@@ -4,3 +4,5 @@ local.mk
 *.tex
 !/preamble.tex
 *.log
+.Auto/
+build/
