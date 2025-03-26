@@ -19,9 +19,8 @@
 
 ;; Babel
 ;; --------------------------------------------------------------------------------
-
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (string-match "^\\(R\\|emacs-lisp\\)$" lang)))
+  (not (string-match "^\\(R\\|emacs-lisp\\|elisp\\)$" lang)))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 (setq ess-ask-for-ess-directory nil)
 (org-babel-do-load-languages
