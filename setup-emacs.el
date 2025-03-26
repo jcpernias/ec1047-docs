@@ -11,6 +11,12 @@
 (setcar (nthcdr 4 org-emphasis-regexp-components) 2)
 (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
 
+;; Recalculate tables before export
+(defun tables-recalc (backend)
+    (org-table-recalculate-buffer-tables))
+
+(add-hook 'org-export-before-processing-hook #'tables-recalc)
+
 ;; Babel
 ;; --------------------------------------------------------------------------------
 
