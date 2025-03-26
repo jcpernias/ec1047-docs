@@ -1,0 +1,606 @@
+#+TITLE: Medidas de la desigualdad de la renta
+#+SETUPFILE: ../setup.org
+
+
+* Introducción
+
+La *desigualdad económica* se refiere a las diferencias en los niveles
+de vida que disfrutan los miembros de una sociedad. Incluso desde la
+posición utilitarista clásica, que en un principio ignora cuestiones
+distributivas, bajo determinados supuestos la desigualdad en la
+distribución de la renta sería indeseable, ya que implicaría una
+pérdida de bienestar social.
+
+Las medidas generalmente usadas en el trabajo aplicado son insensibles
+a cambios en la renta media y no cambian si todas las rentas se
+incrementan en la misma proporción.  A continuación se presentan
+algunos indicadores que se suelen usar en el análisis de la
+desigualdad: la curva de Lorenz, el índice de Gini y los ratios
+interdecílicos.
+
+* La curva de Lorenz
+
+La *curva de Lorenz* es una representación gráfica de la distribución
+de la renta y muestra la proporción de renta que consigue el
+porcentaje $p$ más pobre de la población, para $0\% \leq p \leq
+100\%$.
+
+Para una población con $N$ individuos ordenados de menor a mayor
+renta, la curva de Lorenz, $L(p)$, asigna a cada proporción $p$ de
+población la correspondiente renta total acumulada por esa fracción de
+población. Siendo $y_{1} \le y_{2} \le \dots \le y_{N}$ las rentas de
+los individuos ordenadas de menor a mayor, la curva de Lorenz se
+define como:
+#+begin_export latex
+\[
+L\big(k / N \big) =
+\frac{\sum_{i = 1}^{k} y_{i}}{Y}, \qquad k=0, 1, 2, \dots, N.
+\]
+#+end_export
+donde
+#+begin_export latex
+\[
+  Y = \sum_{i=1}^{N} y_{i},
+\]
+#+end_export
+es la renta total. De acuerdo con esta definición, es fácil ver que
+$L(0)=0$ y $L(1)=1$.
+
+
+#+NAME: tab-lorenz-ex
+#+CAPTION: Cálculo de la curva de Lorenz.
+#+ATTR_LATEX:  :options[H]
+#+begin_table
+#+ATTR_LATEX: :booktabs t :align r*{4}{w{r}{2cm}}
+| $i$  | $y_i$ | $y_i / \sum y_i$ | $p$       | $L(p)$      |
+|------+-------+------------------+-----------+-------------|
+| $0$  | $0$   | \pct{0.0}        | \pct{0}   | \pct{0.0}   |
+| $1$  | $3$   | \pct{1.9}        | \pct{10}  | \pct{1.9}   |
+| $2$  | $7$   | \pct{4.5}        | \pct{20}  | \pct{6.5}   |
+| $3$  | $8$   | \pct{5.2}        | \pct{30}  | \pct{11.7}  |
+| $4$  | $10$  | \pct{6.5}        | \pct{40}  | \pct{18.2}  |
+| $5$  | $12$  | \pct{7.8}        | \pct{50}  | \pct{26.0}  |
+| $6$  | $14$  | \pct{9.1}        | \pct{60}  | \pct{35.1}  |
+| $7$  | $17$  | \pct{11.0}       | \pct{70}  | \pct{46.1}  |
+| $8$  | $20$  | \pct{13.0}       | \pct{80}  | \pct{59.1}  |
+| $9$  | $25$  | \pct{16.2}       | \pct{90}  | \pct{75.3}  |
+| $10$ | $38$  | \pct{24.7}       | \pct{100} | \pct{100.0} |
+|------+-------+------------------+-----------+-------------|
+| Suma | $154$ | \pct{100.0}      |           |             |
+#+end_table
+
+En el Cuadro [[tab-lorenz-ex]], se presenta un ejemplo sencillo para
+ilustrar la construcción de la curva de Lorenz. Los datos que aparecen
+en esa tabla corresponden a una hipotética economía con 10
+habitantes. Las rentas de cada uno de los individuos, $y_i$ para $i =
+1, \dots, 10$, se miden en miles de euros al año y aparecen en orden
+creciente (se ha incluido una fila adicional correspondiente a $i = 0$,
+que representaría un individuo adicional cuya renta es $0$. La
+inclusión de este individuo no afecta a los cálculos pero facilita la
+representación gráfica posterior). La renta total en esta economía es
+$Y = \sum y_i = 154$ miles de euros al año. La tercera columna expresa
+las rentas individuales como porcentaje de la renta total. Por
+ejemplo, la renta del individuo 3 representa el \pct{5.2} de la renta
+total de esa economía. Las últimas dos columnas son porcentajes
+acumulados de población, $p$, y de renta, $L(p)$. Por ejemplo, en la
+fila $i = 6$ el valor de $p$ es \pct{60}, lo que quiere decir que en
+las seis primeras filas representan el \pct{60} más pobre de la población,
+mientras que $L(p)$ es \pct{35.1}, es decir, esa fracción de la
+población solo obtiene el \pct{35.1} de la renta de ese país.
+
+#+NAME: fig-lorenz-ex
+#+CAPTION: Curva de Lorenz, $L(p)$: ejemplo.
+#+ATTR_LATEX: :options [H]
+#+begin_figure
+#+begin_export latex
+\begin{tikzpicture}
+  \begin{axis}[
+    axis equal image = true,
+    axis lines = middle,
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north, text width = 5cm},
+    y label style={at={(axis description cs:-0.15, 1)},
+      anchor=north east, text width = 2.5 cm},
+    xlabel={Porcentaje de la población ordenada por su renta ($p$)},
+    ylabel={Porcentaje de la renta total},
+    xmin=0, xmax=100, ymin=0, ymax=100,
+    ticklabel style = {font=\footnotesize},
+    xtick={0, 20, 40, 60, 80, 100},
+    ytick={0, 20, 40, 60, 80, 100},
+    % legend pos=south east,
+    grid=major
+    ]
+    % Línea de igualdad perfecta
+    \addplot[domain=0:100, semithick, black!60!] {x} ;
+
+
+    \addplot[very thick, blue!40!black, smooth] coordinates {
+      (0, 0) (10, 1.9) (20, 6.5) (30, 11.7) (40, 18.2) (50, 26)
+      (60, 35.1) (70, 46.1) (80, 59.1) (90, 75.3) (100, 100)
+    }
+    node[pos=0.62, below right, yshift = -4pt, text=black, fill=white] {$L(p)$};
+
+  \end{axis}
+\end{tikzpicture}
+#+end_export
+#+end_figure
+
+En la Figura [[fig-lorenz-ex]] se representan en un gráfico las columnas
+$p$ y $L(p)$ del Cuadro [[tab-lorenz-ex]]. Además de la curva de Lorenz se
+representa la línea de 45\textdegree{}, para poder comparar la
+distribución de la renta con una situación donde la renta se
+distribuye de forma igualitaria. En ese caso, $L(p) = p$ para
+cualquier proporción $p$: el 30% de la población más pobre obtendría
+exactamente el 30% de la renta total, el 50% de la población obtendría
+el 50% de la renta, y así sucesivamente. Cuando la renta no se
+distribuye de forma perfectamente igualitaria la curva de Lorenz está
+por debajo de la línea de 45\textdegree{}, indicando que los grupos de
+población más pobres tienen una proporción de renta menor que su
+proporción demográfica.  La diagonal se toma como referencia a la hora
+de evaluar una determinada distribución de la renta: cuanto más cerca
+esté la curva de Lorenz a la recta de 45\textdegree{}, menor es la
+desigualdad.
+
+La curva de Lorenz proporciona una forma visual de comparar
+distribuciones de renta. En algunos casos, podemos ordenar diferentes
+distribuciones de la renta de más a menos igualitarias. En esos casos
+es posible mostrar que, a igualdad de rentas medias, las
+distribuciones más igualitarias se corresponden a niveles de bienestar
+social más elevados sea cual sea la función de bienestar social que se
+utilice (mientras sea simétrica y cóncava). Pero en otros casos, la
+comparación de las curvas de Lorenz no nos permite determinar cuál
+corresponde a una distribución de la renta más igualitaria.
+
+#+NAME: fig-lorenz-comp1
+#+CAPTION: Comparación de dos curvas de Lorenz. La distribución representada por  $L_A(p)$ es más igualitaria que la correspondiente a $L_B(p)$.
+#+ATTR_LATEX: :options [h!]
+#+begin_figure
+#+begin_export latex
+\begin{tikzpicture}
+  \begin{axis}[
+    axis equal image = true,
+    axis lines = middle,
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north, text width = 5cm},
+    y label style={at={(axis description cs:-0.15, 1)},
+      anchor=north east, text width = 2.5 cm},
+    xlabel={Porcentaje de la población ordenada por su renta ($p$)},
+    ylabel={Porcentaje de la renta total},
+    xmin=0, xmax=100, ymin=0, ymax=100,
+    ticklabel style = {font=\footnotesize},
+    xtick={0, 20, 40, 60, 80, 100},
+    ytick={0, 20, 40, 60, 80, 100},
+    % legend pos=south east,
+    grid=major
+    ]
+    % Línea de igualdad perfecta
+    \addplot[domain=0:100, semithick, black!60!] {x} ;
+
+    % Curva de Lorenz - País A (más igualitario)
+    \addplot[very thick, green!40!black, smooth] coordinates {
+      (0,0) (20, 10) (40, 25) (60, 45) (80, 70) (100, 100)
+    }
+    node[pos=0.35, right, xshift = 6pt, yshift = -4pt, text=black, fill=white] {$L_A(p)$};
+
+
+    \addplot[very thick, blue!40!black, smooth] coordinates {
+      (0,0) (20, 2) (40, 6) (50, 9) (60, 14) (70, 22) (80, 37) (90, 60) (100, 100)
+    }
+    node[pos=0.55, below right, yshift = -4pt, text=black, fill=white] {$L_B(p)$};
+
+    \end{axis}
+\end{tikzpicture}
+#+end_export
+#+end_figure
+
+#+NAME: fig-lorenz-comp2
+#+CAPTION: Comparación de dos curvas de Lorenz. Cuando las curvas de Lorenz se cortan ninguna de las dos distribuciones es uniformemente más igualitaria que la otra.
+#+ATTR_LATEX: :options [H]
+#+begin_figure
+#+begin_export latex
+\begin{tikzpicture}
+  \begin{axis}[
+    axis equal image = true,
+    axis lines = middle,
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north, text width = 5cm},
+    y label style={at={(axis description cs:-0.15, 1)},
+      anchor=north east, text width = 2.5 cm},
+    xlabel={Porcentaje de la población ordenada por su renta ($p$)},
+    ylabel={Porcentaje de la renta total},
+    xmin=0, xmax=100, ymin=0, ymax=100,
+    ticklabel style = {font=\footnotesize},
+    xtick={0, 20, 40, 60, 80, 100},
+    ytick={0, 20, 40, 60, 80, 100},
+    % legend pos=south east,
+    grid=major
+    ]
+    % Línea de igualdad perfecta
+    \addplot[domain=0:100, semithick, black!60!] {x} ;
+
+    % Curva de Lorenz - País A (más igualitario)
+    \addplot[very thick, green!40!black, smooth] coordinates {
+      (0,0) (20, 8) (40, 18) (60, 30) (80, 45) (90, 60) (100, 100)
+    }
+    node[pos=0.55, right, xshift = 8pt, yshift = -4pt, text=black, fill=white] {$L_A(p)$};
+
+
+    \addplot[very thick, blue!40!black, smooth] coordinates {
+      (0,0) (20, 2) (40, 10) (60, 30) (80, 60) (100, 100)
+    }
+    node[pos=0.25, right, xshift = 11pt, yshift = -3pt, text=black, fill = white] {$L_B(p)$};
+
+    \end{axis}
+\end{tikzpicture}
+#+end_export
+#+end_figure
+
+
+
+En las Figuras [[fig-lorenz-comp1]] y [[fig-lorenz-comp2]] se representan las
+curvas de Lorenz correspondiente a dos distribuciones de la renta, con
+el objeto de determinar cuál es la distribución más igualitaria en
+cada caso.
+
+- Si, como ocurre en la Figura [[fig-lorenz-comp1]], la curva de Lorenz de
+  A se encuentra siempre por encima de la de B (es decir, está más
+  cerca de la línea de 45° en todo su recorrido), entonces la
+  distribución de la renta en A es más igualitaria que en B. En este
+  caso se dice que A domina en el sentido de Lorenz a B, y la
+  comparación no presenta ambigüedad: A tiene menor desigualdad que B
+  en toda la distribución.
+
+- En casos como el de la Figura [[fig-lorenz-comp2]], en que las curvas de
+  Lorenz se cruzan en algún punto, ninguna de las distribuciones de la
+  renta es uniformemente más igualitaria que la otra. En la Figura
+  [[fig-lorenz-comp2]] la distribución de la renta de A es más igualitaria
+  que B en los segmentos más pobres de la población pero menos
+  igualitaria que en los más ricos. En tal situación, no es posible
+  ordenar las distribuciones de menor a mayor desigualdad.
+
+
+
+* Índice de Gini
+
+
+El índice de Gini es una medida numérica que resume de la desigualdad
+en la distribución de la renta en un solo número, comprendido entre $0$
+y $1$.  La definición formal del índice de Gini se basa en la
+comparación las rentas de una economía, $y_i$, para $i = 1, \dots, N$,
+tomadas de dos en dos. Definamos la brecha absoluta media sobre los
+$N^2$ diferentes pares de renta como:
+#+begin_export latex
+\[
+  \Delta = \frac{1}{N^2}\sum_{i=1}^N \sum_{j=1}^N | y_i - y_j|.
+\]
+#+end_export
+El índice de Gini, $G$, se obtiene normalizando $\Delta$ para
+garantizar que su valor máximo no exceda la unidad. El caso más
+extremo de desigualdad ocurriría cuando una sola persona dispone de
+toda la renta, $Y = N \bar{y}$, siendo $\bar{y}$ la renta media. Entonces:
+#+begin_export latex
+\[
+G = \frac{\Delta}{2 \bar{y}}
+\]
+#+end_export
+
+Una fórmula alternativa, más conveniente en la práctica, es la
+siguiente:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N}
+\]
+#+end_export
+
+El índice de Gini toma valores comprendidos entre 0 y 1. En el caso en
+que la renta se distribuya de forma perfectamente igualitaria, el
+índice toma su valor mínimo: $G = 0$. El valor máximo que puede tomar
+el índice es $G = 1 - 1/N < 1$ que se aproxima a $1$ conforme $N$
+tiende a infinito. Valores de $G$ entre $0$ y $1$ representan niveles
+intermedios de desigualdad. En la práctica, los índices de Gini de las
+sociedades más igualitarias toman valores entre $0.2$ y $0.3$. Los
+índices de Gini de los países donde la distribución de la renta es más
+desigual suelen ser estar entre $0.5$ y $0.6$.
+
+
+#+NAME: fig-lorenz-gini
+#+CAPTION: El valor del índice de Gini es igual al doble del área comprendida entre la curva de Lorenz y la recta de 45\textdegree{}.
+#+ATTR_LATEX: :options [h!]
+#+begin_figure
+#+begin_export latex
+\begin{tikzpicture}
+  \begin{axis}[
+    axis equal image = true,
+    axis lines = middle,
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north, text width = 5cm},
+    y label style={at={(axis description cs:-0.15, 1)},
+      anchor=north east, text width = 2.5 cm},
+    xlabel={Porcentaje de la población ordenada por su renta ($p$)},
+    ylabel={Porcentaje de la renta total},
+    xmin=0, xmax=100, ymin=0, ymax=100,
+    ticklabel style = {font=\footnotesize},
+    xtick={0, 20, 40, 60, 80, 100},
+    ytick={0, 20, 40, 60, 80, 100},
+    % legend pos=south east,
+    grid=major
+    ]
+    % Línea de igualdad perfecta
+    \addplot[domain=0:100, semithick, black!60!, name path=A] {x} ;
+
+
+    \addplot[very thick, blue!40!black, smooth, name path=B] coordinates {
+      (0,0) (20, 5) (40, 15) (60, 30) (80, 55) (100, 100)
+    }
+    node[pos=0.62, below right, yshift = -4pt, text=black, fill=white] {$L(p)$};
+
+    % Área entre la diagonal y la curva de Lorenz
+    \addplot[gray, fill opacity=0.2] fill between[of=A and B];
+
+  \end{axis}
+\end{tikzpicture}
+#+end_export
+#+end_figure
+
+El índice de Gini está relacionado con la curva de Lorenz y puede
+demostrarse que $G$ es igual al doble del área comprendida entre la
+línea de igualdad perfecta y la curva de Lorenz de la distribución. Formalmente:
+#+begin_export latex
+\[
+G = 1 - 2 \int_{0}^{1} L(p)\, dp
+\]
+#+end_export
+
+La Figura [[fig-lorenz-gini]] ilustra la relación entre la curva de Lorenz
+y el índice de Gini. Cuanto más se aleja la curva de Lorenz de la
+línea de igualdad, mayor será el valor de Gini. En el caso de igualdad
+perfecta de ingresos, la curva de Lorenz coincide con la diagonal y el
+área entre ambas es cero; por tanto, $G = 0$. En el caso de
+desigualdad extrema, donde un solo individuo concentra toda la renta
+de la economía, el área entre la curva de Lorenz y la recta de
+45\textdegree{} se aproxima al área total bajo la diagonal, por lo que
+$G \approx 1$. En general, un valor del índice de Gini más alto
+implica una curva de Lorenz más alejada de la línea de igualdad y la
+distribución de la renta se considera más desigual. Por el contrario,
+valores de $G$ más bajos indicarían distribuciones más igualitarias.
+
+#+NAME: tab-gini
+#+CAPTION: Cálculo del índice de Gini.
+#+ATTR_LATEX:  :options[H]
+#+begin_table
+#+ATTR_LATEX: :booktabs t :align r*{2}{w{r}{2cm}}
+| $i$  | $y_i$ | $i \cdot y_i$ |
+|------+-------+---------------|
+| $1$  | $3$   | $3$           |
+| $2$  | $7$   | $14$          |
+| $3$  | $8$   | $24$          |
+| $4$  | $10$  | $40$          |
+| $5$  | $12$  | $60$          |
+| $6$  | $14$  | $84$          |
+| $7$  | $17$  | $119$         |
+| $8$  | $20$  | $160$         |
+| $9$  | $25$  | $225$         |
+| $10$ | $38$  | $380$         |
+|------+-------+---------------|
+| Suma | $154$ | $1109$        |
+#+end_table
+
+El Cuadro [[tab-gini]] ilustra los cálculos necesarios para obtener el
+índice de Gini en la economía hipotética que se introdujo en la
+discusión de la curva de Lorenz. La tercera columna de ese Cuadro es
+simplemente el producto de las dos primeras columnas. El índice de
+Gini es:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
+  \frac{1109}{154} - \frac{11}{10} = 0.340.
+\]
+#+end_export
+
+A diferencia de la curva de Lorenz, el uso de medidas escalares de
+desigualdad siempre permite ordenar dos distribuciones de la
+renta. Esto podría considerarse como una ventaja, pero puede ocultar
+diferencias importantes en las distribuciones que se comparan. Por
+ejemplo, es posible construir casos donde con el índice de Gini se
+consideren más igualitarias distribuciones en las que una parte
+importante de la sociedad obtenga, comparativamente, una proporción
+muy pequeña de la renta total. En general, es recomendable utilizar
+más de un indicador para evaluar la distribución de la renta en la
+práctica.
+
+
+* Cocientes entre cuantiles
+
+
+Los cocientes entre cuantiles o ratios interdecílicos comparan los
+ingresos de distintos cuantiles de la población. Se construyen
+dividiendo los ingresos de dos cuantiles en los extremos de la
+distribución de la renta. El Instituto Nacional de Estadística, INE,
+publica cada año el indicador /S80S20/, definido como el cociente de
+las rentas medias del quintil más alto y del quintil más bajo. Es
+decir, compara la renta media del \pct{20} más rico de la población
+con la renta media del \pct{20} más pobre. En el caso de distribución
+de la renta perfectamente igualitaria este índice toma el valor
+$1$. Cuanto más altos son los valores del índice, más desigual es la
+distribución de la renta.
+
+Utilizando los datos del Cuadro [[tab-gini]] podemos calcular este
+indicador para nuestra economía hipotética. La renta media del quintil
+más alto es $\Var{S80} = (25 + 38) / 2 = 31.5$ miles de euros
+anuales. Por otro lado, la renta media del quintil más bajo es
+$\Var{S20} = (3 + 7) / 2 = 5$ miles de euros al año. En este caso
+$\text{\emph{S80S20}} = 31.5 / 5 = 6.3$, es decir, la renta media del
+\pct{20} más rico de la población es más de 6 veces la renta media del
+\pct{20} más pobre.
+
+En la práctica se utilizan otros indicadores que se construyen de
+forma similar. Es muy común el cociente entre las rentas medias de los
+percentiles 90 y 10. También se está extendiendo el uso del ratio de
+Palma, que compara la renta del percentil 90 con la del percentil 50.
+En todos los casos, estas medidas indican cuántas veces es mayor la
+renta de una persona situada cerca de la cima de la distribución (que,
+por ejemplo, pertenezca al percentil 90) en comparación con el ingreso
+de una persona situada cerca de la base (en el percentil 10, por
+ejemplo).
+
+* Ejercicios
+
+1. En la hoja ~Rentas~ del archivo Excel ~ineq-data.xlsx~ se presentan
+   las rentas anuales en euros de los 10 habitantes de un país
+   hipotético.
+
+   a) Obtenga y represente gráficamente la curva de Lorenz.
+
+   b) Calcule el índice de Gini y el cociente /S80S20/.
+
+   c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
+      transfieren 2.000 euros del individuo 1 al individuo 3. ¿Cómo
+      cambian los indicadores de desigualdad?
+
+   d) Calcule el índice de Gini y el cociente /S80S20/ si se
+      transfieren 2.000 euros del individuo 8 al individuo 10. ¿Cómo
+      cambian ahora los indicadores de desigualdad?
+
+   e) Compare las respuestas obtenidas en los dos apartados
+      anteriores. ¿Cuál de los índices de desigualdad es más adecuado
+      en este caso?
+
+2. En la hoja ~CC.AA.~ del archivo Excel ~ineq-data.xlsx~ se presentan
+   datos de las Comunidades Autónomas españolas correspondientes a los
+   años 2013 y 2023 y que muestran como ha evolucionado el crecimiento
+   económico, la desigualdad de la renta y la pobreza en las distintas
+   Comunidades. En su respuesta no incluya los casos de las Ciudades
+   Autónomas de Ceuta y Melilla dado que presentan características muy
+   diferentes al resto de España. También tenga en cuenta que las
+   rentas medias no están ajustadas al incremento de los precios
+   durante ese periodo. Para comparar las rentas medias en años
+   diferentes es conveniente deflactarlas previamente con el
+   IPC. Utilizando los datos proporcionados compruebe si existe alguna
+   relación entre el crecimiento económico y la pobreza. ¿Disminuye
+   más la pobreza en las Comunidades que crecen más? ¿Están
+   relacionados el crecimiento y la desigualdad? ¿De qué forma? ¿Y la
+   desigualdad y la pobreza?
+
+
+
+* COMMENT Descartes
+
+#+NAME: fig-lorenz
+#+CAPTION: Curva de Lorenz, $L(p)$. La línea de 45\textdegree{} corresponde a una distribución igualitaria de la renta.
+#+ATTR_LATEX: :options [H]
+#+begin_figure
+#+begin_export latex
+\begin{tikzpicture}
+  \begin{axis}[
+    axis equal image = true,
+    axis lines = middle,
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north, text width = 5cm},
+    y label style={at={(axis description cs:-0.15, 1)},
+      anchor=north east, text width = 2.5 cm},
+    xlabel={Porcentaje de la población ordenada por su renta ($p$)},
+    ylabel={Porcentaje de la renta total},
+    xmin=0, xmax=100, ymin=0, ymax=100,
+    ticklabel style = {font=\footnotesize},
+    xtick={0, 20, 40, 60, 80, 100},
+    ytick={0, 20, 40, 60, 80, 100},
+    % legend pos=south east,
+    grid=major
+    ]
+    % Línea de igualdad perfecta
+    \addplot[domain=0:100, semithick, black!60!] {x} ;
+
+
+    \addplot[very thick, blue!40!black, smooth] coordinates {
+      (0,0) (20, 5) (40, 15) (60, 30) (80, 55) (100, 100)
+    }
+    node[pos=0.62, below right, yshift = -4pt, text=black, fill=white] {$L(p)$};
+
+  \end{axis}
+\end{tikzpicture}
+#+end_export
+#+end_figure
+
+
+
+En la práctica, la construcción de la curva de Lorenz se realiza
+mediante los siguientes pasos:
+
+1. Ordenar a todos los individuos de menor a mayor renta.
+
+2. Calcular la proporción acumulada de la población y la
+   correspondiente proporción acumulada de la renta.
+
+3. La curva de Lorenz se obtiene al representar la proporción
+   acumulada de la población en el eje horizontal y la proporción
+   acumulada de la renta en el eje vertical.
+
+
+* COMMENT Conclusiones
+
+** Fortalezas y limitaciones de cada medida
+Cada una de las medidas presentadas tiene fortalezas y debilidades:
+
+- La Curva de Lorenz proporciona una visión completa de la
+  distribución. Su fortaleza principal es que muestra cómo se reparte
+  la renta a lo largo de toda la población de forma gráfica e
+  intuitiva, permitiendo comparaciones detalladas (por ejemplo,
+  mediante dominancia de Lorenz). No obstante, su principal limitación
+  es que no ofrece un número único para resumir la desigualdad, lo que
+  dificulta comparaciones rápidas o la inclusión en modelos
+  cuantitativos. Además, si las curvas de Lorenz de dos distribuciones
+  se cruzan, no podemos concluir fácilmente cuál distribución es más
+  desigual sin ambigüedad.
+
+- El Índice de Gini condensa la información de la curva de Lorenz en
+  un solo valor entre 0 y 1, lo cual es muy útil para comparar niveles
+  de desigualdad entre países, regiones o periodos de tiempo de un
+  vistazo. Es ampliamente utilizado por su simplicidad y porque
+  considera toda la distribución de ingresos en su cálculo. Sin
+  embargo, su simplicidad es también su debilidad: al ser un promedio
+  agregado de las diferencias de ingreso, pierde información sobre
+  cómo está distribuida la desigualdad internamente. Dos
+  distribuciones diferentes pueden compartir el mismo Gini, y un
+  cambio en la desigualdad en los extremos de la distribución (muy
+  pobres o muy ricos) puede no alterar mucho el Gini si el grueso de
+  la población no cambia su situación. En resumen, el Gini no
+  distingue dónde ocurre la desigualdad, solo cuánta existe en
+  conjunto.
+
+- Los ratios interdecílicos (como P90/P10) son fáciles de interpretar
+  y comunican de manera directa la brecha entre sectores específicos
+  de la población (normalmente los extremos). Son útiles para ilustrar
+  disparidades concretas (riqueza relativa de los ricos frente a los
+  pobres) que pueden perderse en un promedio como el Gini. Su
+  limitación es que ignoran el resto de la distribución: se centran
+  solo en dos puntos y no reflejan la situación de la clase media ni
+  la variación dentro de los deciles considerados. Por ejemplo, no
+  capturan si hay mucha desigualdad dentro del 10% más pobre o dentro
+  del 10% más rico, ni muestran nada sobre el 80% central de la
+  población. Por ello, un ratio interdecílico debe interpretarse con
+  cuidado y siempre en contexto con otras medidas.
+
+** Uso conjunto para una visión más completa
+
+Debido a las limitaciones individuales, es recomendable utilizar
+múltiples medidas en conjunto para obtener una visión más completa de
+la desigualdad de la renta. La curva de Lorenz, por ejemplo, ofrece el
+panorama general y permite identificar visualmente diferencias
+distributivas; el índice de Gini resume la desigualdad en un indicador
+comparativo conveniente; y los ratios interdecílicos aportan
+información específica sobre las brechas entre grupos
+extremos. Combinando estas medidas, se puede diagnosticar la
+desigualdad de manera más rica: por ejemplo, dos países pueden tener
+el mismo Gini, pero sus curvas de Lorenz y ratios P90/P10 podrían
+revelar diferencias en qué tan concentrada está la riqueza en el
+extremo superior o qué tan rezagados están los más pobres. En
+conclusión, ninguna medida por sí sola capta todas las dimensiones de
+la desigualdad, pero conjuntamente proporcionan un conjunto de
+herramientas poderoso para el análisis económico de la distribución de
+la renta.
+
+
+
+# Local Variables:
+# ispell-local-dictionary: "spanish"
+# End:

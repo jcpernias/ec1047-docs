@@ -1,0 +1,11 @@
+#+AUTHOR: Economía del Sector Público --- EC1049
+#+DATE: Curso 2024-2025
+
+#+STARTUP: indent
+
+#+OPTIONS: ':t -:t *:t ^:{} H:3 num:2 toc:nil |:t
+#+LANGUAGE: es
+
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper, 11pt]
+#+LATEX_HEADER: \input{preamble}
