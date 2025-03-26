@@ -52,7 +52,7 @@ all: $(pdf-files)
 	$(EMACS) --load=./setup-emacs.el --visit=$< $(org-to-latex)
 
 .PRECIOUS: %.pdf
-%.pdf: %.tex
+%.pdf: %.tex preamble.tex
 	$(LATEXMK) -aux-directory=$(dir $<)/build -output-directory=$(dir $<) $<
 
 
