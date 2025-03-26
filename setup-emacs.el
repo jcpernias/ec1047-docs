@@ -15,7 +15,8 @@
 (defun tables-recalc (backend)
     (org-table-recalculate-buffer-tables))
 
-(add-hook 'org-export-before-processing-hook #'tables-recalc)
+;; (add-hook 'org-export-before-processing-hook #'tables-recalc)
+(add-hook 'org-export-before-parsing-hook #'tables-recalc)
 
 ;; Babel
 ;; --------------------------------------------------------------------------------

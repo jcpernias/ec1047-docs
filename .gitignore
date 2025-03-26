@@ -6,3 +6,4 @@ local.mk
 *.log
 .Auto/
 build/
+/*/data/
