@@ -123,7 +123,7 @@ población solo obtiene el \pct{35.1} de la renta de ese país.
 
 
     \addplot[very thick, blue!40!black, smooth]
-    table[col sep=comma, x=p, y=L] {lorenz.csv}
+    table[col sep=comma, x=p, y=L] {lorenz-data.csv}
     node[pos=0.62, below right, yshift = -4pt, text=black, fill=white] {$L(p)$};
 
   \end{axis}
