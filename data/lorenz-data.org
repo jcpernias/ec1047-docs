@@ -1,0 +1,7 @@
+#+INCLUDE: ../org/lorenz-table.org
+
+#+name: lorenz-csv
+#+BEGIN_SRC emacs-lisp :var tab=tab-lorenz-data[0:-2,*] :results file none :file lorenz.csv :exports results :eval yes
+  ;; write data for plots
+  (orgtbl-to-csv tab nil)
+#+END_SRC

@@ -1,4 +1,4 @@
-(require 'org)
+(require 'ox)
 
 ;; Export settings
 ;; --------------------------------------------------------------------------------
@@ -35,3 +35,24 @@
 
 (add-to-list 'org-src-lang-modes
    '("r" . R))
+
+
+;; Evaluate buffer
+(defun eval-org-buffer (dir)
+  "Export current org buffer to a latex file in directory DIR."
+  (interactive "DDirectory: ")
+  (org-export-expand-include-keyword)
+  ;; (find-file (expand-file-name file))
+  (cd (expand-file-name dir))
+  (org-babel-execute-buffer))
+
+
+;; Export functions
+;; --------------------------------------------------------------------------------
+
+(defun org-to-latex (&optional dir)
+  "Export current org buffer to a latex file in directory DIR."
+  (interactive "DDirectory: ")
+  (let ((name (file-name-base (buffer-file-name))))
+    (org-latex-export-as-latex)
+    (write-file (concat dir name ".tex"))))

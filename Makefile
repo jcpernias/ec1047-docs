@@ -3,11 +3,17 @@ SHELL := /bin/sh
 ## Source files
 ## ================================================================================
 
-org-files := \
-	ineq/ineq.org
+src-files := \
+	ineq.org
 
-# note: sort function remove duplicates
-src-dirs := $(sort $(dir $(org-files)))
+
+root-dir := .
+org-dir := $(root-dir)/org
+build-dir := $(root-dir)/build
+data-dir := $(root-dir)/data
+pdf-dir := $(root-dir)/pdf
+
+
 
 ## Programs
 ## ================================================================================
@@ -24,9 +30,8 @@ latexmkbin := /Library/TeX/texbin/latexmk
 ## Variables
 ## ================================================================================
 EMACS := $(emacsbin) -Q -nw --batch
-org-to-pdf := --eval "(org-latex-export-to-pdf)"
-org-to-latex := --eval "(org-latex-export-to-latex)"
-org-eval := --eval "(org-babel-execute-buffer)"
+org-to-latex := --eval "(tolatex (file-name-as-directory \"$(builddir)\"))"
+org-eval := --eval "(eval-org-buffer (file-name-as-directory \"$(builddir)\"))"
 
 LATEXMK_FLAGS := -lualatex -recorder -emulate-aux-dir
 
@@ -35,44 +40,68 @@ ifneq ($(LATEX_MESSAGES), yes)
 LATEXMK_FLAGS += -quiet
 endif
 
-LATEXMK := $(latexmkbin) $(LATEXMK_FLAGS)
+LATEXMK := $(envbin) TEXINPUTS=$(build-dir)/:$(data-dir)/: \
+	$(latexmkbin) $(LATEXMK_FLAGS)
 
-tex-files := $(patsubst %.org,%.tex,$(org-files))
-pdf-files := $(patsubst %.org,%.pdf,$(org-files))
+org-files := $(addprefix $(org-dir)/,$(src-files))
+tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
+pdf-files := $(addprefix $(pdf-dir)/,$(patsubst %.org,%.pdf,$(src-files)))
 
-build-dirs := $(join $(dir $(org-files)),build)
-data-dirs := $(join $(dir $(org-files)),data)
+VPATH := $(buid-dir)
 
-VPATH := $(src-dirs)
+dir-path = $(dir $(abspath $(1)))
 
+
+ifeq ($(PRINT_INFO), yes)
+$(info src-files: $(src-files))
+$(info org-files: $(org-files))
+$(info tex-files: $(tex-files))
+$(info pdf-files: $(pdf-files))
+endif
 
 all: $(pdf-files)
 
-.PRECIOUS: %.tex
-%.tex: %.org setup.org setup-emacs.el
-	$(EMACS) --load=./setup-emacs.el --visit=$< $(org-to-latex)
+.PRECIOUS: $(build-dir)/%.tex
+$(build-dir)/%.tex: $(org-dir)/%.org setup.org ./setup-emacs.el | $(build-dir)
+	$(EMACS) --load=./setup-emacs.el --visit=$< \
+		--eval '(org-to-latex "$(call dir-path,$@)")'
 
-.PRECIOUS: %.pdf
-%.pdf: %.tex preamble.tex ineq/data/lorenz-data.csv
-	$(LATEXMK) -cd -aux-directory=build -output-directory=. $<
+.PRECIOUS: $(pdf-dir)/%.pdf
+$(pdf-dir)/%.pdf: $(build-dir)/%.tex preamble.tex | $(pdf-dir)
+	$(LATEXMK) -aux-directory=$(build-dir) \
+		-output-directory=$(pdf-dir) $<
 
-ineq/data/lorenz-data.csv: ineq/lorenz-data.org | ineq/data
-	$(EMACS) --load=./setup-emacs.el --visit=$< $(org-eval)
+.PRECIOUS:  $(build-dir)/%.csv
+$(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)
+	$(EMACS) --load=./setup-emacs.el --visit=$< \
+		--eval '(eval-org-buffer "$(call dir-path,$@)")'
 
 
-ineq/data:
+$(build-dir)/ineq.tex: $(org-dir)/lorenz-table.org
+$(build-dir)/lorenz-data.csv: $(org-dir)/lorenz-table.org
+$(pdf-dir)/ineq.pdf: $(build-dir)/lorenz-data.csv
+
+
+
+## Crate directories
+## --------------------------------------------------------------------------------
+
+$(build-dir) $(pdf-dir):
 	mkdir $@
-
 
 
 ## Cleaning rules
 ## --------------------------------------------------------------------------------
 .PHONY: clean
 clean:
-	-@rm $(pdf-files)
-	-@rm $(tex-files)
+	-@rm -r $(pdf-dir)
 
 .PHONY: veryclean
 veryclean: clean
-	-@rm -r $(data-dirs)
-	-@rm -r $(build-dirs)
+	-@rm -r $(build-dir)
+
+
+# Local Variables:
+# mode: makefile-gmake
+# eval: (flyspell-mode -1)
+# End:

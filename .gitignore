@@ -1,9 +1,6 @@
 local.mk
-*.t2d/
-*.pdf
-*.tex
-!/preamble.tex
 *.log
+*.aux
 .Auto/
 build/
-/*/data/
+pdf/
