@@ -1,0 +1,214 @@
+#+TITLE: Medición de la pobreza
+#+SETUPFILE: ../setup.org
+
+
+* Introducción
+
+En este laboratorio se introducen algunos conceptos básicos en la
+medición de la pobreza. Un tratamiento más detallado puede encontrarse
+en el manual editado por el Banco Mundial: Haughton, Jonathan and
+Shahidur R. Khandker, (2009). /Handbook on Poverty and Inequality/.
+Washington, DC: World Bank ([[http://hdl.handle.net/10986/11985][enlace]]).
+
+La medición de la pobreza precisa completar tres pasos:
+
+- Definir un indicador de bienestar.
+
+- Establecer un estándar mínimo aceptable de ese indicador para
+  separar a los pobres de los no pobres (la línea de pobreza).
+
+- Calcular un estadístico que mida la distribución del indicador de
+  bienestar en relación con la línea de pobreza.
+
+* Indicadores de bienestar
+
+Los indicadores de bienestar más utilizados son la renta y los gastos en
+consumo de los individuos. En países desarrollados es más frecuente el
+uso de la renta mientras que en los países menos desarrollados se usa el
+consumo. Existen argumentos a favor y en contra de ambos indicadores e
+incluso se han propuesto otros.
+
+Consideraremos un caso hipotético de una economía con 40 habitantes. En
+el fichero ~rentas.xlsx~ se registra la renta disponible de cada uno de
+ellos (en miles de euros al año). El /Desfile de Pen/ (/Pen's Parade/)
+es un gráfico utilizado para estudiar la distribución de la renta . En
+el eje horizontal, se representan todas las personas de un país o región
+ordenadas de más pobres a más ricas. La población se mide como un
+porcentaje acumulado, lo que facilita las comparaciones entre diferentes
+períodos temporales o áreas geográficas. En el eje vertical se
+representa el nivel de renta (o gastos en consumo) de cada uno de los
+individuos. Con los datos de nuestro ejemplo, se obtiene el siguiente
+gráfico:
+#+begin_src R
+  #| message: false
+  #| warning: false
+
+  library(tidyverse)
+  library(openxlsx2)
+  y  <- read_xlsx("rentas.xlsx") |> pull(y)
+  y_med <- median(y)
+  z <- 0.6 * y_med
+  N <- length(y)
+  pct_pop <- 100 * (1:N) / N
+
+
+  plot_data <- tibble(pop = c(pct_pop - 100 / length(y), 100),
+                      renta = c(y, max(y)),
+                      pov_line = z)
+  plot_ylim <- c(0, 1.02 * max(plot_data$renta))
+
+  base_plot <-
+    ggplot(data = plot_data, aes(y = renta, x = pop)) +
+    coord_cartesian(ylim = plot_ylim, xlim = c(0, 100), expand = FALSE) +
+    theme_classic() +
+    labs(x = "Población (% acumulado)", y = "Renta (miles euros)" )
+
+  base_plot +
+    geom_step(lwd = 1)
+#+end_src
+
+* Líneas de la pobreza
+
+La **línea de la pobreza** es un umbral utilizado para identificar
+quiénes son pobres y quiénes no. La elección de una determinada línea
+de la pobreza depende en gran medida de la finalidad que se
+persigue. En general, podemos pensar en la línea de pobreza como el
+mínimo nivel de gasto que necesita un individuo para satisfacer sus
+necesidades básicas.
+
+En los países desarrollados, es más frecuente usar **líneas de pobreza
+relativas** que buscan diferenciar los segmentos más pobres de la
+población. La forma más común de definir una línea de la pobreza
+relativa es usar una fracción de la media o la mediana de la renta. En
+nuestro ejemplo, aplicaremos la definición usada, entre otras agencias
+estadísticas, por Eurostat y definimos el umbral de la pobreza como el
+60% de la mediana de la renta disponible per cápita.
+
+#+begin_src R
+  base_plot +
+    geom_segment(x = 50, y = 0, yend = y_med,
+                 color = "gray80", linetype = 1, linewidth = 0.3) +
+    geom_hline(yintercept = y_med, linetype = 2, color = "darkgreen") +
+    geom_hline(yintercept = z, color = "darkblue") +
+    geom_step(lwd = 1)
+#+end_src
+
+En el gráfico anterior, la línea horizontal discontinua representa la
+renta mediana. A partir de esta, se calcula la línea de pobreza cuyo
+nivel se representa por la línea horizontal continua.
+
+* Índices de pobreza
+
+La medida más popular de la pobreza es el *índice de pobreza* que se
+define como la fracción de la población cuya renta es inferior al
+umbral de la pobreza. Se calcula como:
+#+begin_export latex
+\[
+  H = \frac{q}{N},
+\]
+#+end_export
+donde $q$ es el número de pobres (aquellos cuya renta, $y_i$, es
+inferior al umbral de la pobreza, $z$), y $N$ es el número total de
+personas.
+
+#+begin_src R
+  poor <- y < z
+  Q <- sum(poor)
+  P0 <- Q / N
+  base_plot +
+    geom_hline(yintercept = z, color = "darkblue") +
+    geom_segment(x = 100 * P0, y = 0, yend = z,
+                 color = "gray80", linewidth = 0.3) +
+    geom_step(lwd = 1)
+#+end_src
+
+Esta medida se centra en la /incidencia/ de la pobreza, es fácil de
+entender y es adecuada para ciertos propósitos, aunque se suele
+recomendar calcularla para al menos dos líneas de la pobreza
+diferentes.
+
+Un segundo indicador, el *índice de la brecha de la pobreza*, mide la
+/profundidad/ de la pobreza. Se define como:
+#+begin_export latex
+\[
+  PG = \frac{1}{N}\sum_{i=1}^{q}\frac{z - y_i}{z}
+\]
+#+end_export
+
+Este índice es la media en la población de las brechas de renta
+individuales ($z - y_i$ para los individuos por debajo del umbral de
+pobreza y $0$ para los restantes) como proporción de la línea de la
+pobreza. Gráficamente se corresponde al área entre el umbral de la
+pobreza y la curva de Pen.
+
+#+begin_src R
+PG <- poor * (z - y)
+P1 <- sum(PG) / (N * z)
+Ns <- with(plot_data, renta < pov_line) |> sum() + 1
+shade_data <- plot_data[1:Ns, ]
+
+ribbon_data <-
+  with(shade_data,
+       tibble(pop = c(pop[1], rep(pop[2:(Ns - 1)], each = 2), pop[Ns]),
+              renta = c(rep(renta[-Ns], each = 2)),
+              pov_line = c(rep(pov_line[-Ns], each = 2))))
+
+base_plot +
+  geom_ribbon(data = ribbon_data,
+              aes(ymin = renta, ymax = pov_line),
+              fill = "blue", alpha = 0.5) +
+  geom_hline(yintercept = z, color = "darkblue") +
+  geom_segment(x = 100 * P0, y = 0, yend = z,
+               color = "gray80", linewidth = 0.3) +
+  geom_step(lwd = 1)
+#+end_src
+
+A pesar de tener algunas propiedades buenas, la brecha de la pobreza
+no está exenta de limitaciones (algunas se señalan en [[https://es.wikipedia.org/wiki/Índice_de_brecha_de_pobreza][este artículo]] de
+Wikipedia)
+
+Un indicador mejor es el *índice de la brecha cuadrática de la
+pobreza* que se define de como la media de las brechas de pobreza
+individuales al cuadrado:
+#+begin_export latex
+\[
+  SPG = \frac{1}{N}\sum_{i=1}^{q}\left(\frac{z - y_i}{z}\right)^2
+\]
+#+end_export
+
+Se puede interpretar como una media de las brechas relativas ponderada
+por esas mismas brechas. De esta forma se da más peso a los individuos
+cuyas rentas están más alejadas del umbral de pobreza. Este índice,
+por tanto, penaliza la desigualdad entre los pobres y refleja la
+/severidad/ de la pobreza. A pesar de tener buenas propiedades, no es
+usado con frecuencia.
+
+* Ejercicios
+
+#+ATTR_LATEX: :options [1)]
+1. Calcule los tres índices con los datos de ~rentas.xlsx~ usando un
+   umbral de la pobreza igual al \pct{60} de la renta mediana.
+
+2. <<item:2>>Suponga que recibe \money{10 000} euros de una
+   organización de ayuda a la pobreza y puede distribuirlos sin coste
+   y como desee entre los 40 ciudadanos del país. Si se plantea el
+   objetivo de reducir $H$, ¿cuál sería la distribución óptima de los
+   \money{10 000}? ¿Y si busca minimizar $PG$? ¿Y en el caso de $SPG$?
+
+3. <<item:3>>Suponga que las funciones de utilidad de cada uno de los
+   ciudadanos del país son idénticas y sólo dependen del logaritmo de
+   la renta: $U_i = \log(y_i)$, por lo que las utilidades marginales
+   de la renta son decrecientes. Si adopta un enfoque /rawlsiano/,
+   ¿cuál es la forma óptima de distribuir los \money{10 000}? ¿Y si
+   usa una función de bienestar social /utilitarista/?
+
+4. Compare los resultados obtenidos en los apartados [[item:2]] y [[item:3]]
+   ¿En qué casos coinciden los resultados de los índices de pobreza y
+   de las funciones de bienestar social?
+
+
+# Local Variables:
+# ispell-local-dictionary: "spanish"
+# End:
+
+#  LocalWords:  Pen
