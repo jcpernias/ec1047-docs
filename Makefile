@@ -5,7 +5,8 @@ SHELL := /bin/sh
 
 src-files := \
 	ineq.org \
-	pov.org
+	pov.org \
+	pov-sol.org
 
 ## Directories
 ## --------------------------------------------------------------------------------
