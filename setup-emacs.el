@@ -1,8 +1,9 @@
-(require 'ox)
+(require 'package)
+(package-initialize)
 
 ;; Export settings
 ;; --------------------------------------------------------------------------------
-
+(require 'ox)
 (setq org-list-allow-alphabetical t)
 
 ;; Allow opening question or exclamation marks before emphasis
@@ -21,7 +22,7 @@
 ;; Babel
 ;; --------------------------------------------------------------------------------
 (defun my-org-confirm-babel-evaluate (lang body)
-  (not (string-match "^\\(R\\|emacs-lisp\\|elisp\\)$" lang)))
+  (not (string-match "^\\(R\\|emacs-lisp\\|latex\\)$" lang)))
 (setq org-confirm-babel-evaluate 'my-org-confirm-babel-evaluate)
 (setq ess-ask-for-ess-directory nil)
 (org-babel-do-load-languages
@@ -56,3 +57,9 @@
   (let ((name (file-name-base (buffer-file-name))))
     (org-latex-export-as-latex)
     (write-file (concat dir name ".tex"))))
+
+;; ESS
+;; --------------------------------------------------------------------------------
+(setq ess-ask-for-ess-directory nil)
+(setq inferior-R-args "--no-save --no-restore")
+(setq ess-history-file nil)
