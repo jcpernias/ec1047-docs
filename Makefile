@@ -15,6 +15,7 @@ org-dir := $(root-dir)/org
 build-dir := $(root-dir)/build
 data-dir := $(root-dir)/data
 pdf-dir := $(root-dir)/pdf
+R-dir := $(root-dir)/R
 
 
 
@@ -45,6 +46,8 @@ endif
 
 LATEXMK := $(envbin) TEXINPUTS=$(build-dir)/:$(data-dir)/: \
 	$(latexmkbin) $(LATEXMK_FLAGS)
+
+RSCRIPT := $(Rscriptbin)
 
 org-files := $(addprefix $(org-dir)/,$(src-files))
 tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
@@ -79,12 +82,19 @@ $(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(eval-org-buffer "$(call dir-path,$@)")'
 
-
 $(build-dir)/ineq.tex: $(org-dir)/lorenz-table.org
 $(build-dir)/lorenz-data.csv: $(org-dir)/lorenz-table.org
 $(pdf-dir)/ineq.pdf: $(build-dir)/lorenz-data.csv
 
+pov-csv-files := $(addprefix $(build-dir)/,pen.csv povline.csv)
+$(pov-csv-files): pov-csv.intermediate
+	@:
 
+.INTERMEDIATE: pov-csv.intermediate
+pov-csv.intermediate: $(R-dir)/pov.R $(data-dir)/rentas.xlsx
+	$(RSCRIPT) $< $(build-dir)
+
+$(pdf-dir)/pov.pdf: $(pov-csv-files)
 
 ## Crate directories
 ## --------------------------------------------------------------------------------

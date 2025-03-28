@@ -39,33 +39,51 @@ períodos temporales o áreas geográficas. En el eje vertical se
 representa el nivel de renta (o gastos en consumo) de cada uno de los
 individuos. Con los datos de nuestro ejemplo, se obtiene el siguiente
 gráfico:
-#+begin_src R
-  #| message: false
-  #| warning: false
 
-  library(tidyverse)
-  library(openxlsx2)
-  y  <- read_xlsx("rentas.xlsx") |> pull(y)
-  y_med <- median(y)
-  z <- 0.6 * y_med
-  N <- length(y)
-  pct_pop <- 100 * (1:N) / N
+#+CAPTION: Curva de Pen.
+#+LABEL: fig:1
+#+ATTR_LATEX: :placement [H]
+#+begin_figure
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[
+      width = 12cm,
+      height = 8cm,
+      axis lines = middle,
+      xlabel = {Población (porcentaje)},
+      ylabel = {Renta (miles de euros)},
+      x label style={at={(axis description cs:0.5, -0.1)},
+        anchor=north},
+      y label style={at={(axis description cs:-0.1, 1)},
+        anchor=north east, text width = 2cm},
+      xmin = 0, xmax = 100,
+      ymin = 0, ymax = 60,
+      grid = both,
+      major grid style = {line width = .2pt, draw = gray!50},
+      minor tick num = 1,
+      tick label style = {font = \footnotesize},
+      label style = {font = \small},
+      xtick = {0, 20, ..., 100},
+      ytick = {0, 20, ..., 60},
+      tick align = center,
+    ]
 
+    % Curva de Pen
+    \addplot[
+      name path = pen,
+      thick,
+      color = black,
+      const plot,
+    ] table[
+      col sep=comma,
+      x = p,
+      y = y,
+    ] {pen.csv};
 
-  plot_data <- tibble(pop = c(pct_pop - 100 / length(y), 100),
-                      renta = c(y, max(y)),
-                      pov_line = z)
-  plot_ylim <- c(0, 1.02 * max(plot_data$renta))
-
-  base_plot <-
-    ggplot(data = plot_data, aes(y = renta, x = pop)) +
-    coord_cartesian(ylim = plot_ylim, xlim = c(0, 100), expand = FALSE) +
-    theme_classic() +
-    labs(x = "Población (% acumulado)", y = "Renta (miles euros)" )
-
-  base_plot +
-    geom_step(lwd = 1)
+    \end{axis}
+  \end{tikzpicture}
 #+end_src
+#+end_figure
 
 * Líneas de la pobreza
 
@@ -84,14 +102,84 @@ nuestro ejemplo, aplicaremos la definición usada, entre otras agencias
 estadísticas, por Eurostat y definimos el umbral de la pobreza como el
 60% de la mediana de la renta disponible per cápita.
 
-#+begin_src R
-  base_plot +
-    geom_segment(x = 50, y = 0, yend = y_med,
-                 color = "gray80", linetype = 1, linewidth = 0.3) +
-    geom_hline(yintercept = y_med, linetype = 2, color = "darkgreen") +
-    geom_hline(yintercept = z, color = "darkblue") +
-    geom_step(lwd = 1)
+#+CAPTION: Línea de la pobreza.
+#+LABEL: fig:2
+#+ATTR_LATEX: :placement [H]
+#+begin_figure
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[
+      width = 12cm,
+      height = 8cm,
+      axis lines = middle,
+      xlabel = {Población (porcentaje)},
+      ylabel = {Renta (miles de euros)},
+      x label style={at={(axis description cs:0.5, -0.1)},
+        anchor=north},
+      y label style={at={(axis description cs:-0.1, 1)},
+        anchor=north east, text width = 2cm},
+      xmin = 0, xmax = 100,
+      ymin = 0, ymax = 60,
+      label style = {font = \small},
+      ticks = none,
+      set layers,
+      clip = false
+    ]
+
+      % Curva de Pen
+      \addplot[
+        name path = pen,
+        thick,
+        color = black,
+        const plot,
+      ] table[
+        col sep=comma,
+        x = p,
+        y = y,
+      ] {pen.csv};
+
+
+      % Renta mediana
+      \addplot[
+        name path = ymed,
+        semithick,
+        color = black,
+      ] table[col sep=comma, x=p, y=ymed]{povline.csv} ;
+
+      % Línea de la pobreza
+      \addplot[
+        name path = povline,
+        semithick,
+        color = black,
+      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
+
+      \draw[
+          name intersections={of=pen and ymed, name=i}
+        ][
+          line width = .3pt,
+          draw = gray!50,
+          on layer = axis background,
+        ] (i-1) -- (i-1 |- current axis.south)
+        node[label={[font=\footnotesize]below:$50$}] {}
+        (i-1 -| current axis.west)
+        node[label={[font=\footnotesize]left:$\operatorname{med}(y)$}] {}
+        ;
+
+      \draw[
+        name intersections={of=pen and povline, name=i}
+      ][
+        line width = .2pt,
+        draw = gray!50,
+      ]
+      (i-1 -| current axis.west)
+      node[label={[font=\footnotesize]left:$z$}] {}
+      ;
+
+    \end{axis}
+  \end{tikzpicture}
 #+end_src
+#+end_figure
+
 
 En el gráfico anterior, la línea horizontal discontinua representa la
 renta mediana. A partir de esta, se calcula la línea de pobreza cuyo
@@ -111,16 +199,67 @@ donde $q$ es el número de pobres (aquellos cuya renta, $y_i$, es
 inferior al umbral de la pobreza, $z$), y $N$ es el número total de
 personas.
 
-#+begin_src R
-  poor <- y < z
-  Q <- sum(poor)
-  P0 <- Q / N
-  base_plot +
-    geom_hline(yintercept = z, color = "darkblue") +
-    geom_segment(x = 100 * P0, y = 0, yend = z,
-                 color = "gray80", linewidth = 0.3) +
-    geom_step(lwd = 1)
+#+CAPTION: Índice de pobreza.
+#+LABEL: fig:3
+#+ATTR_LATEX: :placement [H]
+#+begin_figure
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[
+      width = 12cm,
+      height = 8cm,
+      axis lines = middle,
+      xlabel = {Población (porcentaje)},
+      ylabel = {Renta (miles de euros)},
+      x label style={at={(axis description cs:0.5, -0.1)},
+        anchor=north},
+      y label style={at={(axis description cs:-0.1, 1)},
+        anchor=north east, text width = 2cm},
+      xmin = 0, xmax = 100,
+      ymin = 0, ymax = 60,
+      label style = {font = \small},
+      ticks = none,
+      set layers,
+      clip = false
+    ]
+
+      % Curva de Pen
+      \addplot[
+        name path = pen,
+        thick,
+        color = black,
+        const plot,
+      ] table[
+        col sep=comma,
+        x = p,
+        y = y,
+      ] {pen.csv};
+
+
+      % Línea de la pobreza
+      \addplot[
+        name path = povline,
+        semithick,
+        color = black,
+      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
+
+      \draw[
+        name intersections={of=pen and povline, name=i}
+      ][
+        line width = .3pt,
+        draw = gray!50,
+        on layer = axis background,
+      ] (i-1) -- (i-1 |- current axis.south)
+      node[label={[font=\footnotesize]below:$H$}] {}
+      (i-1 -| current axis.west)
+      node[label={[font=\footnotesize]left:$z$}] {}
+      ;
+
+    \end{axis}
+  \end{tikzpicture}
 #+end_src
+#+end_figure
+
 
 Esta medida se centra en la /incidencia/ de la pobreza, es fácil de
 entender y es adecuada para ciertos propósitos, aunque se suele
@@ -141,27 +280,77 @@ pobreza y $0$ para los restantes) como proporción de la línea de la
 pobreza. Gráficamente se corresponde al área entre el umbral de la
 pobreza y la curva de Pen.
 
-#+begin_src R
-PG <- poor * (z - y)
-P1 <- sum(PG) / (N * z)
-Ns <- with(plot_data, renta < pov_line) |> sum() + 1
-shade_data <- plot_data[1:Ns, ]
+#+CAPTION: Brecha de la pobreza.
+#+LABEL: fig:4
+#+ATTR_LATEX: :placement [H]
+#+begin_figure
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[
+      width = 12cm,
+      height = 8cm,
+      axis lines = middle,
+      xlabel = {Población (porcentaje)},
+      ylabel = {Renta (miles de euros)},
+      x label style={at={(axis description cs:0.5, -0.1)},
+        anchor=north},
+      y label style={at={(axis description cs:-0.1, 1)},
+        anchor=north east, text width = 2cm},
+      xmin = 0, xmax = 100,
+      ymin = 0, ymax = 60,
+      label style = {font = \small},
+      ticks = none,
+      set layers,
+      clip = false
+    ]
 
-ribbon_data <-
-  with(shade_data,
-       tibble(pop = c(pop[1], rep(pop[2:(Ns - 1)], each = 2), pop[Ns]),
-              renta = c(rep(renta[-Ns], each = 2)),
-              pov_line = c(rep(pov_line[-Ns], each = 2))))
+      % Curva de Pen
+      \addplot[
+        name path = pen,
+        thick,
+        color = black,
+        const plot,
+      ] table[
+        col sep=comma,
+        x = p,
+        y = y,
+      ] {pen.csv};
 
-base_plot +
-  geom_ribbon(data = ribbon_data,
-              aes(ymin = renta, ymax = pov_line),
-              fill = "blue", alpha = 0.5) +
-  geom_hline(yintercept = z, color = "darkblue") +
-  geom_segment(x = 100 * P0, y = 0, yend = z,
-               color = "gray80", linewidth = 0.3) +
-  geom_step(lwd = 1)
+
+      % Línea de la pobreza
+      \addplot[
+        name path = povline,
+        semithick,
+        color = black,
+      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
+
+      \draw[
+        name intersections={of=pen and povline, name=i}
+      ][
+        line width = .3pt,
+        draw = gray!50,
+        on layer = axis background,
+      ] (i-1) -- (i-1 |- current axis.south)
+      node[label={[font=\footnotesize]below:$H$}] {}
+      (i-1 -| current axis.west)
+      node[label={[font=\footnotesize]left:$z$}] {}
+      ;
+
+      % Relleno entre la curva de Pen y línea de la pobreza
+      \addplot [
+        fill=none,
+      ] fill between [
+        of=pen and povline,
+        split,
+        every segment no 0/.style={fill=blue!50, opacity = 0.2,},
+      ];
+
+    \end{axis}
+  \end{tikzpicture}
 #+end_src
+#+end_figure
+
+
 
 A pesar de tener algunas propiedades buenas, la brecha de la pobreza
 no está exenta de limitaciones (algunas se señalan en [[https://es.wikipedia.org/wiki/Índice_de_brecha_de_pobreza][este artículo]] de
