@@ -82,6 +82,9 @@ $(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)
 		--eval '(eval-org-buffer "$(call dir-path,$@)")'
 
 ## ineq.org dependencies ------------------------------------------------
+ineq-fig-files := $(addprefix $(tex-dir)/ineq-fig-,\
+	$(addsuffix .tex,lorenz lorenz-comp1 lorenz-comp2 gini))
+$(build-dir)/ineq.tex: $(ineq-fig-files)
 $(build-dir)/ineq.tex: $(org-dir)/lorenz-table.org
 $(build-dir)/lorenz-data.csv: $(org-dir)/lorenz-table.org
 $(pdf-dir)/ineq.pdf: $(build-dir)/lorenz-data.csv
