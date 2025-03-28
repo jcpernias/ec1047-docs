@@ -22,29 +22,26 @@ La medición de la pobreza precisa completar tres pasos:
 
 * Indicadores de bienestar
 
-Los indicadores de bienestar más utilizados son la renta y los gastos en
-consumo de los individuos. En países desarrollados es más frecuente el
-uso de la renta mientras que en los países menos desarrollados se usa el
-consumo. Existen argumentos a favor y en contra de ambos indicadores e
-incluso se han propuesto otros.
+Los indicadores de bienestar más utilizados son la renta y los gastos
+en consumo de los individuos. En países desarrollados es más frecuente
+el uso de la renta mientras que en los países menos desarrollados se
+usa el consumo. Existen argumentos a favor y en contra de ambos
+indicadores e incluso se han propuesto otros.
 
-Consideraremos un caso hipotético de una economía con 40 habitantes. En
-el fichero ~rentas.xlsx~ se registra la renta disponible de cada uno de
-ellos (en miles de euros al año). El /Desfile de Pen/ (/Pen's Parade/)
-es un gráfico utilizado para estudiar la distribución de la renta . En
-el eje horizontal, se representan todas las personas de un país o región
-ordenadas de más pobres a más ricas. La población se mide como un
-porcentaje acumulado, lo que facilita las comparaciones entre diferentes
-períodos temporales o áreas geográficas. En el eje vertical se
-representa el nivel de renta (o gastos en consumo) de cada uno de los
-individuos. Con los datos de nuestro ejemplo, se obtiene el siguiente
-gráfico:
+
+El /Desfile de Pen/ (/Pen's Parade/) es un gráfico utilizado para
+estudiar la distribución de la renta . En el eje horizontal, se
+representan todas las personas de un país o región ordenadas de más
+pobres a más ricas. La población se mide como un porcentaje acumulado,
+lo que facilita las comparaciones entre diferentes períodos temporales
+o áreas geográficas. En el eje vertical se representa el nivel de
+renta (o gastos en consumo) de cada uno de los individuos.
 
 #+CAPTION: Curva de Pen.
 #+LABEL: fig:1
-#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_src latex
+#+begin_export latex
   \begin{tikzpicture}
     \begin{axis}[
       width = 12cm,
@@ -82,8 +79,14 @@ gráfico:
 
     \end{axis}
   \end{tikzpicture}
-#+end_src
+#+end_export
 #+end_figure
+
+Consideraremos un caso hipotético de una economía con 40 habitantes,
+cuyas rentas disponibles (en miles de euros al año) se recogen en el
+fichero =rentas.xlsx=. Con los datos de nuestro ejemplo, se obtiene la
+Figura [[fig:1]].
+
 
 * Líneas de la pobreza
 
@@ -104,9 +107,9 @@ estadísticas, por Eurostat y definimos el umbral de la pobreza como el
 
 #+CAPTION: Línea de la pobreza.
 #+LABEL: fig:2
-#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_src latex
+#+begin_export latex
   \begin{tikzpicture}
     \begin{axis}[
       width = 12cm,
@@ -177,13 +180,14 @@ estadísticas, por Eurostat y definimos el umbral de la pobreza como el
 
     \end{axis}
   \end{tikzpicture}
-#+end_src
+#+end_export
 #+end_figure
 
 
-En el gráfico anterior, la línea horizontal discontinua representa la
-renta mediana. A partir de esta, se calcula la línea de pobreza cuyo
-nivel se representa por la línea horizontal continua.
+En la Figura [[fig:2]], la línea horizontal representa la renta mediana,
+$\operatorname{med}(y)$. A partir de esta, se calcula la línea de
+pobreza como el \pct{60} de la renta mediana, $z = 0.6
+\operatorname{med}(y)$.
 
 * Índices de pobreza
 
@@ -201,9 +205,9 @@ personas.
 
 #+CAPTION: Índice de pobreza.
 #+LABEL: fig:3
-#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_src latex
+#+begin_export latex
   \begin{tikzpicture}
     \begin{axis}[
       width = 12cm,
@@ -257,14 +261,16 @@ personas.
 
     \end{axis}
   \end{tikzpicture}
-#+end_src
+#+end_export
 #+end_figure
 
 
 Esta medida se centra en la /incidencia/ de la pobreza, es fácil de
 entender y es adecuada para ciertos propósitos, aunque se suele
 recomendar calcularla para al menos dos líneas de la pobreza
-diferentes.
+diferentes. En la Figura [[fig:3]], corresponde al porcentaje de la
+población para el que se cortan la curva de Pen y la línea de la
+pobreza.
 
 Un segundo indicador, el *índice de la brecha de la pobreza*, mide la
 /profundidad/ de la pobreza. Se define como:
@@ -274,17 +280,11 @@ Un segundo indicador, el *índice de la brecha de la pobreza*, mide la
 \]
 #+end_export
 
-Este índice es la media en la población de las brechas de renta
-individuales ($z - y_i$ para los individuos por debajo del umbral de
-pobreza y $0$ para los restantes) como proporción de la línea de la
-pobreza. Gráficamente se corresponde al área entre el umbral de la
-pobreza y la curva de Pen.
-
 #+CAPTION: Brecha de la pobreza.
 #+LABEL: fig:4
-#+ATTR_LATEX: :placement [H]
+#+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_src latex
+#+begin_export latex
   \begin{tikzpicture}
     \begin{axis}[
       width = 12cm,
@@ -347,10 +347,15 @@ pobreza y la curva de Pen.
 
     \end{axis}
   \end{tikzpicture}
-#+end_src
+#+end_export
 #+end_figure
 
-
+Este índice es la media en la población de las brechas de renta
+individuales ($z - y_i$ para los individuos por debajo del umbral de
+pobreza y $0$ para los restantes) como proporción de la línea de la
+pobreza. Gráficamente se corresponde con el área entre el umbral de la
+pobreza y la curva de Pen. En la Figura [[fig:4]] se ha representado para
+los datos de nuestro ejemplo.
 
 A pesar de tener algunas propiedades buenas, la brecha de la pobreza
 no está exenta de limitaciones (algunas se señalan en [[https://es.wikipedia.org/wiki/Índice_de_brecha_de_pobreza][este artículo]] de
