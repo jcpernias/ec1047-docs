@@ -1,0 +1,44 @@
+\begin{tikzpicture}
+  \begin{axis}[
+    width = 12cm,
+    height = 8cm,
+    axis lines = middle,
+    xlabel = {Población (porcentaje)},
+    ylabel = {Renta (miles de euros)},
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north},
+    y label style={at={(axis description cs:-0.1, 1)},
+      anchor=north east, text width = 2cm},
+    xmin = 0, xmax = 100,
+    ymin = 0, ymax = 60,
+    grid = both,
+    major grid style = {line width = .2pt, draw = gray!50},
+    minor tick num = 1,
+    tick label style = {font = \footnotesize},
+    label style = {font = \small},
+    xtick = {0, 20, ..., 100},
+    ytick = {0, 20, ..., 60},
+    tick align = center,
+  ]
+
+  % Curva de Pen
+  \addplot[
+    name path = pen,
+    thick,
+    color = black,
+    const plot,
+  ] table[
+    col sep=comma,
+    x = p,
+    y = y,
+  ] {pen.csv};
+
+  \end{axis}
+\end{tikzpicture}
+
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% ispell-local-dictionary: "spanish"
+%%% End:

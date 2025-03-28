@@ -16,8 +16,7 @@ build-dir := $(root-dir)/build
 data-dir := $(root-dir)/data
 pdf-dir := $(root-dir)/pdf
 R-dir := $(root-dir)/R
-
-
+tex-dir := $(root-dir)/tex
 
 ## Programs
 ## ================================================================================
@@ -82,9 +81,14 @@ $(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(eval-org-buffer "$(call dir-path,$@)")'
 
+## ineq.org dependencies ------------------------------------------------
 $(build-dir)/ineq.tex: $(org-dir)/lorenz-table.org
 $(build-dir)/lorenz-data.csv: $(org-dir)/lorenz-table.org
 $(pdf-dir)/ineq.pdf: $(build-dir)/lorenz-data.csv
+
+## pov.org dependencies -------------------------------------------------
+pov-fig-files := $(addprefix $(tex-dir)/pov-fig-,$(addsuffix .tex,pen h z pg))
+$(build-dir)/ineq.tex: $(pov-fig-files)
 
 pov-csv-files := $(addprefix $(build-dir)/,pen.csv povline.csv)
 $(pov-csv-files): pov-csv.intermediate
@@ -96,7 +100,7 @@ pov-csv.intermediate: $(R-dir)/pov.R $(data-dir)/rentas.xlsx
 
 $(pdf-dir)/pov.pdf: $(pov-csv-files)
 
-## Crate directories
+## Create directories
 ## --------------------------------------------------------------------------------
 
 $(build-dir) $(pdf-dir):

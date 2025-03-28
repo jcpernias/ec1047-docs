@@ -41,45 +41,7 @@ renta (o gastos en consumo) de cada uno de los individuos.
 #+LABEL: fig:1
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_export latex
-  \begin{tikzpicture}
-    \begin{axis}[
-      width = 12cm,
-      height = 8cm,
-      axis lines = middle,
-      xlabel = {Población (porcentaje)},
-      ylabel = {Renta (miles de euros)},
-      x label style={at={(axis description cs:0.5, -0.1)},
-        anchor=north},
-      y label style={at={(axis description cs:-0.1, 1)},
-        anchor=north east, text width = 2cm},
-      xmin = 0, xmax = 100,
-      ymin = 0, ymax = 60,
-      grid = both,
-      major grid style = {line width = .2pt, draw = gray!50},
-      minor tick num = 1,
-      tick label style = {font = \footnotesize},
-      label style = {font = \small},
-      xtick = {0, 20, ..., 100},
-      ytick = {0, 20, ..., 60},
-      tick align = center,
-    ]
-
-    % Curva de Pen
-    \addplot[
-      name path = pen,
-      thick,
-      color = black,
-      const plot,
-    ] table[
-      col sep=comma,
-      x = p,
-      y = y,
-    ] {pen.csv};
-
-    \end{axis}
-  \end{tikzpicture}
-#+end_export
+#+include: "../tex/pov-fig-pen.tex" export latex
 #+end_figure
 
 Consideraremos un caso hipotético de una economía con 40 habitantes,
@@ -109,78 +71,7 @@ estadísticas, por Eurostat y definimos el umbral de la pobreza como el
 #+LABEL: fig:2
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_export latex
-  \begin{tikzpicture}
-    \begin{axis}[
-      width = 12cm,
-      height = 8cm,
-      axis lines = middle,
-      xlabel = {Población (porcentaje)},
-      ylabel = {Renta (miles de euros)},
-      x label style={at={(axis description cs:0.5, -0.1)},
-        anchor=north},
-      y label style={at={(axis description cs:-0.1, 1)},
-        anchor=north east, text width = 2cm},
-      xmin = 0, xmax = 100,
-      ymin = 0, ymax = 60,
-      label style = {font = \small},
-      ticks = none,
-      set layers,
-      clip = false
-    ]
-
-      % Curva de Pen
-      \addplot[
-        name path = pen,
-        thick,
-        color = black,
-        const plot,
-      ] table[
-        col sep=comma,
-        x = p,
-        y = y,
-      ] {pen.csv};
-
-
-      % Renta mediana
-      \addplot[
-        name path = ymed,
-        semithick,
-        color = black,
-      ] table[col sep=comma, x=p, y=ymed]{povline.csv} ;
-
-      % Línea de la pobreza
-      \addplot[
-        name path = povline,
-        semithick,
-        color = black,
-      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
-
-      \draw[
-          name intersections={of=pen and ymed, name=i}
-        ][
-          line width = .3pt,
-          draw = gray!50,
-          on layer = axis background,
-        ] (i-1) -- (i-1 |- current axis.south)
-        node[label={[font=\footnotesize]below:$50$}] {}
-        (i-1 -| current axis.west)
-        node[label={[font=\footnotesize]left:$\operatorname{med}(y)$}] {}
-        ;
-
-      \draw[
-        name intersections={of=pen and povline, name=i}
-      ][
-        line width = .2pt,
-        draw = gray!50,
-      ]
-      (i-1 -| current axis.west)
-      node[label={[font=\footnotesize]left:$z$}] {}
-      ;
-
-    \end{axis}
-  \end{tikzpicture}
-#+end_export
+#+include: "../tex/pov-fig-z.tex" export latex
 #+end_figure
 
 
@@ -207,61 +98,7 @@ personas.
 #+LABEL: fig:3
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_export latex
-  \begin{tikzpicture}
-    \begin{axis}[
-      width = 12cm,
-      height = 8cm,
-      axis lines = middle,
-      xlabel = {Población (porcentaje)},
-      ylabel = {Renta (miles de euros)},
-      x label style={at={(axis description cs:0.5, -0.1)},
-        anchor=north},
-      y label style={at={(axis description cs:-0.1, 1)},
-        anchor=north east, text width = 2cm},
-      xmin = 0, xmax = 100,
-      ymin = 0, ymax = 60,
-      label style = {font = \small},
-      ticks = none,
-      set layers,
-      clip = false
-    ]
-
-      % Curva de Pen
-      \addplot[
-        name path = pen,
-        thick,
-        color = black,
-        const plot,
-      ] table[
-        col sep=comma,
-        x = p,
-        y = y,
-      ] {pen.csv};
-
-
-      % Línea de la pobreza
-      \addplot[
-        name path = povline,
-        semithick,
-        color = black,
-      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
-
-      \draw[
-        name intersections={of=pen and povline, name=i}
-      ][
-        line width = .3pt,
-        draw = gray!50,
-        on layer = axis background,
-      ] (i-1) -- (i-1 |- current axis.south)
-      node[label={[font=\footnotesize]below:$H$}] {}
-      (i-1 -| current axis.west)
-      node[label={[font=\footnotesize]left:$z$}] {}
-      ;
-
-    \end{axis}
-  \end{tikzpicture}
-#+end_export
+#+include: "../tex/pov-fig-h.tex" export latex
 #+end_figure
 
 
@@ -284,70 +121,7 @@ Un segundo indicador, el *índice de la brecha de la pobreza*, mide la
 #+LABEL: fig:4
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+begin_export latex
-  \begin{tikzpicture}
-    \begin{axis}[
-      width = 12cm,
-      height = 8cm,
-      axis lines = middle,
-      xlabel = {Población (porcentaje)},
-      ylabel = {Renta (miles de euros)},
-      x label style={at={(axis description cs:0.5, -0.1)},
-        anchor=north},
-      y label style={at={(axis description cs:-0.1, 1)},
-        anchor=north east, text width = 2cm},
-      xmin = 0, xmax = 100,
-      ymin = 0, ymax = 60,
-      label style = {font = \small},
-      ticks = none,
-      set layers,
-      clip = false
-    ]
-
-      % Curva de Pen
-      \addplot[
-        name path = pen,
-        thick,
-        color = black,
-        const plot,
-      ] table[
-        col sep=comma,
-        x = p,
-        y = y,
-      ] {pen.csv};
-
-
-      % Línea de la pobreza
-      \addplot[
-        name path = povline,
-        semithick,
-        color = black,
-      ] table[col sep=comma, x=p, y=z]{povline.csv} ;
-
-      \draw[
-        name intersections={of=pen and povline, name=i}
-      ][
-        line width = .3pt,
-        draw = gray!50,
-        on layer = axis background,
-      ] (i-1) -- (i-1 |- current axis.south)
-      node[label={[font=\footnotesize]below:$H$}] {}
-      (i-1 -| current axis.west)
-      node[label={[font=\footnotesize]left:$z$}] {}
-      ;
-
-      % Relleno entre la curva de Pen y línea de la pobreza
-      \addplot [
-        fill=none,
-      ] fill between [
-        of=pen and povline,
-        split,
-        every segment no 0/.style={fill=blue!50, opacity = 0.2,},
-      ];
-
-    \end{axis}
-  \end{tikzpicture}
-#+end_export
+#+include: "../tex/pov-fig-pg.tex" export latex
 #+end_figure
 
 Este índice es la media en la población de las brechas de renta

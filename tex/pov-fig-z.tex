@@ -1,0 +1,75 @@
+\begin{tikzpicture}
+  \begin{axis}[
+    width = 12cm,
+    height = 8cm,
+    axis lines = middle,
+    xlabel = {Población (porcentaje)},
+    ylabel = {Renta (miles de euros)},
+    x label style={at={(axis description cs:0.5, -0.1)},
+      anchor=north},
+    y label style={at={(axis description cs:-0.1, 1)},
+      anchor=north east, text width = 2cm},
+    xmin = 0, xmax = 100,
+    ymin = 0, ymax = 60,
+    label style = {font = \small},
+    ticks = none,
+    set layers,
+    clip = false
+  ]
+
+    % Curva de Pen
+    \addplot[
+      name path = pen,
+      thick,
+      color = black,
+      const plot,
+    ] table[
+      col sep=comma,
+      x = p,
+      y = y,
+    ] {pen.csv};
+
+
+    % Renta mediana
+    \addplot[
+      name path = ymed,
+      semithick,
+      color = black,
+    ] table[col sep=comma, x=p, y=ymed]{povline.csv} ;
+
+    % Línea de la pobreza
+    \addplot[
+      name path = povline,
+      semithick,
+      color = black,
+    ] table[col sep=comma, x=p, y=z]{povline.csv} ;
+
+    \draw[
+        name intersections={of=pen and ymed, name=i}
+      ][
+        line width = .3pt,
+        draw = gray!50,
+        on layer = axis background,
+      ] (i-1) -- (i-1 |- current axis.south)
+      node[label={[font=\footnotesize]below:$50$}] {}
+      (i-1 -| current axis.west)
+      node[label={[font=\footnotesize]left:$\operatorname{med}(y)$}] {}
+      ;
+
+    \draw[
+      name intersections={of=pen and povline, name=i}
+    ][
+      line width = .2pt,
+      draw = gray!50,
+    ]
+    (i-1 -| current axis.west)
+    node[label={[font=\footnotesize]left:$z$}] {}
+    ;
+
+  \end{axis}
+\end{tikzpicture}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:
