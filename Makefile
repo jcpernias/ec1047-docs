@@ -84,7 +84,7 @@ $(build-dir)/%.tex: $(org-dir)/%.org setup.org ./setup-emacs.el | $(build-dir)
 		--eval '(org-to-latex "$(call dir-path,$@)")'
 
 .PRECIOUS: $(pdf-dir)/%.pdf
-$(pdf-dir)/%.pdf: $(build-dir)/%.tex preamble.tex | $(pdf-dir)
+$(pdf-dir)/%.pdf: $(build-dir)/%.tex $(root-dir)/preamble.tex | $(pdf-dir)
 	$(LATEXMK) -aux-directory=$(build-dir) \
 		-output-directory=$(pdf-dir) $<
 
