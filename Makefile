@@ -33,8 +33,17 @@ latexmkbin := /Library/TeX/texbin/latexmk
 
 ## Variables
 ## ================================================================================
+
+## Print info ----------------------------------------
+LATEX_MESSAGES := no
+PRINT_INFO := no
+
+
+## emacs ---------------------------------------------
 EMACS := $(emacsbin) -Q -nw --batch
 
+
+## latexmk -----------------------------------------
 LATEXMK_FLAGS := -lualatex -recorder -emulate-aux-dir
 
 LATEX_MESSAGES := no
@@ -45,7 +54,11 @@ endif
 LATEXMK := $(envbin) TEXINPUTS=$(build-dir)/:$(data-dir)/: \
 	$(latexmkbin) $(LATEXMK_FLAGS)
 
+## Rscript -----------------------------------------
+
 RSCRIPT := $(Rscriptbin)
+
+## Targets -----------------------------------------
 
 org-files := $(addprefix $(org-dir)/,$(src-files))
 tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
