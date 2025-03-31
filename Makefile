@@ -64,6 +64,8 @@ org-files := $(addprefix $(org-dir)/,$(src-files))
 tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
 pdf-files := $(addprefix $(pdf-dir)/,$(patsubst %.org,%.pdf,$(src-files)))
 
+tex-deps := $(root-dir)/setup.org $(root-dir)/setup-emacs.el
+
 VPATH := $(buid-dir)
 
 dir-path = $(dir $(abspath $(1)))
@@ -79,7 +81,7 @@ endif
 all: $(pdf-files)
 
 .PRECIOUS: $(build-dir)/%.tex
-$(build-dir)/%.tex: $(org-dir)/%.org setup.org ./setup-emacs.el | $(build-dir)
+$(build-dir)/%.tex: $(org-dir)/%.org $(tex-deps) | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(org-to-latex "$(call dir-path,$@)")'
 
