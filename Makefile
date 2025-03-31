@@ -34,8 +34,6 @@ latexmkbin := /Library/TeX/texbin/latexmk
 ## Variables
 ## ================================================================================
 EMACS := $(emacsbin) -Q -nw --batch
-org-to-latex := --eval "(tolatex (file-name-as-directory \"$(builddir)\"))"
-org-eval := --eval "(eval-org-buffer (file-name-as-directory \"$(builddir)\"))"
 
 LATEXMK_FLAGS := -lualatex -recorder -emulate-aux-dir
 
