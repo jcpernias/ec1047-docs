@@ -37,16 +37,20 @@ latexmkbin := /Library/TeX/texbin/latexmk
 ## Print info ----------------------------------------
 LATEX_MESSAGES := no
 PRINT_INFO := no
-
+USE_LUALATEX := no
 
 ## emacs ---------------------------------------------
 EMACS := $(emacsbin) -Q -nw --batch
 
 
 ## latexmk -----------------------------------------
-LATEXMK_FLAGS := -lualatex -recorder -emulate-aux-dir
+LATEX_ENGINE := -pdf
+ifeq ($(USE_LUALATEX), yes)
+LATEX_ENGINE := -lualatex
+endif
 
-LATEX_MESSAGES := no
+LATEXMK_FLAGS := $(LATEX_ENGINE) -cd -nobibfudge
+
 ifneq ($(LATEX_MESSAGES), yes)
 LATEXMK_FLAGS += -quiet
 endif
@@ -65,6 +69,8 @@ tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
 pdf-files := $(addprefix $(pdf-dir)/,$(patsubst %.org,%.pdf,$(src-files)))
 
 tex-deps := $(root-dir)/setup.org $(root-dir)/setup-emacs.el
+
+pdf-deps := $(build-dir)/preamble.tex
 
 VPATH := $(buid-dir)
 
@@ -85,10 +91,16 @@ $(build-dir)/%.tex: $(org-dir)/%.org $(tex-deps) | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(org-to-latex "$(call dir-path,$@)")'
 
+$(build-dir)/%.pdf: $(build-dir)/%.tex $(pdf-deps) | $(build-dir)
+	$(LATEXMK) $<
+
 .PRECIOUS: $(pdf-dir)/%.pdf
-$(pdf-dir)/%.pdf: $(build-dir)/%.tex $(root-dir)/preamble.tex | $(pdf-dir)
-	$(LATEXMK) -aux-directory=$(build-dir) \
-		-output-directory=$(pdf-dir) $<
+$(pdf-dir)/%.pdf: $(build-dir)/%.pdf | $(pdf-dir)
+	$(MV) $< $@
+
+$(build-dir)/preamble.tex: $(root-dir)/preamble.tex | $(build-dir)
+	$(CP) $< $@
+
 
 .PRECIOUS:  $(build-dir)/%.csv
 $(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)

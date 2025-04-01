@@ -1,16 +1,20 @@
 
 % Fonts
 % --------------------------------------------------------------------------------
-% \usepackage{kpfonts}
-% \usepackage{FiraSans}
-% \usepackage[scale=0.87]{FiraMono}
-
-\usepackage{fontspec}
-\usepackage{unicode-math}
-\setmainfont{STIX Two Text}
-\setmathfont{STIX Two Math}
-\setsansfont{FiraSans}[Scale=MatchLowercase]
-\setmonofont{FiraMono}[Scale=MatchLowercase]
+\usepackage{iftex}
+\iftutex
+  \usepackage{fontspec}
+  \usepackage{unicode-math}
+  \setmainfont{STIX Two Text}
+  \setmathfont{STIX Two Math}
+  \setsansfont{FiraSans}[Scale=MatchLowercase]
+  \setmonofont{FiraMono}[Scale=MatchLowercase]
+\else
+  \usepackage{kpfonts}
+  \usepackage{FiraSans}
+  \usepackage[scale=0.87]{FiraMono}
+% \usepackage{newtxtext,newtxmath}
+\fi
 
 
 % Add \usepackage{upquote} to the preamble preferably after any packages that
