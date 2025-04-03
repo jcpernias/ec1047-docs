@@ -5,6 +5,7 @@ SHELL := /bin/sh
 
 src-files := \
 	ineq.org \
+	ineq-sol.org \
 	pov.org \
 	pov-sol.org
 
@@ -18,6 +19,7 @@ data-dir := $(root-dir)/data
 pdf-dir := $(root-dir)/pdf
 R-dir := $(root-dir)/R
 tex-dir := $(root-dir)/tex
+fig-dir := $(root-dir)/figures
 
 ## Programs
 ## ================================================================================
