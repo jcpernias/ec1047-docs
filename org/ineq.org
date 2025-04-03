@@ -342,7 +342,7 @@ ejemplo).
 
 2. En la hoja =CC.AA.= del archivo Excel =ineq-data.xlsx= se presentan
    datos de las Comunidades Autónomas españolas correspondientes a los
-   años 2013 y 2023 y que muestran como ha evolucionado el crecimiento
+   años 2013 y 2023 y que muestran cómo ha evolucionado el crecimiento
    económico, la desigualdad de la renta y la pobreza en las distintas
    Comunidades. En su respuesta no incluya los casos de las Ciudades
    Autónomas de Ceuta y Melilla dado que presentan características muy

@@ -156,7 +156,7 @@ ineq-fig-files-deps := $(data-dir)/ineq-data.xlsx $(data-dir)/ccaa.csv
 ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-dir)
 	$(RSCRIPT) $<
 
-$(pdf-dir)/ineq-sol.pdf: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
+$(build-dir)/ineq-sol.tex: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
 
 
 

@@ -22,7 +22,7 @@
 #+end_tcolorbox
 
 #+begin_center
-#+latex: \footnotesize%
+#+latex: \small%
 #+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{4}{>{$}w{r}{2cm}<{$}}
 |           i | y_{i} | y_{i} / @@latex: \sum y_i@@ | p         | L(p)        |
 |-------------+-------+-----------------------------+-----------+-------------|
@@ -45,9 +45,7 @@
 #+TBLFM: @2$3..@12$5='(concat "\\pct{" remote(tab-lorenz-data, @@#$5) "}")
 #+end_center
 
-Se representa la curva de Lorenz que corresponde a los datos
-presentados en la tabla anterior:
-
+Curva de Lorenz:
 #+begin_center
 #+include: "../tex/ineq-fig-lorenz2.tex" export latex
 #+end_center
@@ -58,9 +56,10 @@ presentados en la tabla anterior:
    b) <<item:b>>Calcule el índice de Gini y el cociente /S80S20/.
 #+end_tcolorbox
 
-#+begin_center
+#+ATTR_LATEX: :options {0.4\textwidth}
+#+begin_minipage
 #+latex: \small%
-#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+#+ATTR_LATEX: :center nil :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{1cm}<{$}}
 |           i | y_{i} | @@latex:i \cdot y_{i}@@ |
 |-------------+-------+-------------------------|
 |           1 |     5 |                       5 |
@@ -88,8 +87,9 @@ presentados en la tabla anterior:
 #+TBLFM: @>$2=vsum(@I..II-1)
 #+TBLFM: @2$3..@12$3=$-1 * $-2
 #+TBLFM: @>$3=vsum(@I..II-1)
-#+end_center
-
+#+end_minipage
+#+ATTR_LATEX: :options {0.6\textwidth}
+#+begin_minipage
 Índice de Gini:
 #+begin_export latex
 \[
@@ -104,6 +104,7 @@ presentados en la tabla anterior:
   \text{\emph{S80S20}} = \frac{32 + 48}{10 + 5} = 5.33.
 \]
 #+end_export
+#+end_minipage
 
 
 #+begin_tcolorbox
@@ -113,9 +114,10 @@ presentados en la tabla anterior:
       cambian los indicadores de desigualdad?
 #+end_tcolorbox
 
-#+begin_center
+#+ATTR_LATEX: :options {0.4\textwidth}
+#+begin_minipage
 #+latex: \small%
-#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+#+ATTR_LATEX: :center nil :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{1cm}<{$}}
 |           i | y_{i} | @@latex:i \cdot y_{i}@@ |
 |-------------+-------+-------------------------|
 |           1 |     3 |                       3 |
@@ -143,8 +145,9 @@ presentados en la tabla anterior:
 #+TBLFM: @>$2=vsum(@I..II-1)
 #+TBLFM: @2$3..@12$3=$-1 * $-2
 #+TBLFM: @>$3=vsum(@I..II-1)
-#+end_center
-
+#+end_minipage
+#+ATTR_LATEX: :options {0.6\textwidth}
+#+begin_minipage
 Índice de Gini:
 #+begin_export latex
 \[
@@ -159,6 +162,7 @@ presentados en la tabla anterior:
   \text{\emph{S80S20}} = \frac{32 + 48}{10 + 3} = 6.15.
 \]
 #+end_export
+#+end_minipage
 
 
 
@@ -169,9 +173,10 @@ presentados en la tabla anterior:
       cambian ahora los indicadores de desigualdad?
 #+end_tcolorbox
 
-#+begin_center
+#+ATTR_LATEX: :options {0.4\textwidth}
+#+begin_minipage
 #+latex: \small%
-#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+#+ATTR_LATEX: :center nil :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{1cm}<{$}}
 |           i | y_{i} | @@latex:i \cdot y_{i}@@ |
 |-------------+-------+-------------------------|
 |           1 |     5 |                       5 |
@@ -199,9 +204,9 @@ presentados en la tabla anterior:
 #+TBLFM: @>$2=vsum(@I..II-1)
 #+TBLFM: @2$3..@12$3=$-1 * $-2
 #+TBLFM: @>$3=vsum(@I..II-1)
-#+end_center
-
-
+#+end_minipage
+#+ATTR_LATEX: :options {0.6\textwidth}
+#+begin_minipage
 Índice de Gini:
 #+begin_export latex
 \[
@@ -216,6 +221,7 @@ presentados en la tabla anterior:
   \text{\emph{S80S20}} = \frac{32 + 50}{10 + 5} = 5.47.
 \]
 #+end_export
+#+end_minipage
 
 #+begin_tcolorbox
    #+ATTR_LATEX: :options [resume* = inner]
@@ -225,27 +231,29 @@ presentados en la tabla anterior:
 #+end_tcolorbox
 
 Las redistribuciones que se plantean en los apartados [[item:c]] y [[item:d]]
-son regresivas: se transfiere dinero de un individuo más pobre a uno
-más rico. En ambos casos, los índices indican un empeoramiento de la
-distribución de la renta con respecto a la situación inicial del
-apartado [[item:b]].
+son regresivas: se transfiere dinero de un individuo con menos renta a
+otro con mayor renta. En ambos casos, los índices indican un
+empeoramiento de la distribución de la renta con respecto a la
+situación inicial del apartado [[item:b]].
 
-Por otro lado, cuando comparamos la distribución de la renta de los
-apartados [[item:c]] y [[item:d]] se obtienen resultados diferentes con cada
-uno de los índices. Por un lado, el índice de Gini toma el mismo
-valor. Por otro lado, el índice /S80S20/ muestra una mayor desigualdad
-en el apartado [[item:c]].
+Cuando comparamos la distribución de la renta de los apartados [[item:c]]
+y [[item:d]] se obtienen resultados diferentes según el índice
+considerado. Por un lado, el índice de Gini toma el mismo valor. Por
+otro lado, el índice /S80S20/ muestra una mayor desigualdad en el
+apartado [[item:c]].
 
 Para comparar las transferencias que se han planteado antes es
-preferible usara el índice /S80S20/ dado que es más sensible a cambios
-en los extremos de la distribución. El índice de Gini no proporciona
-una guía útil en este caso.
+preferible usar el índice /S80S20/ dado que es más sensible a cambios
+en los extremos de la distribución. El índice de Gini no ofrece
+información útil para este tipo de comparación.
+
+#+latex: \clearpage{}
 
 #+begin_tcolorbox
 #+ATTR_LATEX: :options [resume* = questions]
 2. En la hoja =CC.AA.= del archivo Excel =ineq-data.xlsx= se presentan
    datos de las Comunidades Autónomas españolas correspondientes a los
-   años 2013 y 2023 y que muestran como ha evolucionado el crecimiento
+   años 2013 y 2023 y que muestran cómo ha evolucionado el crecimiento
    económico, la desigualdad de la renta y la pobreza en las distintas
    Comunidades. En su respuesta no incluya los casos de las Ciudades
    Autónomas de Ceuta y Melilla dado que presentan características muy
@@ -260,37 +268,114 @@ una guía útil en este caso.
    desigualdad y la pobreza?
 #+end_tcolorbox
 
-#+ATTR_LATEX: :scale 0.4
-[[file:../figures/Gini.pdf]]
+En cada uno de los gráficos que siguen se incluye una línea vertical y
+otra horizontal que representan el valor para el conjunto de España de
+la variable que se representa en el eje correspondiente.
 
-#+ATTR_LATEX: :scale 0.4
-[[file:../figures/S80S20.pdf]]
+El siguiente gráfico representa las tasas de riesgo de la pobreza en
+el año 2013 (eje horizontal) y en el año 2023 (eje vertical).
 
-#+ATTR_LATEX: :scale 0.4
+#+ATTR_LATEX: :options [t]{0.3\textwidth}
+#+begin_minipage
+#+latex: \vspace{1ex}\small%
+En general, los índices de pobreza han disminuido. Las comunidades que
+tenían las tasas más elevadas en 2013 (Murcia, Extremadura, Andalucía,
+Canarias, Comunidad Valenciana y Castilla-La Mancha) siguen situándose
+por encima de la media española en 2023. En el resto del país, las
+tasas de pobreza se mantienen por debajo de la media en ambos años.
+#+end_minipage
+#+ATTR_LATEX: :options [t]{0.7\textwidth}
+#+begin_minipage
+#+latex: \vspace{0pt}
+#+ATTR_LATEX: :scale 0.46
 [[file:../figures/H.pdf]]
+#+end_minipage
 
-#+ATTR_LATEX: :scale 0.4
-[[file:../figures/ypc.pdf]]
+#+latex: \clearpage{}
+Se utiliza el índice de Gini para describir la evolución de la
+desigualdad de la renta en España durante los años 2013 a 2023.
 
-#+ATTR_LATEX: :scale 0.4
+#+ATTR_LATEX: :options [t]{0.3\textwidth}
+#+begin_minipage
+#+latex: \vspace{1ex}\small%
+En general, la desigualdad ha disminuido en todo el país. En 2023,
+cuatro comunidades presentan un índice de Gini superior al promedio
+nacional: Madrid, Comunidad Valenciana, Canarias y Andalucía. Esta
+última ya registraba niveles de desigualdad por encima de la media
+en 2013.
+#+end_minipage
+#+ATTR_LATEX: :options [t]{0.7\textwidth}
+#+begin_minipage
+#+latex: \vspace{0pt}
+#+ATTR_LATEX: :scale 0.46
+[[file:../figures/Gini.pdf]]
+#+end_minipage
+
+El siguiente gráfico muestra las tasas medias anuales de crecimiento
+del riesgo de la pobreza (eje vertical) frente al crecimiento medio
+anual de la renta (eje horizontal).
+
+#+ATTR_LATEX: :options [t]{0.3\textwidth}
+#+begin_minipage
+#+latex: \vspace{1ex}\small%
+Se observa una clara relación negativa entre ambas variables: las
+comunidades con mayor crecimiento económico durante el periodo son
+también las que han experimentado las mayores reducciones relativas en
+sus tasas de pobreza.  tasas de pobreza.
+#+end_minipage
+#+ATTR_LATEX: :options [t]{0.7\textwidth}
+#+begin_minipage
+#+latex: \vspace{0pt}
+#+ATTR_LATEX: :scale 0.46
 [[file:../figures/ypc_H.pdf]]
+#+end_minipage
 
-#+ATTR_LATEX: :scale 0.4
+#+latex: \clearpage{}
+En el siguiente gráfico se relacionan las tasas de crecimiento medias
+anuales del índice de Gini (eje vertical) y de la renta (eje
+horizontal).
+
+#+ATTR_LATEX: :options [t]{0.3\textwidth}
+#+begin_minipage
+#+latex: \vspace{1ex}\small%
+Durante el periodo analizado, no se aprecia una relación sistemática
+entre el crecimiento de la renta y la evolución de la desigualdad.
+#+end_minipage
+#+ATTR_LATEX: :options [t]{0.7\textwidth}
+#+begin_minipage
+#+latex: \vspace{0pt}
+#+ATTR_LATEX: :scale 0.46
 [[file:../figures/ypc_Gini.pdf]]
+#+end_minipage
 
-#+ATTR_LATEX: :scale 0.4
-[[file:../figures/ypc_S80S20.pdf]]
+Finalmente, se representa el crecimiento de las tasas de pobreza (eje
+vertical) y el de los índices de Gini (eje horizontal).
 
-#+ATTR_LATEX: :scale 0.4
+#+ATTR_LATEX: :options [t]{0.3\textwidth}
+#+begin_minipage
+#+latex: \vspace{1ex}\small%
+Aparentemente, existe una relación positiva entre el crecimiento de
+ambos indicadores. No obstante, si se excluye el caso atípico de
+Navarra, la asociación entre pobreza y desigualdad desaparece.
+#+end_minipage
+#+ATTR_LATEX: :options [t]{0.7\textwidth}
+#+begin_minipage
+#+latex: \vspace{0pt}
+#+ATTR_LATEX: :scale 0.46
 [[file:../figures/Gini_H.pdf]]
+#+end_minipage
 
-#+ATTR_LATEX: :scale 0.4
-[[file:../figures/S80S20_H.pdf]]
-
-
+En conclusión, el crecimiento de la renta durante el periodo analizado
+ha ido acompañado de una disminución de las tasas de riesgo de
+pobreza. Aunque la desigualdad en la distribución también se ha
+reducido en términos generales, no se han encontrado relaciones
+sistemáticas entre la evolución de la desigualdad y el crecimiento
+económico o la variación de las tasas de la pobreza.
 
 
 
 # Local Variables:
 # ispell-local-dictionary: "spanish"
 # End:
+
+#  LocalWords:  Andalucía
