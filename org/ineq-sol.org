@@ -8,7 +8,6 @@
 
 #+INCLUDE: "../build/ineq-data.org" :minlevel 1
 
-
 * Ejercicios
 
 #+begin_tcolorbox
@@ -27,22 +26,22 @@
 |           i | y_{i} | y_{i} / @@latex: \sum y_i@@ | p         | L(p)        |
 |-------------+-------+-----------------------------+-----------+-------------|
 |           0 |     0 | \pct{0.0}                   | \pct{0}   | \pct{0.0}   |
-|           1 |     5 | \pct{1.9}                   | \pct{10}  | \pct{1.9}   |
-|           2 |    10 | \pct{4.5}                   | \pct{20}  | \pct{6.5}   |
-|           3 |    12 | \pct{5.2}                   | \pct{30}  | \pct{11.7}  |
-|           4 |    15 | \pct{6.5}                   | \pct{40}  | \pct{18.2}  |
-|           5 |    17 | \pct{7.8}                   | \pct{50}  | \pct{26.0}  |
-|           6 |    20 | \pct{9.1}                   | \pct{60}  | \pct{35.1}  |
-|           7 |    22 | \pct{11.0}                  | \pct{70}  | \pct{46.1}  |
-|           8 |    26 | \pct{13.0}                  | \pct{80}  | \pct{59.1}  |
-|           9 |    32 | \pct{16.2}                  | \pct{90}  | \pct{75.3}  |
-|          10 |    48 | \pct{24.7}                  | \pct{100} | \pct{100.0} |
+|           1 |     5 | \pct{2.4}                   | \pct{10}  | \pct{2.4}   |
+|           2 |    10 | \pct{4.8}                   | \pct{20}  | \pct{7.2}   |
+|           3 |    12 | \pct{5.8}                   | \pct{30}  | \pct{13.0}  |
+|           4 |    15 | \pct{7.2}                   | \pct{40}  | \pct{20.3}  |
+|           5 |    17 | \pct{8.2}                   | \pct{50}  | \pct{28.5}  |
+|           6 |    20 | \pct{9.7}                   | \pct{60}  | \pct{38.2}  |
+|           7 |    22 | \pct{10.6}                  | \pct{70}  | \pct{48.8}  |
+|           8 |    26 | \pct{12.6}                  | \pct{80}  | \pct{61.4}  |
+|           9 |    32 | \pct{15.5}                  | \pct{90}  | \pct{76.8}  |
+|          10 |    48 | \pct{23.2}                  | \pct{100} | \pct{100.0} |
 |-------------+-------+-----------------------------+-----------+-------------|
 | \text{Suma} |   207 |                             |           |             |
 #+TBLFM: @2$2..@13$2=remote(tab-lorenz-data, @@#$2)
 #+TBLFM: @2$3..@12$3='(concat "\\pct{" remote(tab-lorenz-data, @@#$3) "}")
 #+TBLFM: @2$4..@12$4='(concat "\\pct{" remote(tab-lorenz-data, @@#$4) "}")
-#+TBLFM: @2$3..@12$5='(concat "\\pct{" remote(tab-lorenz-data, @@#$5) "}")
+#+TBLFM: @2$5..@12$5='(concat "\\pct{" remote(tab-lorenz-data, @@#$5) "}")
 #+end_center
 
 Curva de Lorenz:
