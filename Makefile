@@ -131,10 +131,24 @@ pov-csv.intermediate: $(R-dir)/pov.R $(data-dir)/rentas.xlsx
 
 $(pdf-dir)/pov.pdf: $(pov-csv-files)
 
+
+## ineq-sol.org dependencies -------------------------------------------------
+ineq-fig-files := $(addprefix $(fig-dir)/,$(addsuffix .pdf,Gini H S80S20 ypc))
+
+$(ineq-fig-files): ineq-fig-files.intermediate
+	@:
+
+ineq-fig-files-deps := $(data-dir)/ineq-data.xlsx $(data-dir)/ccaa.csv
+.INTERMEDIATE: ineq-fig-files.intermediate
+ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-dir)
+	$(RSCRIPT) $<
+
+$(pdf-dir)/ineq-sol.pdf: $(ineq-fig-files)
+
 ## Create directories
 ## --------------------------------------------------------------------------------
 
-$(build-dir) $(pdf-dir):
+$(build-dir) $(pdf-dir) $(fig-dir):
 	mkdir $@
 
 
@@ -143,6 +157,7 @@ $(build-dir) $(pdf-dir):
 .PHONY: clean
 clean:
 	-@rm -r $(pdf-dir)
+	-@rm -r $(fig-dir)
 
 .PHONY: veryclean
 veryclean: clean

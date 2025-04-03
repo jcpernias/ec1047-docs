@@ -57,6 +57,13 @@
    desigualdad y la pobreza?
 #+end_tcolorbox
 
+[[file:../figures/Gini.pdf]]
+
+[[file:../figures/S80S20.pdf]]
+
+file:../figures/H.pdf
+
+file:../figures/ypc.pdf
 
 
 # Local Variables:
