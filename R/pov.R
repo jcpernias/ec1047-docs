@@ -7,7 +7,6 @@ suppressPackageStartupMessages({
 
 args <- commandArgs(trailingOnly = TRUE)
 
-out_dir <- "."
 if (length(args) == 0) {
     out_dir <- "."
 } else if (length(args) == 1) {

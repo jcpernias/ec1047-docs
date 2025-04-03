@@ -268,7 +268,7 @@ Gini es:
 #+begin_export latex
 \[
   G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
-  \frac{1109}{154} - \frac{11}{10} = 0.340.
+  \frac{2}{10} \frac{1109}{154} - \frac{11}{10} = 0.340.
 \]
 #+end_export
 

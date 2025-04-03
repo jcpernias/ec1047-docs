@@ -133,6 +133,18 @@ $(pdf-dir)/pov.pdf: $(pov-csv-files)
 
 
 ## ineq-sol.org dependencies -------------------------------------------------
+ineq-data-files := $(build-dir)/ineq-data.org $(build-dir)/ineq-data.csv
+
+$(ineq-data-files): ineq-data-files.intermediate
+	@:
+
+.INTERMEDIATE: ineq-data-files.intermediate
+ineq-data-files.intermediate:  $(R-dir)/ineq.R $(data-dir)/ineq-data.xlsx | $(build-dir)
+	$(RSCRIPT) $< $(build-dir)
+
+$(build-dir)/ineq-sol.tex: $(ineq-data-files)
+
+
 ineq-fig-files := $(addprefix $(fig-dir)/,$(addsuffix .pdf,Gini H S80S20 ypc))
 
 $(ineq-fig-files): ineq-fig-files.intermediate
@@ -143,7 +155,9 @@ ineq-fig-files-deps := $(data-dir)/ineq-data.xlsx $(data-dir)/ccaa.csv
 ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-dir)
 	$(RSCRIPT) $<
 
-$(pdf-dir)/ineq-sol.pdf: $(ineq-fig-files)
+$(pdf-dir)/ineq-sol.pdf: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
+
+
 
 ## Create directories
 ## --------------------------------------------------------------------------------

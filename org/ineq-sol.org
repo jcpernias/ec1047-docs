@@ -2,6 +2,15 @@
 #+SETUPFILE: ../setup.org
 
 
+#+latex: \setcounter{section}{4}
+
+* Datos :noexport:
+
+#+INCLUDE: "../build/ineq-data.org" :minlevel 1
+
+
+* Ejercicios
+
 #+begin_tcolorbox
 #+ATTR_LATEX: :options [1., series = questions]
 1. En la hoja =Rentas= del archivo Excel =ineq-data.xlsx= se presentan
@@ -12,24 +21,201 @@
    a) Obtenga y represente gráficamente la curva de Lorenz.
 #+end_tcolorbox
 
+#+begin_center
+#+latex: \footnotesize%
+#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{4}{>{$}w{r}{2cm}<{$}}
+|           i | y_{i} | y_{i} / @@latex: \sum y_i@@ | p         | L(p)        |
+|-------------+-------+-----------------------------+-----------+-------------|
+|           0 |     0 | \pct{0.0}                   | \pct{0}   | \pct{0.0}   |
+|           1 |     5 | \pct{1.9}                   | \pct{10}  | \pct{1.9}   |
+|           2 |    10 | \pct{4.5}                   | \pct{20}  | \pct{6.5}   |
+|           3 |    12 | \pct{5.2}                   | \pct{30}  | \pct{11.7}  |
+|           4 |    15 | \pct{6.5}                   | \pct{40}  | \pct{18.2}  |
+|           5 |    17 | \pct{7.8}                   | \pct{50}  | \pct{26.0}  |
+|           6 |    20 | \pct{9.1}                   | \pct{60}  | \pct{35.1}  |
+|           7 |    22 | \pct{11.0}                  | \pct{70}  | \pct{46.1}  |
+|           8 |    26 | \pct{13.0}                  | \pct{80}  | \pct{59.1}  |
+|           9 |    32 | \pct{16.2}                  | \pct{90}  | \pct{75.3}  |
+|          10 |    48 | \pct{24.7}                  | \pct{100} | \pct{100.0} |
+|-------------+-------+-----------------------------+-----------+-------------|
+| \text{Suma} |   207 |                             |           |             |
+#+TBLFM: @2$2..@13$2=remote(tab-lorenz-data, @@#$2)
+#+TBLFM: @2$3..@12$3='(concat "\\pct{" remote(tab-lorenz-data, @@#$3) "}")
+#+TBLFM: @2$4..@12$4='(concat "\\pct{" remote(tab-lorenz-data, @@#$4) "}")
+#+TBLFM: @2$3..@12$5='(concat "\\pct{" remote(tab-lorenz-data, @@#$5) "}")
+#+end_center
+
+Se representa la curva de Lorenz que corresponde a los datos
+presentados en la tabla anterior:
+
+#+begin_center
+#+include: "../tex/ineq-fig-lorenz2.tex" export latex
+#+end_center
+
+
 #+begin_tcolorbox
    #+ATTR_LATEX: :options [(a), series = inner, start = 2, leftmargin=1.8cm]
-   b) Calcule el índice de Gini y el cociente /S80S20/.
+   b) <<item:b>>Calcule el índice de Gini y el cociente /S80S20/.
 #+end_tcolorbox
+
+#+begin_center
+#+latex: \small%
+#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+|           i | y_{i} | @@latex:i \cdot y_{i}@@ |
+|-------------+-------+-------------------------|
+|           1 |     5 |                       5 |
+|           2 |    10 |                      20 |
+|           3 |    12 |                      36 |
+|           4 |    15 |                      60 |
+|           5 |    17 |                      85 |
+|           6 |    20 |                     120 |
+|           7 |    22 |                     154 |
+|           8 |    26 |                     208 |
+|           9 |    32 |                     288 |
+|          10 |    48 |                     480 |
+|-------------+-------+-------------------------|
+| \text{Suma} |   207 |                    1456 |
+#+TBLFM: @2$2 = remote(tab-lorenz-data, @3$2)
+#+TBLFM: @3$2 = remote(tab-lorenz-data, @4$2)
+#+TBLFM: @4$2 = remote(tab-lorenz-data, @5$2)
+#+TBLFM: @5$2 = remote(tab-lorenz-data, @6$2)
+#+TBLFM: @6$2 = remote(tab-lorenz-data, @7$2)
+#+TBLFM: @7$2 = remote(tab-lorenz-data, @8$2)
+#+TBLFM: @8$2 = remote(tab-lorenz-data, @9$2)
+#+TBLFM: @9$2 = remote(tab-lorenz-data, @10$2)
+#+TBLFM: @10$2 = remote(tab-lorenz-data, @11$2)
+#+TBLFM: @11$2 = remote(tab-lorenz-data, @12$2)
+#+TBLFM: @>$2=vsum(@I..II-1)
+#+TBLFM: @2$3..@12$3=$-1 * $-2
+#+TBLFM: @>$3=vsum(@I..II-1)
+#+end_center
+
+Índice de Gini:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
+  \frac{2}{10} \frac{1456}{207} - \frac{11}{10} = 0.307.
+\]
+#+end_export
+
+Índice /S80S20/:
+#+begin_export latex
+\[
+  \text{\emph{S80S20}} = \frac{32 + 48}{10 + 5} = 5.33.
+\]
+#+end_export
+
 
 #+begin_tcolorbox
    #+ATTR_LATEX: :options [resume* = inner]
-   c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
+   c) <<item:c>>Calcule el índice de Gini y el cociente /S80S20/ cuando se
       transfieren \money{2 000} del individuo 1 al individuo 3. ¿Cómo
       cambian los indicadores de desigualdad?
 #+end_tcolorbox
 
+#+begin_center
+#+latex: \small%
+#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+|           i | y_{i} | @@latex:i \cdot y_{i}@@ |
+|-------------+-------+-------------------------|
+|           1 |     3 |                       3 |
+|           2 |    10 |                      20 |
+|           3 |    14 |                      42 |
+|           4 |    15 |                      60 |
+|           5 |    17 |                      85 |
+|           6 |    20 |                     120 |
+|           7 |    22 |                     154 |
+|           8 |    26 |                     208 |
+|           9 |    32 |                     288 |
+|          10 |    48 |                     480 |
+|-------------+-------+-------------------------|
+| \text{Suma} |   207 |                    1460 |
+#+TBLFM: @2$2 = remote(tab-lorenz-data, @3$2) - 2
+#+TBLFM: @3$2 = remote(tab-lorenz-data, @4$2)
+#+TBLFM: @4$2 = remote(tab-lorenz-data, @5$2) + 2
+#+TBLFM: @5$2 = remote(tab-lorenz-data, @6$2)
+#+TBLFM: @6$2 = remote(tab-lorenz-data, @7$2)
+#+TBLFM: @7$2 = remote(tab-lorenz-data, @8$2)
+#+TBLFM: @8$2 = remote(tab-lorenz-data, @9$2)
+#+TBLFM: @9$2 = remote(tab-lorenz-data, @10$2)
+#+TBLFM: @10$2 = remote(tab-lorenz-data, @11$2)
+#+TBLFM: @11$2 = remote(tab-lorenz-data, @12$2)
+#+TBLFM: @>$2=vsum(@I..II-1)
+#+TBLFM: @2$3..@12$3=$-1 * $-2
+#+TBLFM: @>$3=vsum(@I..II-1)
+#+end_center
+
+Índice de Gini:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
+  \frac{2}{10} \frac{1460}{207} - \frac{11}{10} = 0.311.
+\]
+#+end_export
+
+Índice /S80S20/:
+#+begin_export latex
+\[
+  \text{\emph{S80S20}} = \frac{32 + 48}{10 + 3} = 6.15.
+\]
+#+end_export
+
+
+
 #+begin_tcolorbox
    #+ATTR_LATEX: :options [resume* = inner]
-   d) Calcule el índice de Gini y el cociente /S80S20/ si se
+   d) <<item:d>>Calcule el índice de Gini y el cociente /S80S20/ si se
       transfieren \money{2 000} del individuo 8 al individuo 10. ¿Cómo
       cambian ahora los indicadores de desigualdad?
 #+end_tcolorbox
+
+#+begin_center
+#+latex: \small%
+#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{2}{>{$}w{r}{2cm}<{$}}
+|           i | y_{i} | @@latex:i \cdot y_{i}@@ |
+|-------------+-------+-------------------------|
+|           1 |     5 |                       5 |
+|           2 |    10 |                      20 |
+|           3 |    12 |                      36 |
+|           4 |    15 |                      60 |
+|           5 |    17 |                      85 |
+|           6 |    20 |                     120 |
+|           7 |    22 |                     154 |
+|           8 |    24 |                     192 |
+|           9 |    32 |                     288 |
+|          10 |    50 |                     500 |
+|-------------+-------+-------------------------|
+| \text{Suma} |   207 |                    1460 |
+#+TBLFM: @2$2 = remote(tab-lorenz-data, @3$2)
+#+TBLFM: @3$2 = remote(tab-lorenz-data, @4$2)
+#+TBLFM: @4$2 = remote(tab-lorenz-data, @5$2)
+#+TBLFM: @5$2 = remote(tab-lorenz-data, @6$2)
+#+TBLFM: @6$2 = remote(tab-lorenz-data, @7$2)
+#+TBLFM: @7$2 = remote(tab-lorenz-data, @8$2)
+#+TBLFM: @8$2 = remote(tab-lorenz-data, @9$2)
+#+TBLFM: @9$2 = remote(tab-lorenz-data, @10$2) - 2
+#+TBLFM: @10$2 = remote(tab-lorenz-data, @11$2)
+#+TBLFM: @11$2 = remote(tab-lorenz-data, @12$2) + 2
+#+TBLFM: @>$2=vsum(@I..II-1)
+#+TBLFM: @2$3..@12$3=$-1 * $-2
+#+TBLFM: @>$3=vsum(@I..II-1)
+#+end_center
+
+
+Índice de Gini:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
+  \frac{2}{10} \frac{1460}{207} - \frac{11}{10} = 0.311.
+\]
+#+end_export
+
+Índice /S80S20/:
+#+begin_export latex
+\[
+  \text{\emph{S80S20}} = \frac{32 + 50}{10 + 5} = 5.47.
+\]
+#+end_export
 
 #+begin_tcolorbox
    #+ATTR_LATEX: :options [resume* = inner]
@@ -37,6 +223,23 @@
       anteriores. ¿Cuál de los índices de desigualdad es más adecuado
       en este caso?
 #+end_tcolorbox
+
+Las redistribuciones que se plantean en los apartados [[item:c]] y [[item:d]]
+son regresivas: se transfiere dinero de un individuo más pobre a uno
+más rico. En ambos casos, los índices indican un empeoramiento de la
+distribución de la renta con respecto a la situación inicial del
+apartado [[item:b]].
+
+Por otro lado, cuando comparamos la distribución de la renta de los
+apartados [[item:c]] y [[item:d]] se obtienen resultados diferentes con cada
+uno de los índices. Por un lado, el índice de Gini toma el mismo
+valor. Por otro lado, el índice /S80S20/ muestra una mayor desigualdad
+en el apartado [[item:c]].
+
+Para comparar las transferencias que se han planteado antes es
+preferible usara el índice /S80S20/ dado que es más sensible a cambios
+en los extremos de la distribución. El índice de Gini no proporciona
+una guía útil en este caso.
 
 #+begin_tcolorbox
 #+ATTR_LATEX: :options [resume* = questions]
