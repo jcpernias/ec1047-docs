@@ -4,6 +4,7 @@ suppressPackageStartupMessages({
     library(ggrepel)
 })
 
+
 var_names <- c("S80S20", "Gini", "ypc", "H", "ipc") |>
   map(\(x) paste(x, c(2013, 2023), sep = "_")) |>
   unlist()
@@ -15,59 +16,65 @@ es_db <- read_excel("data/ineq-data.xlsx",
                     range = "A3:K22") |>
   left_join(read_csv("data/ccaa.csv", col_types = "cc"),
             by = c("name" = "name")) |>
-  mutate(ypc_2013 = ypc_2013 / 1000,
-         ypc_2023 = ypc_2023 / 1000) |>
-  select(-name)
+  select(-name) |>
+  mutate(ypc_2013 = ypc_2013 / (10 * ipc_2013),
+         ypc_2023 = ypc_2023 / (10 * ipc_2023))
 
-es_all <- es_db |>
-  pivot_longer(cols = -ccaa,
-               names_to = c("variable", "year"),
-               names_sep = "_",
-               names_transform = list(year = as.integer),
-               values_to = "value")
+es_g <- es_db |>
+  mutate(
+    Gini = 100 * (Gini_2023 / Gini_2013 - 1) / 11,
+    ypc = 100 * (ypc_2023 / ypc_2013 - 1) / 11,
+    H = 100 * (H_2023 / H_2013 - 1) / 11,
+    S80S20 = 100 * (S80S20_2023 / S80S20_2013 - 1) / 11,
+  )
 
-mk_plot <- function(x) {
-  plot_db <- es_all |>
-    filter(!ccaa %in% c("CEU", "MEL")) |>
-    mutate(year = paste0("y", year))
+lines_db <- filter(es_g, ccaa == "ESP")
 
-
-  pt_db <- plot_db |>
-    filter(variable == x) |>
-    select(-variable) |>
-    pivot_wider(names_from = year, values_from = value)
-
-  lines_db <- filter(pt_db, ccaa == "ESP")
-
-  filter(pt_db, ccaa != "ESP") |>
-    ggplot(aes(x = y2013, y = y2023)) +
+mk_plt <- function(x, y) {
+  es_g |>
+    filter(!ccaa %in% c("ESP", "CEU", "MEL")) |>
+    ggplot(aes(x = {{ x }}, y = {{ y }})) +
     geom_point() +
-    coord_fixed(ratio = 1, xlim = range(pt_db$y2013), ylim = range(pt_db$y2023)) +
-    geom_vline(aes(xintercept = y2013), lines_db, color = "darkblue") +
-    geom_hline(aes(yintercept = y2023), lines_db, color = "darkblue") +
     geom_text_repel(aes(label = ccaa)) +
-    xlab("Año 2013") + ylab("Año 2023") +
-    # geom_abline(intercept = 0, slope = 1) +
+    geom_vline(aes(xintercept = {{ x }}), lines_db, color = "darkblue") +
+    geom_hline(aes(yintercept = {{ y }}), lines_db, color = "darkblue") +
     theme_bw()
-
 }
 
-pdf("figures/Gini.pdf", width = 9, height = 6, family = "Times",
-    encoding = "ISOLatin9.enc")
-mk_plot("Gini")
-dev.off()
 
-pdf("figures/S80S20.pdf", width = 9, height = 6, family = "Times",
-    encoding = "ISOLatin9.enc")
-mk_plot("S80S20")
-dev.off()
+ggsave("figures/ypc_H.pdf", plot = mk_plt(ypc, H),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
 
-pdf("figures/H.pdf", width = 9, height = 6, family = "Times",
-    encoding = "ISOLatin9.enc")
-mk_plot("H")
-dev.off()
+ggsave("figures/ypc_Gini.pdf", mk_plt(ypc, Gini),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
 
-pdf("figures/ypc.pdf", width = 9, height = 6, family = "Times",
-    encoding = "ISOLatin9.enc")
-mk_plot("ypc")
-dev.off()
+ggsave("figures/ypc_S80S20.pdf", mk_plt(ypc, S80S20),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+ggsave("figures/Gini_H.pdf", mk_plt(Gini, H),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+ggsave("figures/S80S20_H.pdf", mk_plt(S80S20, H),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+
+ggsave("figures/Gini.pdf", mk_plt(Gini_2013, Gini_2023),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+ggsave("figures/H.pdf", mk_plt(H_2013, H_2023),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+ggsave("figures/S80S20.pdf", mk_plt(S80S20_2013, S80S20_2023),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")
+
+ggsave("figures/ypc.pdf", mk_plt(ypc_2013, ypc_2023),
+       width = 9, family = "Times",
+       encoding = "ISOLatin9.enc")

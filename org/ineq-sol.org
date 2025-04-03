@@ -260,13 +260,35 @@ una guía útil en este caso.
    desigualdad y la pobreza?
 #+end_tcolorbox
 
+#+ATTR_LATEX: :scale 0.4
 [[file:../figures/Gini.pdf]]
 
+#+ATTR_LATEX: :scale 0.4
 [[file:../figures/S80S20.pdf]]
 
-file:../figures/H.pdf
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/H.pdf]]
 
-file:../figures/ypc.pdf
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/ypc.pdf]]
+
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/ypc_H.pdf]]
+
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/ypc_Gini.pdf]]
+
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/ypc_S80S20.pdf]]
+
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/Gini_H.pdf]]
+
+#+ATTR_LATEX: :scale 0.4
+[[file:../figures/S80S20_H.pdf]]
+
+
+
 
 
 # Local Variables:

@@ -145,7 +145,8 @@ ineq-data-files.intermediate:  $(R-dir)/ineq.R $(data-dir)/ineq-data.xlsx | $(bu
 $(build-dir)/ineq-sol.tex: $(ineq-data-files)
 
 
-ineq-fig-files := $(addprefix $(fig-dir)/,$(addsuffix .pdf,Gini H S80S20 ypc))
+ineq-fig-files := $(addprefix $(fig-dir)/,\
+	$(addsuffix .pdf,Gini H S80S20 ypc ypc_H ypc_Gini ypc_S80S20 Gini_H S80S20_H))
 
 $(ineq-fig-files): ineq-fig-files.intermediate
 	@:
