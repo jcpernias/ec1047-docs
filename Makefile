@@ -7,7 +7,8 @@ src-files := \
 	ineq.org \
 	ineq-sol.org \
 	pov.org \
-	pov-sol.org
+	pov-sol.org \
+	pov-ineq.org
 
 ## Directories
 ## --------------------------------------------------------------------------------

@@ -1,0 +1,538 @@
+#+TITLE: Indicadores de pobreza y desigualdad
+#+SETUPFILE: ../setup.org
+
+
+* Introducción
+
+En este laboratorio se introducen algunos conceptos básicos en la
+medición de la pobreza. Un tratamiento más detallado puede encontrarse
+en el manual editado por el Banco Mundial: Haughton, Jonathan and
+Shahidur R. Khandker, (2009). /Handbook on Poverty and Inequality/.
+Washington, DC: World Bank ([[http://hdl.handle.net/10986/11985][enlace]]).
+
+* Medición de la pobreza
+
+La medición de la pobreza precisa completar tres pasos:
+
+- Definir un indicador de bienestar.
+
+- Establecer un estándar mínimo aceptable de ese indicador para
+  separar a los pobres de los no pobres (la línea de pobreza).
+
+- Calcular un estadístico que mida la distribución del indicador de
+  bienestar en relación con la línea de pobreza.
+
+** Indicadores de bienestar
+
+Los indicadores de bienestar más utilizados son la renta y los gastos
+en consumo de los individuos. En países desarrollados es más frecuente
+el uso de la renta mientras que en los países menos desarrollados se
+usa el consumo. Existen argumentos a favor y en contra de ambos
+indicadores e incluso se han propuesto otros.
+
+
+El /Desfile de Pen/ (/Pen's Parade/) es un gráfico utilizado para
+estudiar la distribución de la renta . En el eje horizontal, se
+representan todas las personas de un país o región ordenadas de más
+pobres a más ricas. La población se mide como un porcentaje acumulado,
+lo que facilita las comparaciones entre diferentes períodos temporales
+o áreas geográficas. En el eje vertical se representa el nivel de
+renta (o gastos en consumo) de cada uno de los individuos.
+
+#+CAPTION: Curva de Pen.
+#+LABEL: fig:1
+#+ATTR_LATEX: :placement [h!]
+#+begin_figure
+#+include: "../tex/pov-fig-pen.tex" export latex
+#+end_figure
+
+Consideraremos un caso hipotético de una economía con 40 habitantes,
+cuyas rentas disponibles (en miles de euros al año) se recogen en el
+fichero =rentas.xlsx=. Con los datos de nuestro ejemplo, se obtiene la
+Figura [[fig:1]].
+
+
+** Líneas de la pobreza
+
+La **línea de la pobreza** es un umbral utilizado para identificar
+quiénes son pobres y quiénes no. La elección de una determinada línea
+de la pobreza depende en gran medida de la finalidad que se
+persigue. En general, podemos pensar en la línea de pobreza como el
+mínimo nivel de gasto que necesita un individuo para satisfacer sus
+necesidades básicas.
+
+En los países desarrollados, es más frecuente usar **líneas de pobreza
+relativas** que buscan diferenciar los segmentos más pobres de la
+población. La forma más común de definir una línea de la pobreza
+relativa es usar una fracción de la media o la mediana de la renta. En
+nuestro ejemplo, aplicaremos la definición usada, entre otras agencias
+estadísticas, por Eurostat y definimos el umbral de la pobreza como el
+60% de la mediana de la renta disponible per cápita.
+
+#+CAPTION: Línea de la pobreza.
+#+LABEL: fig:2
+#+ATTR_LATEX: :placement [h!]
+#+begin_figure
+#+include: "../tex/pov-fig-z.tex" export latex
+#+end_figure
+
+
+En la Figura [[fig:2]], la línea horizontal representa la renta mediana,
+$\operatorname{med}(y)$. A partir de esta, se calcula la línea de
+pobreza como el \pct{60} de la renta mediana, $z = 0.6
+\operatorname{med}(y)$.
+
+** Índices de pobreza
+
+La medida más popular de la pobreza es el *índice de pobreza* que se
+define como la fracción de la población cuya renta es inferior al
+umbral de la pobreza. Se calcula como:
+#+begin_export latex
+\[
+  H = \frac{q}{N},
+\]
+#+end_export
+donde $q$ es el número de pobres (aquellos cuya renta, $y_i$, es
+inferior al umbral de la pobreza, $z$), y $N$ es el número total de
+personas.
+
+#+CAPTION: Índice de pobreza.
+#+LABEL: fig:3
+#+ATTR_LATEX: :placement [h!]
+#+begin_figure
+#+include: "../tex/pov-fig-h.tex" export latex
+#+end_figure
+
+
+Esta medida se centra en la /incidencia/ de la pobreza, es fácil de
+entender y es adecuada para ciertos propósitos, aunque se suele
+recomendar calcularla para al menos dos líneas de la pobreza
+diferentes. En la Figura [[fig:3]], corresponde al porcentaje de la
+población para el que se cortan la curva de Pen y la línea de la
+pobreza.
+
+Un segundo indicador, el *índice de la brecha de la pobreza*, mide la
+/profundidad/ de la pobreza. Se define como:
+#+begin_export latex
+\[
+  PG = \frac{1}{N}\sum_{i=1}^{q}\frac{z - y_i}{z}
+\]
+#+end_export
+
+#+CAPTION: Brecha de la pobreza.
+#+LABEL: fig:4
+#+ATTR_LATEX: :placement [h!]
+#+begin_figure
+#+include: "../tex/pov-fig-pg.tex" export latex
+#+end_figure
+
+Este índice es la media en la población de las brechas de renta
+individuales ($z - y_i$ para los individuos por debajo del umbral de
+pobreza y $0$ para los restantes) como proporción de la línea de la
+pobreza. Gráficamente se corresponde con el área entre el umbral de la
+pobreza y la curva de Pen. En la Figura [[fig:4]] se ha representado para
+los datos de nuestro ejemplo.
+
+A pesar de tener algunas propiedades buenas, la brecha de la pobreza
+no está exenta de limitaciones (algunas se señalan en [[https://es.wikipedia.org/wiki/Índice_de_brecha_de_pobreza][este artículo]] de
+Wikipedia)
+
+Un indicador mejor es el *índice de la brecha cuadrática de la
+pobreza* que se define de como la media de las brechas de pobreza
+individuales al cuadrado:
+#+begin_export latex
+\[
+  SPG = \frac{1}{N}\sum_{i=1}^{q}\left(\frac{z - y_i}{z}\right)^2
+\]
+#+end_export
+
+Se puede interpretar como una media de las brechas relativas ponderada
+por esas mismas brechas. De esta forma se da más peso a los individuos
+cuyas rentas están más alejadas del umbral de pobreza. Este índice,
+por tanto, penaliza la desigualdad entre los pobres y refleja la
+/severidad/ de la pobreza. A pesar de tener buenas propiedades, no es
+usado con frecuencia.
+
+
+* Datos :noexport:
+
+#+INCLUDE: "./lorenz-table.org" :minlevel 1
+
+
+* Medición de la desigualdad
+
+La *desigualdad económica* se refiere a las diferencias en los niveles
+de vida que disfrutan los miembros de una sociedad. Incluso desde la
+posición utilitarista clásica, que en un principio ignora cuestiones
+distributivas, bajo determinados supuestos la desigualdad en la
+distribución de la renta sería indeseable, ya que implicaría una
+pérdida de bienestar social.
+
+Las medidas generalmente usadas en el trabajo aplicado son insensibles
+a cambios en la renta media y no cambian si todas las rentas se
+incrementan en la misma proporción.  A continuación se presentan
+algunos indicadores que se suelen usar en el análisis de la
+desigualdad: la curva de Lorenz, el índice de Gini y los ratios
+interdecílicos.
+
+** La curva de Lorenz
+
+La *curva de Lorenz* es una representación gráfica de la distribución
+de la renta y muestra la proporción de renta que consigue el
+porcentaje $p$ más pobre de la población, para $0\% \leq p \leq
+100\%$.
+
+Para una población con $N$ individuos ordenados de menor a mayor
+renta, la curva de Lorenz, $L(p)$, asigna a cada proporción $p$ de
+población la correspondiente renta total acumulada por esa fracción de
+población. Siendo $y_{1} \le y_{2} \le \dots \le y_{N}$ las rentas de
+los individuos ordenadas de menor a mayor, la curva de Lorenz se
+define como:
+#+begin_export latex
+\[
+L\big(k / N \big) =
+\frac{\sum_{i = 1}^{k} y_{i}}{Y}, \qquad k=0, 1, 2, \dots, N.
+\]
+#+end_export
+donde
+#+begin_export latex
+\[
+  Y = \sum_{i=1}^{N} y_{i},
+\]
+#+end_export
+es la renta total. De acuerdo con esta definición, es fácil ver que
+$L(0)=0$ y $L(1)=1$.
+
+#+NAME: tab-lorenz-ex
+#+CAPTION: Cálculo de la curva de Lorenz.
+#+ATTR_LATEX:  :options[H]
+#+begin_table
+#+ATTR_LATEX: :booktabs t :align >{$}r<{$}*{4}{>{$}w{r}{2cm}<{$}}
+|           i | y_{i} | y_{i} / @@latex: \sum y_i@@  | p         | L(p)        |
+|-------------+-----+---------------------------+-----------+-------------|
+|           0 |   0 | \pct{0.0}                 | \pct{0}   | \pct{0.0}   |
+|           1 |   3 | \pct{1.9}                 | \pct{10}  | \pct{1.9}   |
+|           2 |   7 | \pct{4.5}                 | \pct{20}  | \pct{6.5}   |
+|           3 |   8 | \pct{5.2}                 | \pct{30}  | \pct{11.7}  |
+|           4 |  10 | \pct{6.5}                 | \pct{40}  | \pct{18.2}  |
+|           5 |  12 | \pct{7.8}                 | \pct{50}  | \pct{26.0}  |
+|           6 |  14 | \pct{9.1}                 | \pct{60}  | \pct{35.1}  |
+|           7 |  17 | \pct{11.0}                | \pct{70}  | \pct{46.1}  |
+|           8 |  20 | \pct{13.0}                | \pct{80}  | \pct{59.1}  |
+|           9 |  25 | \pct{16.2}                | \pct{90}  | \pct{75.3}  |
+|          10 |  38 | \pct{24.7}                | \pct{100} | \pct{100.0} |
+|-------------+-----+---------------------------+-----------+-------------|
+| \text{Suma} | 154 |                           |           |             |
+#+TBLFM: @2$2..@13$2=remote(tab-lorenz-data, @@#$2)
+#+TBLFM: @2$3..@12$3='(concat "\\pct{" remote(tab-lorenz-data, @@#$3) "}")
+#+TBLFM: @2$4..@12$4='(concat "\\pct{" remote(tab-lorenz-data, @@#$4) "}")
+#+TBLFM: @2$3..@12$5='(concat "\\pct{" remote(tab-lorenz-data, @@#$5) "}")
+#+end_table
+
+En el Cuadro [[tab-lorenz-ex]], se presenta un ejemplo sencillo para
+ilustrar la construcción de la curva de Lorenz. Los datos que aparecen
+en esa tabla corresponden a una hipotética economía con 10
+habitantes. Las rentas de cada uno de los individuos, $y_i$ para $i =
+1, \dots, 10$, se miden en miles de euros al año y aparecen en orden
+creciente (se ha incluido una fila adicional correspondiente a $i = 0$,
+que representaría un individuo adicional cuya renta es $0$. La
+inclusión de este individuo no afecta a los cálculos pero facilita la
+representación gráfica posterior). La renta total en esta economía es
+$Y = \sum y_i = 154$ miles de euros al año. La tercera columna expresa
+las rentas individuales como porcentaje de la renta total. Por
+ejemplo, la renta del individuo 3 representa el \pct{5.2} de la renta
+total de esa economía. Las últimas dos columnas son porcentajes
+acumulados de población, $p$, y de renta, $L(p)$. Por ejemplo, en la
+fila $i = 6$ el valor de $p$ es \pct{60}, lo que quiere decir que en
+las seis primeras filas representan el \pct{60} más pobre de la población,
+mientras que $L(p)$ es \pct{35.1}, es decir, esa fracción de la
+población solo obtiene el \pct{35.1} de la renta de ese país.
+
+#+NAME: fig-lorenz-ex
+#+CAPTION: Curva de Lorenz, $L(p)$: ejemplo.
+#+ATTR_LATEX: :options [h!]
+#+begin_figure
+#+include: "../tex/ineq-fig-lorenz.tex" export latex
+#+end_figure
+
+En la Figura [[fig-lorenz-ex]] se representan en un gráfico las columnas
+$p$ y $L(p)$ del Cuadro [[tab-lorenz-ex]]. Además de la curva de Lorenz se
+representa la línea de 45\textdegree{}, para poder comparar la
+distribución de la renta con una situación donde la renta se
+distribuye de forma igualitaria. En ese caso, $L(p) = p$ para
+cualquier proporción $p$: el 30% de la población más pobre obtendría
+exactamente el 30% de la renta total, el 50% de la población obtendría
+el 50% de la renta, y así sucesivamente. Cuando la renta no se
+distribuye de forma perfectamente igualitaria la curva de Lorenz está
+por debajo de la línea de 45\textdegree{}, indicando que los grupos de
+población más pobres tienen una proporción de renta menor que su
+proporción demográfica.  La diagonal se toma como referencia a la hora
+de evaluar una determinada distribución de la renta: cuanto más cerca
+esté la curva de Lorenz a la recta de 45\textdegree{}, menor es la
+desigualdad.
+
+La curva de Lorenz proporciona una forma visual de comparar
+distribuciones de renta. En algunos casos, podemos ordenar diferentes
+distribuciones de la renta de más a menos igualitarias. En esos casos
+es posible mostrar que, a igualdad de rentas medias, las
+distribuciones más igualitarias se corresponden a niveles de bienestar
+social más elevados sea cual sea la función de bienestar social que se
+utilice (mientras sea simétrica y cóncava). Pero en otros casos, la
+comparación de las curvas de Lorenz no nos permite determinar cuál
+corresponde a una distribución de la renta más igualitaria.
+
+#+NAME: fig-lorenz-comp1
+#+CAPTION: Comparación de dos curvas de Lorenz. La distribución representada por  $L_A(p)$ es más igualitaria que la correspondiente a $L_B(p)$.
+#+ATTR_LATEX: :options [h!]
+#+begin_figure
+#+include: "../tex/ineq-fig-lorenz-comp1.tex" export latex
+#+begin_export latex
+#+end_export
+#+end_figure
+
+#+NAME: fig-lorenz-comp2
+#+CAPTION: Comparación de dos curvas de Lorenz. Cuando las curvas de Lorenz se cortan ninguna de las dos distribuciones es uniformemente más igualitaria que la otra.
+#+ATTR_LATEX: :options [H]
+#+begin_figure
+#+include: "../tex/ineq-fig-lorenz-comp2.tex" export latex
+#+end_figure
+
+En las Figuras [[fig-lorenz-comp1]] y [[fig-lorenz-comp2]] se representan las
+curvas de Lorenz correspondiente a dos distribuciones de la renta, con
+el objeto de determinar cuál es la distribución más igualitaria en
+cada caso.
+
+- Si, como ocurre en la Figura [[fig-lorenz-comp1]], la curva de Lorenz de
+  A se encuentra siempre por encima de la de B (es decir, está más
+  cerca de la línea de 45° en todo su recorrido), entonces la
+  distribución de la renta en A es más igualitaria que en B. En este
+  caso se dice que A domina en el sentido de Lorenz a B, y la
+  comparación no presenta ambigüedad: A tiene menor desigualdad que B
+  en toda la distribución.
+
+- En casos como el de la Figura [[fig-lorenz-comp2]], en que las curvas de
+  Lorenz se cruzan en algún punto, ninguna de las distribuciones de la
+  renta es uniformemente más igualitaria que la otra. En la Figura
+  [[fig-lorenz-comp2]] la distribución de la renta de A es más igualitaria
+  que B en los segmentos más pobres de la población pero menos
+  igualitaria que en los más ricos. En tal situación, no es posible
+  ordenar las distribuciones de menor a mayor desigualdad.
+
+
+
+** Índice de Gini
+
+
+El índice de Gini es una medida numérica que resume de la desigualdad
+en la distribución de la renta en un solo número, comprendido entre $0$
+y $1$.  La definición formal del índice de Gini se basa en la
+comparación las rentas de una economía, $y_i$, para $i = 1, \dots, N$,
+tomadas de dos en dos. Definamos la brecha absoluta media sobre los
+$N^2$ diferentes pares de renta como:
+#+begin_export latex
+\[
+  \Delta = \frac{1}{N^2}\sum_{i=1}^N \sum_{j=1}^N | y_i - y_j|.
+\]
+#+end_export
+El índice de Gini, $G$, se obtiene normalizando $\Delta$ para
+garantizar que su valor máximo no exceda la unidad. El caso más
+extremo de desigualdad ocurriría cuando una sola persona dispone de
+toda la renta, $Y = N \bar{y}$, siendo $\bar{y}$ la renta media. Entonces:
+#+begin_export latex
+\[
+G = \frac{\Delta}{2 \bar{y}}
+\]
+#+end_export
+
+Una fórmula alternativa, más conveniente en la práctica, es la
+siguiente:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N}
+\]
+#+end_export
+
+El índice de Gini toma valores comprendidos entre 0 y 1. En el caso en
+que la renta se distribuya de forma perfectamente igualitaria, el
+índice toma su valor mínimo: $G = 0$. El valor máximo que puede tomar
+el índice es $G = 1 - 1/N < 1$ que se aproxima a $1$ conforme $N$
+tiende a infinito. Valores de $G$ entre $0$ y $1$ representan niveles
+intermedios de desigualdad. En la práctica, los índices de Gini de las
+sociedades más igualitarias toman valores entre $0.2$ y $0.3$. Los
+índices de Gini de los países donde la distribución de la renta es más
+desigual suelen ser estar entre $0.5$ y $0.6$.
+
+#+NAME: fig-lorenz-gini
+#+CAPTION: El valor del índice de Gini es igual al doble del área comprendida entre la curva de Lorenz y la recta de 45\textdegree{}.
+#+ATTR_LATEX: :options [h!]
+#+begin_figure
+#+include: "../tex/ineq-fig-gini.tex" export latex
+#+end_figure
+
+El índice de Gini está relacionado con la curva de Lorenz y puede
+demostrarse que $G$ es igual al doble del área comprendida entre la
+línea de igualdad perfecta y la curva de Lorenz de la distribución. Formalmente:
+#+begin_export latex
+\[
+G = 1 - 2 \int_{0}^{1} L(p)\, dp
+\]
+#+end_export
+
+La Figura [[fig-lorenz-gini]] ilustra la relación entre la curva de Lorenz
+y el índice de Gini. Cuanto más se aleja la curva de Lorenz de la
+línea de igualdad, mayor será el valor de Gini. En el caso de igualdad
+perfecta de ingresos, la curva de Lorenz coincide con la diagonal y el
+área entre ambas es cero; por tanto, $G = 0$. En el caso de
+desigualdad extrema, donde un solo individuo concentra toda la renta
+de la economía, el área entre la curva de Lorenz y la recta de
+45\textdegree{} se aproxima al área total bajo la diagonal, por lo que
+$G \approx 1$. En general, un valor del índice de Gini más alto
+implica una curva de Lorenz más alejada de la línea de igualdad y la
+distribución de la renta se considera más desigual. Por el contrario,
+valores de $G$ más bajos indicarían distribuciones más igualitarias.
+
+#+NAME: tab-gini
+#+CAPTION: Cálculo del índice de Gini.
+#+ATTR_LATEX:  :options[H]
+#+begin_table
+#+ATTR_LATEX: :booktabs t :align r*{2}{w{r}{2cm}}
+| $i$  | $y_i$ | $i \cdot y_i$ |
+|------+-------+---------------|
+| $1$  | $3$   | $3$           |
+| $2$  | $7$   | $14$          |
+| $3$  | $8$   | $24$          |
+| $4$  | $10$  | $40$          |
+| $5$  | $12$  | $60$          |
+| $6$  | $14$  | $84$          |
+| $7$  | $17$  | $119$         |
+| $8$  | $20$  | $160$         |
+| $9$  | $25$  | $225$         |
+| $10$ | $38$  | $380$         |
+|------+-------+---------------|
+| Suma | $154$ | $1109$        |
+#+end_table
+
+El Cuadro [[tab-gini]] ilustra los cálculos necesarios para obtener el
+índice de Gini en la economía hipotética que se introdujo en la
+discusión de la curva de Lorenz. La tercera columna de ese Cuadro es
+simplemente el producto de las dos primeras columnas. El índice de
+Gini es:
+#+begin_export latex
+\[
+  G = \frac{2}{N} \frac{\sum i y_i}{\sum y_i} - \frac{N+1}{N} =
+  \frac{2}{10} \frac{1109}{154} - \frac{11}{10} = 0.340.
+\]
+#+end_export
+
+A diferencia de la curva de Lorenz, el uso de medidas escalares de
+desigualdad siempre permite ordenar dos distribuciones de la
+renta. Esto podría considerarse como una ventaja, pero puede ocultar
+diferencias importantes en las distribuciones que se comparan. Por
+ejemplo, es posible construir casos donde con el índice de Gini se
+consideren más igualitarias distribuciones en las que una parte
+importante de la sociedad obtenga, comparativamente, una proporción
+muy pequeña de la renta total. En general, es recomendable utilizar
+más de un indicador para evaluar la distribución de la renta en la
+práctica.
+
+
+** Cocientes entre cuantiles
+
+
+Los cocientes entre cuantiles o ratios interdecílicos comparan los
+ingresos de distintos cuantiles de la población. Se construyen
+dividiendo los ingresos de dos cuantiles en los extremos de la
+distribución de la renta. El Instituto Nacional de Estadística, INE,
+publica cada año el indicador /S80S20/, definido como el cociente de
+las rentas medias del quintil más alto y del quintil más bajo. Es
+decir, compara la renta media del \pct{20} más rico de la población
+con la renta media del \pct{20} más pobre. En el caso de distribución
+de la renta perfectamente igualitaria este índice toma el valor
+$1$. Cuanto más altos son los valores del índice, más desigual es la
+distribución de la renta.
+
+Utilizando los datos del Cuadro [[tab-gini]] podemos calcular este
+indicador para nuestra economía hipotética. La renta media del quintil
+más alto es $\Var{S80} = (25 + 38) / 2 = 31.5$ miles de euros
+anuales. Por otro lado, la renta media del quintil más bajo es
+$\Var{S20} = (3 + 7) / 2 = 5$ miles de euros al año. En este caso
+$\text{\emph{S80S20}} = 31.5 / 5 = 6.3$, es decir, la renta media del
+\pct{20} más rico de la población es más de 6 veces la renta media del
+\pct{20} más pobre.
+
+En la práctica se utilizan otros indicadores que se construyen de
+forma similar. Es muy común el cociente entre las rentas medias de los
+percentiles 90 y 10. También se está extendiendo el uso del ratio de
+Palma, que compara la renta del percentil 90 con la del percentil 50.
+En todos los casos, estas medidas indican cuántas veces es mayor la
+renta de una persona situada cerca de la cima de la distribución (que,
+por ejemplo, pertenezca al percentil 90) en comparación con el ingreso
+de una persona situada cerca de la base (en el percentil 10, por
+ejemplo).
+
+
+* Ejercicios
+
+#+ATTR_LATEX: :options [1)]
+1. Calcule los tres índices con los datos de =rentas.xlsx= usando un
+   umbral de la pobreza igual al \pct{60} de la renta mediana.
+
+2. <<item:2>>Suponga que recibe \money{10 000} euros de una
+   organización de ayuda a la pobreza y puede distribuirlos sin coste
+   y como desee entre los 40 ciudadanos del país. Si se plantea el
+   objetivo de reducir $H$, ¿cuál sería la distribución óptima de los
+   \money{10 000}? ¿Y si busca minimizar $PG$? ¿Y en el caso de $SPG$?
+
+3. <<item:3>>Suponga que las funciones de utilidad de cada uno de los
+   ciudadanos del país son idénticas y sólo dependen del logaritmo de
+   la renta: $U_i = \log(y_i)$, por lo que las utilidades marginales
+   de la renta son decrecientes. Si adopta un enfoque /rawlsiano/,
+   ¿cuál es la forma óptima de distribuir los \money{10 000}? ¿Y si
+   usa una función de bienestar social /utilitarista/?
+
+4. Compare los resultados obtenidos en los apartados [[item:2]] y [[item:3]]
+   ¿En qué casos coinciden los resultados de los índices de pobreza y
+   de las funciones de bienestar social?
+
+1. En la hoja =Rentas= del archivo Excel =ineq-data.xlsx= se presentan
+   las rentas anuales en euros de los 10 habitantes de un país
+   hipotético.
+
+   a) Obtenga y represente gráficamente la curva de Lorenz.
+
+   b) Calcule el índice de Gini y el cociente /S80S20/.
+
+   c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
+      transfieren \money{2 000} del individuo 1 al individuo 3. ¿Cómo
+      cambian los indicadores de desigualdad?
+
+   d) Calcule el índice de Gini y el cociente /S80S20/ si se
+      transfieren \money{2 000} del individuo 8 al individuo 10. ¿Cómo
+      cambian ahora los indicadores de desigualdad?
+
+   e) Compare las respuestas obtenidas en los dos apartados
+      anteriores. ¿Cuál de los índices de desigualdad es más adecuado
+      en este caso?
+
+2. En la hoja =CC.AA.= del archivo Excel =ineq-data.xlsx= se presentan
+   datos de las Comunidades Autónomas españolas correspondientes a los
+   años 2013 y 2023 y que muestran cómo ha evolucionado el crecimiento
+   económico, la desigualdad de la renta y la pobreza en las distintas
+   Comunidades. En su respuesta no incluya los casos de las Ciudades
+   Autónomas de Ceuta y Melilla dado que presentan características muy
+   diferentes al resto de España. También tenga en cuenta que las
+   rentas medias no están ajustadas al incremento de los precios
+   durante ese periodo. Para comparar las rentas medias en años
+   diferentes es conveniente deflactarlas previamente con el
+   IPC. Utilizando los datos proporcionados compruebe si existe alguna
+   relación entre el crecimiento económico y la pobreza. ¿Disminuye
+   más la pobreza en las Comunidades que crecen más? ¿Están
+   relacionados el crecimiento y la desigualdad? ¿De qué forma? ¿Y la
+   desigualdad y la pobreza?
+
+
+# Local Variables:
+# ispell-local-dictionary: "spanish"
+# End:
+
+#  LocalWords:  Pen Lorenz Gini
