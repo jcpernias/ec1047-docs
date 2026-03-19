@@ -1,5 +1,5 @@
-#+AUTHOR: Economía del Sector Público --- EC1049
-#+DATE: Curso 2024-2025
+#+AUTHOR: Economía del Sector Público --- EC1047
+#+DATE: Curso 2025-2026
 
 #+STARTUP: indent
 
