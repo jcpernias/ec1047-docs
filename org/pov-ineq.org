@@ -475,9 +475,9 @@ ejemplo).
       los \money{10 000}? ¿Y si usa una función de bienestar social
       /utilitarista/?
 
-   d) Compare los resultados obtenidos en los dos apartados
-      anteriores.  ¿En qué casos coinciden los resultados de los
-      índices de pobreza y de las funciones de bienestar social?
+   d) Compare los repartos óptimos obtenidos con los índices de
+      pobreza y con las funciones de bienestar social. ¿En qué casos
+      coinciden?
 
 2. En la hoja =Desigualdad= del archivo Excel =pov-ineq.xlsx= se
    presentan las rentas anuales en euros de los 10 habitantes de un
