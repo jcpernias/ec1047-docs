@@ -159,7 +159,10 @@ ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-di
 
 $(build-dir)/ineq-sol.tex: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
 
+## pov-ineq.org dependencies -------------------------------------------------
+$(build-dir)/pov-ineq.tex: $(pov-fig-files) $(ineq-fig-files) $(org-dir)/lorenz-table.org
 
+$(pdf-dir)/pov-ineq.pdf: $(pov-csv-files) $(build-dir)/lorenz-data.csv
 
 ## Create directories
 ## --------------------------------------------------------------------------------
