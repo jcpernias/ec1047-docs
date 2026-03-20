@@ -10,6 +10,9 @@ src-files := \
 	pov-sol.org \
 	pov-ineq.org
 
+ans-files := \
+	pov-ineq.org
+
 ## Directories
 ## --------------------------------------------------------------------------------
 
@@ -69,8 +72,8 @@ RSCRIPT := $(Rscriptbin)
 
 org-files := $(addprefix $(org-dir)/,$(src-files))
 tex-files := $(addprefix $(build-dir)/,$(patsubst %.org,%.tex,$(src-files)))
-pdf-files := $(addprefix $(pdf-dir)/,$(patsubst %.org,%.pdf,$(src-files)))
-
+pdf-files := $(addprefix $(pdf-dir)/,$(patsubst %.org,%.pdf,$(src-files))) \
+	$(addprefix $(pdf-dir)/,$(patsubst %.org,%-ans.pdf,$(ans-files)))
 tex-deps := $(root-dir)/setup.org $(root-dir)/setup-emacs.el
 
 pdf-deps := $(build-dir)/preamble.tex
@@ -87,12 +90,30 @@ $(info tex-files: $(tex-files))
 $(info pdf-files: $(pdf-files))
 endif
 
+
+# $(call ans-tex,texfile) -> write to a file
+define ans-tex
+\RequirePackage{etoolbox}
+\providebool{answers}
+\booltrue{answers}
+\input{$(realpath $(build-dir))/$1}
+endef
+
+
 all: $(pdf-files)
 
+## From .org to .tex
 .PRECIOUS: $(build-dir)/%.tex
 $(build-dir)/%.tex: $(org-dir)/%.org $(tex-deps) | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(org-to-latex "$(call dir-path,$@)")'
+
+## From .tex to -ans.tex
+.PRECIOUS: $(build-dir)/%-ans.tex
+$(build-dir)/%-ans.tex: $(build-dir)/%.tex
+	$(file > $@,$(call ans-tex,$*))
+
+
 
 $(build-dir)/%.pdf: $(build-dir)/%.tex $(pdf-deps) | $(build-dir)
 	$(LATEXMK) $<

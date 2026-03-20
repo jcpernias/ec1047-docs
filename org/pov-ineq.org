@@ -460,12 +460,20 @@ ejemplo).
    a) Calcule los índices $H$, $PG$ y $SPG$ usando una línea de la
       pobreza igual al \pct{60} de la renta mediana.
 
+      #+begin_answer
+
+      #+end_answer
+
    b) Suponga que una organización de ayuda a la pobreza recibe
       \money{10 000} euros y puede distribuirlos sin coste y como
       desee entre los 40 ciudadanos del país. Si se plantea el
       objetivo de reducir $H$, ¿cuál sería la distribución óptima de
       los \money{10 000}? ¿Y si busca minimizar $PG$? ¿Y en el caso de
       $SPG$?
+
+      #+begin_answer
+
+      #+end_answer
 
    c) Suponga que las funciones de utilidad de cada uno de los
       ciudadanos del país son idénticas y sólo dependen del logaritmo
@@ -475,9 +483,17 @@ ejemplo).
       los \money{10 000}? ¿Y si usa una función de bienestar social
       /utilitarista/?
 
+      #+begin_answer
+
+      #+end_answer
+
    d) Compare los repartos óptimos obtenidos con los índices de
       pobreza y con las funciones de bienestar social. ¿En qué casos
       coinciden?
+
+      #+begin_answer
+
+      #+end_answer
 
 2. En la hoja =Desigualdad= del archivo Excel =pov-ineq.xlsx= se
    presentan las rentas anuales en euros de los 10 habitantes de un
@@ -485,19 +501,39 @@ ejemplo).
 
    a) Obtenga y represente gráficamente la curva de Lorenz.
 
+      #+begin_answer
+
+      #+end_answer
+
    b) Calcule el índice de Gini y el cociente /S80S20/.
+
+      #+begin_answer
+
+      #+end_answer
 
    c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
       transfieren \money{2 000} del individuo 1 al individuo 3. ¿Cómo
       cambian los indicadores de desigualdad?
 
+      #+begin_answer
+
+      #+end_answer
+
    d) Calcule el índice de Gini y el cociente /S80S20/ si se
       transfieren \money{2 000} del individuo 8 al individuo 10. ¿Cómo
       cambian ahora los indicadores de desigualdad?
 
+      #+begin_answer
+
+      #+end_answer
+
    e) Compare las respuestas obtenidas en los dos apartados
       anteriores. ¿Cuál de los índices de desigualdad es más adecuado
       en este caso?
+
+      #+begin_answer
+
+      #+end_answer
 
 3. En la hoja =CC.AA.= del archivo Excel =pov-ineq.xlsx= se han
    incluido indicadores que muestran cómo han evolucionado entre los
@@ -508,6 +544,10 @@ ejemplo).
    desigualdad. ¿Disminuye más la pobreza en las Comunidades que
    crecen más? ¿Están relacionados el crecimiento y la desigualdad?
    ¿De qué forma? ¿Y la desigualdad y la pobreza?
+
+   #+begin_answer
+
+   #+end_answer
 
 
 # Local Variables:
