@@ -1131,6 +1131,7 @@ ejemplo).
      vertical y otra horizontal que representan el valor para el
      conjunto de España de la variable que se representa en el eje
      correspondiente.
+     #+latex: \medskip
 
      El siguiente gráfico representa las tasas de riesgo de la pobreza
      en el año 2013 (eje horizontal) y en el año 2023 (eje vertical).
@@ -1151,6 +1152,7 @@ ejemplo).
      #+ATTR_LATEX: :scale 0.35
      [[file:../figures/H.pdf]]
      #+end_minipage
+     #+latex: \medskip
 
      Se utiliza el índice de Gini para describir la evolución de la
      desigualdad de la renta en España durante los años 2013 a 2023.
@@ -1170,6 +1172,7 @@ ejemplo).
      #+ATTR_LATEX: :scale 0.35
      [[file:../figures/Gini.pdf]]
      #+end_minipage
+     #+latex: \medskip
 
      El siguiente gráfico muestra las tasas medias anuales de crecimiento
      del riesgo de la pobreza (eje vertical) frente al crecimiento medio
@@ -1189,6 +1192,7 @@ ejemplo).
      #+ATTR_LATEX: :scale 0.35
      [[file:../figures/ypc_H.pdf]]
      #+end_minipage
+     #+latex: \medskip
 
      En el siguiente gráfico se relacionan las tasas de crecimiento medias
      anuales del índice de Gini (eje vertical) y de la renta (eje
@@ -1206,6 +1210,7 @@ ejemplo).
      #+ATTR_LATEX: :scale 0.35
      [[file:../figures/ypc_Gini.pdf]]
      #+end_minipage
+     #+latex: \medskip
 
      Finalmente, se representa el crecimiento de las tasas de pobreza (eje
      vertical) y el de los índices de Gini (eje horizontal).
@@ -1223,6 +1228,7 @@ ejemplo).
      #+ATTR_LATEX: :scale 0.35
      [[file:../figures/Gini_H.pdf]]
      #+end_minipage
+     #+latex: \medskip
 
      En conclusión, el crecimiento de la renta durante el periodo analizado
      ha ido acompañado de una disminución de las tasas de riesgo de
