@@ -131,6 +131,22 @@ $(build-dir)/%.csv: $(data-dir)/%.org | $(build-dir)
 	$(EMACS) --load=./setup-emacs.el --visit=$< \
 		--eval '(eval-org-buffer "$(call dir-path,$@)")'
 
+
+## Exercise 3 figures ===================================================
+ineq-fig-files := $(addprefix $(fig-dir)/,\
+	$(addsuffix .pdf,Gini H S80S20 ypc ypc_H ypc_Gini ypc_S80S20 Gini_H S80S20_H))
+
+$(ineq-fig-files): ineq-fig-files.intermediate
+	@:
+
+ineq-fig-files-deps := $(data-dir)/pov-ineq.xlsx $(data-dir)/ccaa.csv
+.INTERMEDIATE: ineq-fig-files.intermediate
+ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-dir)
+	$(RSCRIPT) $<
+
+$(pdf-dir)/pov-ineq-ans.pdf: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
+
+
 ## ineq.org dependencies ------------------------------------------------
 ineq-fig-files := $(addprefix $(tex-dir)/ineq-fig-,\
 	$(addsuffix .tex,lorenz lorenz-comp1 lorenz-comp2 gini))
@@ -167,18 +183,6 @@ ineq-data-files.intermediate:  $(R-dir)/ineq.R $(data-dir)/ineq-data.xlsx | $(bu
 $(build-dir)/ineq-sol.tex: $(ineq-data-files)
 
 
-ineq-fig-files := $(addprefix $(fig-dir)/,\
-	$(addsuffix .pdf,Gini H S80S20 ypc ypc_H ypc_Gini ypc_S80S20 Gini_H S80S20_H))
-
-$(ineq-fig-files): ineq-fig-files.intermediate
-	@:
-
-ineq-fig-files-deps := $(data-dir)/ineq-data.xlsx $(data-dir)/ccaa.csv
-.INTERMEDIATE: ineq-fig-files.intermediate
-ineq-fig-files.intermediate: $(R-dir)/ineq-es.R $(ineq-fig-files-dep) | $(fig-dir)
-	$(RSCRIPT) $<
-
-$(build-dir)/ineq-sol.tex: $(ineq-fig-files) $(tex-dir)/ineq-fig-lorenz2.tex
 
 ## pov-ineq.org dependencies -------------------------------------------------
 $(build-dir)/pov-ineq.tex: $(pov-fig-files) $(ineq-fig-files) $(org-dir)/lorenz-table.org

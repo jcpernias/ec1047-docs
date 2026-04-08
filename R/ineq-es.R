@@ -28,7 +28,7 @@ es_g <- es_db |>
 
 lines_db <- filter(es_g, ccaa == "ESP")
 
-mk_plt <- function(x, y) {
+mk_plt <- function(x, y, xlab, ylab) {
   es_g |>
     filter_out(ccaa == "ESP") |>
     ggplot(aes(x = {{ x }}, y = {{ y }})) +
@@ -36,7 +36,8 @@ mk_plt <- function(x, y) {
     geom_hline(aes(yintercept = {{ y }}), lines_db, color = "snow4") +
     geom_point(size = 1) +
     geom_label_repel(aes(label = ccaa), size = 4.5, box.padding = 0.2) +
-    theme_bw(base_size = 24)
+    theme_bw(base_size = 24) +
+    labs(x = xlab, y = ylab)
 }
 
 
@@ -46,12 +47,13 @@ save_pdf <- function(path, plot) {
     encoding = "ISOLatin9.enc")
 }
 
-save_pdf("figures/ypc_H.pdf", mk_plt(ypc, H))
-save_pdf("figures/ypc_Gini.pdf", mk_plt(ypc, Gini))
-save_pdf("figures/ypc_S80S20.pdf", mk_plt(ypc, S80S20))
-save_pdf("figures/Gini_H.pdf", mk_plt(Gini, H))
-save_pdf("figures/S80S20_H.pdf", mk_plt(S80S20, H))
-save_pdf("figures/Gini.pdf", mk_plt(Gini_2013, Gini_2023))
-save_pdf("figures/H.pdf", mk_plt(H_2013, H_2023))
-save_pdf("figures/S80S20.pdf", mk_plt(S80S20_2013, S80S20_2023))
-save_pdf("figures/ypc.pdf", mk_plt(ypc_2013, ypc_2023))
+save_pdf("figures/ypc_H.pdf", mk_plt(ypc, H, "Crec. Renta", "Crec. Pobreza"))
+save_pdf("figures/ypc_Gini.pdf", mk_plt(ypc, Gini, "Crec. Renta", "Crec. Pobreza" ))
+save_pdf("figures/ypc_S80S20.pdf", mk_plt(ypc, S80S20, "Crec. Renta", "Crec. S80S20"))
+save_pdf("figures/Gini_H.pdf", mk_plt(Gini, H, "Crec. Gini", "Crec. Pobreza"))
+save_pdf("figures/S80S20_H.pdf", mk_plt(S80S20, H, "Crec. S80S20", "Crec. Pobreza"))
+save_pdf("figures/Gini.pdf", mk_plt(Gini_2013, Gini_2023, "Gini 2013", "Gini 2023"))
+save_pdf("figures/H.pdf", mk_plt(H_2013, H_2023, "Pobreza 2013", "Pobreza 2023"))
+save_pdf("figures/S80S20.pdf", mk_plt(S80S20_2013, S80S20_2023,
+  "S80S20 2013", "S80S20 2023"))
+save_pdf("figures/ypc.pdf", mk_plt(ypc_2013, ypc_2023, "Renta 2013", "Renta 2023"))
