@@ -470,9 +470,9 @@ ejemplo).
 
   latex_env <- function(..., envir) {
     glue(
-      "#+begin_export latex\n\\begin{<<envir>>}",
+      "#+begin_export latex\n\\begin{<<envir>>}\n",
       ...,
-      "\\end{<<envir>>}\n#+end_export\n",
+      "\n\\end{<<envir>>}\n#+end_export\n",
       .open = "<<", .close = ">>") |>
       cat(sep = "\n")
   }
@@ -486,9 +486,18 @@ ejemplo).
     latex_env(..., envir = "gather*")
   }
 
+  fmt_col <- function(x, digits, width, format) {
+    col <- formatC(x, digits = digits, width = width, format = format)
+    na_idx <- is.na(x)
+    if (any(na_idx)) {
+      col[na_idx] <- paste0(rep(" ", width), collapse = "")
+    }
+    col
+  }
+
   table_body <- function(x, digits = 2, width = NULL) {
     x |>
-      map2(digits, \(x, d) formatC(x, digits = d, width = width, format = "f")) |>
+      map2(digits, \(x, d) fmt_col(x, digits = d, width = width, format = "f")) |>
       do.call(cbind, args = _) |>
       apply(1, \(x) paste("|", x, collapse = " ")) |>
       paste0(collapse = " |\n") |>
@@ -503,6 +512,10 @@ ejemplo).
       rep(ncols) |>
       paste0(collapse = "") |>
       paste0("|\n")
+  }
+
+  protect <- function(x) {
+    paste("@@latex:", x, "@@")
   }
 #+end_src
 
@@ -574,12 +587,13 @@ ejemplo).
 
           col_labels <-
             c("i", "y_{i}", "z - y_{i}", "(z - y_{i}) / z",
-              "\\big((z - y_{i}) / z\\big)^{2}")
+              "\\big((z - y_{i}) / z\\big)^{2}") |>
+            protect()
 
           hdr <- paste("|", col_labels, collapse = " ") |>
             paste("|\n")
 
-          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align c*{",
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
                              ncols - 1, "}{>{$}w{r}{2.3cm}<{$}}\n")
 
           cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
@@ -655,12 +669,13 @@ ejemplo).
 
           col_labels <-
             c("i", "y^{0}_{i}", "d_{i}", "y^{1}_{i}", "z - y^{1}_{i}",
-              "(z - y^{1}_{i}) / z", "\\big((z - y^{1}_{i}) / z\\big)^{2}")
+              "(z - y^{1}_{i}) / z", "\\big((z - y^{1}_{i}) / z\\big)^{2}") |>
+            protect()
 
           hdr <- paste("|", col_labels, collapse = " ") |>
             paste("|\n")
 
-          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align c*{",
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
                              ncols - 1, "}{>{$}r<{$}}\n")
 
           cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
@@ -759,12 +774,13 @@ ejemplo).
 
           col_labels <-
             c("i", "y^{0}_{i}", "d_{i}", "y^{1}_{i}", "z - y^{1}_{i}",
-              "(z - y^{1}_{i}) / z", "\\big((z - y^{1}_{i}) / z\\big)^{2}")
+              "(z - y^{1}_{i}) / z", "\\big((z - y^{1}_{i}) / z\\big)^{2}") |>
+            protect()
 
           hdr <- paste("|", col_labels, collapse = " ") |>
             paste("|\n")
 
-          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align c*{",
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
                              ncols - 1, "}{>{$}r<{$}}\n")
 
           cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
@@ -844,17 +860,119 @@ ejemplo).
 2. En la hoja =Desigualdad= del archivo Excel =pov-ineq.xlsx= se
    presentan las rentas anuales en euros de los 10 habitantes de un
    país hipotético.
+   #+begin_src R :exports none
+     y <- read_excel("data/pov-ineq.xlsx", sheet = "Desigualdad",
+                     n_max = 11, skip = 1,
+                     col_names = c("i", "y"),
+                     col_types = "numeric") |>
+       pull(y) |> sort()
+
+     N <- length(y)
+     idx <- 1:N
+     y <- y
+     sum_y <- sum(y)
+     pct_y <- y / sum_y * 100
+     p <- 10 * idx
+     Lp <- cumsum(pct_y)
+   #+end_src
 
    a) Obtenga y represente gráficamente la curva de Lorenz.
 
       #+begin_answer
+        #+latex: \medskip
+        #+begin_src R :results output raw
+          tbl <- tibble(i = c(0, idx),
+                        y = c(0, y),
+                        pct_y = c(0, pct_y),
+                        p = c(0, p),
+                        Lp = c(0, Lp))
 
+          digits <- c(0, 0, 1, 0, 1)
+          width <- 6
+          body <- table_body(tbl, digits, width)
+          ncols <- ncol(tbl)
+          hline <- table_line(ncols, width)
+
+          sums <- rep(NA_real_, ncols)
+          sums[2:3] <- c(sum_y, 100)
+          foot <-
+            paste("|", "\\text{Suma}",
+                  table_body(sums[-1], digits[-1], width))
+
+
+          col_labels <-
+            c("i", "y_{i}", "100 y_{i} / \\sum y_{i}", "p_i", "L(p_i)") |>
+            protect()
+
+          hdr <- paste("|", col_labels, collapse = " ") |>
+            paste("|\n")
+
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
+                             ncols - 1, "}{>{$}w{r}{2cm}<{$}}\n")
+          cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
+        #+end_src
+        #+latex: \medskip
+
+        Curva de Lorenz:
+        #+begin_center
+        #+include: "../tex/ineq-fig-lorenz2.tex" export latex
+        #+end_center
       #+end_answer
 
    b) Calcule el índice de Gini y el cociente /S80S20/.
 
       #+begin_answer
+        #+ATTR_LATEX: :options [c]{0.4\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}
+        #+begin_src R :results output raw
+          tbl <- tibble(i = idx,
+                        y = y,
+                        iy = i * y)
 
+          digits <- c(0, 0, 0)
+          width <- 6
+          body <- table_body(tbl, digits, width)
+          ncols <- ncol(tbl)
+          hline <- table_line(ncols, width)
+
+          sums <- tbl |> map(sum)
+          foot <-
+            paste("|", "\\text{Suma}",
+                  table_body(sums[-1], digits[-1], width))
+
+          col_labels <-
+            c("i", "y_{i}", "i \\cdot y_{i}") |>
+            protect()
+
+          hdr <- paste("|", col_labels, collapse = " ") |>
+            paste("|\n")
+
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
+                             ncols - 1, "}{>{$}w{r}{1cm}<{$}}\n")
+          cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
+        #+end_src
+        #+end_minipage
+        #+ATTR_LATEX: :options [c]{0.6\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}%
+        Índice de Gini:
+        #+begin_src R :results output raw
+          G = (2 / N) * sums[[3]] / sums[[2]] - (N + 1) / N
+          latex_eq("G =
+            \\frac{2}{N} \\frac{\\sum i y_i}{\\sum y_i} - \\frac{N + 1}{N} =
+            \\frac{2}{<<N>>} \\frac{<<sums[[3]]>>}{<<sums[[2]]>>} - \\frac{<<N + 1>>}{<<N>>} =
+            <<round(G, 3)>>.")
+        #+end_src
+
+        Índice /S80S20/:
+        #+begin_src R :results output raw
+          S8020 = sum(y[9:10]) / sum(y[1:2])
+          latex_eq("\\text{\\emph{S80S20}} =
+            \\frac{<<y[9]>> + <<y[10]>>}{<<y[1]>> + <<y[2]>>} =
+            <<round(S8020, 2)>>.")
+        #+end_src
+        #+end_minipage
       #+end_answer
 
    c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
@@ -862,7 +980,61 @@ ejemplo).
       cambian los indicadores de desigualdad?
 
       #+begin_answer
+        #+ATTR_LATEX: :options [c]{0.4\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}
+        #+begin_src R :results output raw
+          y1 <- y
+          y1[1] <- y[1] - 2
+          y1[3] <- y[3] + 2
 
+          tbl <- tibble(i = idx,
+                        y = y1,
+                        iy = i * y1)
+
+          digits <- c(0, 0, 0)
+          width <- 6
+          body <- table_body(tbl, digits, width)
+          ncols <- ncol(tbl)
+          hline <- table_line(ncols, width)
+
+          sums <- tbl |> map(sum)
+          foot <-
+            paste("|", "\\text{Suma}",
+                  table_body(sums[-1], digits[-1], width))
+
+          col_labels <-
+            c("i", "y_{i}", "i \\cdot y_{i}") |>
+            protect()
+
+          hdr <- paste("|", col_labels, collapse = " ") |>
+            paste("|\n")
+
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
+                             ncols - 1, "}{>{$}w{r}{1cm}<{$}}\n")
+          cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
+        #+end_src
+        #+end_minipage
+        #+ATTR_LATEX: :options [c]{0.6\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}%
+        Índice de Gini:
+        #+begin_src R :results output raw
+          G = (2 / N) * sums[[3]] / sums[[2]] - (N + 1) / N
+          latex_eq("G =
+            \\frac{2}{N} \\frac{\\sum i y_i}{\\sum y_i} - \\frac{N + 1}{N} =
+            \\frac{2}{<<N>>} \\frac{<<sums[[3]]>>}{<<sums[[2]]>>} - \\frac{<<N + 1>>}{<<N>>} =
+            <<round(G, 3)>>.")
+        #+end_src
+
+        Índice /S80S20/:
+        #+begin_src R :results output raw
+          S8020 = sum(y1[9:10]) / sum(y1[1:2])
+          latex_eq("\\text{\\emph{S80S20}} =
+            \\frac{<<y1[9]>> + <<y1[10]>>}{<<y1[1]>> + <<y1[2]>>} =
+            <<round(S8020, 2)>>.")
+        #+end_src
+        #+end_minipage
       #+end_answer
 
    d) Calcule el índice de Gini y el cociente /S80S20/ si se
@@ -870,7 +1042,61 @@ ejemplo).
       cambian ahora los indicadores de desigualdad?
 
       #+begin_answer
+        #+ATTR_LATEX: :options [c]{0.4\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}
+        #+begin_src R :results output raw
+          y1 <- y
+          y1[8] <- y[8] - 2
+          y1[10] <- y[10] + 2
 
+          tbl <- tibble(i = idx,
+                        y = y1,
+                        iy = i * y1)
+
+          digits <- c(0, 0, 0)
+          width <- 6
+          body <- table_body(tbl, digits, width)
+          ncols <- ncol(tbl)
+          hline <- table_line(ncols, width)
+
+          sums <- tbl |> map(sum)
+          foot <-
+            paste("|", "\\text{Suma}",
+                  table_body(sums[-1], digits[-1], width))
+
+          col_labels <-
+            c("i", "y_{i}", "i \\cdot y_{i}") |>
+            protect()
+
+          hdr <- paste("|", col_labels, collapse = " ") |>
+            paste("|\n")
+
+          attr_str <- paste0("#+ATTR_LATEX: :float nil :booktabs t :align >{$}c<{$}*{",
+                             ncols - 1, "}{>{$}w{r}{1cm}<{$}}\n")
+          cat(attr_str, hline, hdr, hline, body, hline, foot, hline)
+        #+end_src
+        #+end_minipage
+        #+ATTR_LATEX: :options [c]{0.6\textwidth}
+        #+begin_minipage
+        #+latex: \vspace{0pt}%
+        Índice de Gini:
+        #+begin_src R :results output raw
+          G = (2 / N) * sums[[3]] / sums[[2]] - (N + 1) / N
+          latex_eq("G =
+            \\frac{2}{N} \\frac{\\sum i y_i}{\\sum y_i} - \\frac{N + 1}{N} =
+            \\frac{2}{<<N>>} \\frac{<<sums[[3]]>>}{<<sums[[2]]>>} - \\frac{<<N + 1>>}{<<N>>} =
+            <<round(G, 3)>>.")
+        #+end_src
+
+        Índice /S80S20/:
+        #+begin_src R :results output raw
+          S8020 = sum(y1[9:10]) / sum(y1[1:2])
+          latex_eq("\\text{\\emph{S80S20}} =
+            \\frac{<<y1[9]>> + <<y1[10]>>}{<<y1[1]>> + <<y1[2]>>} =
+            <<round(S8020, 2)>>.")
+        #+end_src
+        #+end_minipage
       #+end_answer
 
    e) Compare las respuestas obtenidas en los dos apartados
@@ -878,7 +1104,16 @@ ejemplo).
       en este caso?
 
       #+begin_answer
+        Las redistribuciones que se plantean en los dos apartados
+        anteriores regresivas: se transfiere dinero de un individuo
+        con menos renta a otro con mayor renta. En ambos casos, los
+        índices indican un empeoramiento de la distribución de la
+        renta con respecto a la situación inicial.
 
+        Para comparar las transferencias que se han planteado antes es
+        preferible usar el índice /S80S20/ dado que es más sensible a
+        cambios en los extremos de la distribución. El índice de Gini
+        no ofrece información útil para este tipo de comparación.
       #+end_answer
 
 3. En la hoja =CC.AA.= del archivo Excel =pov-ineq.xlsx= se han
@@ -892,7 +1127,109 @@ ejemplo).
    ¿De qué forma? ¿Y la desigualdad y la pobreza?
 
    #+begin_answer
+     En cada uno de los gráficos que siguen se incluye una línea
+     vertical y otra horizontal que representan el valor para el
+     conjunto de España de la variable que se representa en el eje
+     correspondiente.
 
+     El siguiente gráfico representa las tasas de riesgo de la pobreza
+     en el año 2013 (eje horizontal) y en el año 2023 (eje vertical).
+
+     #+ATTR_LATEX: :options [t]{0.3\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}\small%
+     En general, los índices de pobreza han disminuido. Las
+     comunidades que tenían las tasas más elevadas en 2013 (Murcia,
+     Extremadura, Andalucía, Canarias, Comunidad Valenciana y
+     Castilla-La Mancha) siguen situándose por encima de la media
+     española en 2023. En el resto del país, las tasas de pobreza se
+     mantienen por debajo de la media en ambos años.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.7\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.35
+     [[file:../figures/H.pdf]]
+     #+end_minipage
+
+     Se utiliza el índice de Gini para describir la evolución de la
+     desigualdad de la renta en España durante los años 2013 a 2023.
+
+     #+ATTR_LATEX: :options [t]{0.3\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}\small%
+     En general, la desigualdad ha disminuido en todo el país. En 2023,
+     cuatro comunidades presentan un índice de Gini superior al promedio
+     nacional: Madrid, Comunidad Valenciana, Canarias y Andalucía. Esta
+     última ya registraba niveles de desigualdad por encima de la media
+     en 2013.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.7\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.35
+     [[file:../figures/Gini.pdf]]
+     #+end_minipage
+
+     El siguiente gráfico muestra las tasas medias anuales de crecimiento
+     del riesgo de la pobreza (eje vertical) frente al crecimiento medio
+     anual de la renta (eje horizontal).
+
+     #+ATTR_LATEX: :options [t]{0.3\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}\small%
+     Se observa una clara relación negativa entre ambas variables: las
+     comunidades con mayor crecimiento económico durante el periodo son
+     también las que han experimentado las mayores reducciones relativas en
+     sus tasas de pobreza.  tasas de pobreza.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.7\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.35
+     [[file:../figures/ypc_H.pdf]]
+     #+end_minipage
+
+     En el siguiente gráfico se relacionan las tasas de crecimiento medias
+     anuales del índice de Gini (eje vertical) y de la renta (eje
+     horizontal).
+
+     #+ATTR_LATEX: :options [t]{0.3\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}\small%
+     Durante el periodo analizado, no se aprecia una relación sistemática
+     entre el crecimiento de la renta y la evolución de la desigualdad.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.7\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.35
+     [[file:../figures/ypc_Gini.pdf]]
+     #+end_minipage
+
+     Finalmente, se representa el crecimiento de las tasas de pobreza (eje
+     vertical) y el de los índices de Gini (eje horizontal).
+
+     #+ATTR_LATEX: :options [t]{0.3\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}\small%
+     Aparentemente, existe una relación positiva entre el crecimiento de
+     ambos indicadores. No obstante, si se excluye el caso atípico de
+     Navarra, la asociación entre pobreza y desigualdad desaparece.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.7\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.35
+     [[file:../figures/Gini_H.pdf]]
+     #+end_minipage
+
+     En conclusión, el crecimiento de la renta durante el periodo analizado
+     ha ido acompañado de una disminución de las tasas de riesgo de
+     pobreza. Aunque la desigualdad en la distribución también se ha
+     reducido en términos generales, no se han encontrado relaciones
+     sistemáticas entre la evolución de la desigualdad y el crecimiento
+     económico o la variación de las tasas de la pobreza.
    #+end_answer
 
 
