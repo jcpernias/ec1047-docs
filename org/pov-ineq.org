@@ -1138,7 +1138,7 @@ ejemplo).
 
      #+ATTR_LATEX: :options [t]{0.3\textwidth}
      #+begin_minipage
-     #+latex: \vspace{1ex}\small%
+     #+latex: \vspace{1ex}
      En general, los índices de pobreza han disminuido. Las
      comunidades que tenían las tasas más elevadas en 2013 (Murcia,
      Extremadura, Andalucía, Canarias, Comunidad Valenciana y
@@ -1159,7 +1159,7 @@ ejemplo).
 
      #+ATTR_LATEX: :options [t]{0.3\textwidth}
      #+begin_minipage
-     #+latex: \vspace{1ex}\small%
+     #+latex: \vspace{1ex}
      En general, la desigualdad ha disminuido en todo el país. En 2023,
      cuatro comunidades presentan un índice de Gini superior al promedio
      nacional: Madrid, Comunidad Valenciana, Canarias y Andalucía. Esta
@@ -1180,7 +1180,7 @@ ejemplo).
 
      #+ATTR_LATEX: :options [t]{0.3\textwidth}
      #+begin_minipage
-     #+latex: \vspace{1ex}\small%
+     #+latex: \vspace{1ex}
      Se observa una clara relación negativa entre ambas variables: las
      comunidades con mayor crecimiento económico durante el periodo son
      también las que han experimentado las mayores reducciones relativas en
@@ -1200,7 +1200,7 @@ ejemplo).
 
      #+ATTR_LATEX: :options [t]{0.3\textwidth}
      #+begin_minipage
-     #+latex: \vspace{1ex}\small%
+     #+latex: \vspace{1ex}
      Durante el periodo analizado, no se aprecia una relación sistemática
      entre el crecimiento de la renta y la evolución de la desigualdad.
      #+end_minipage
@@ -1217,7 +1217,7 @@ ejemplo).
 
      #+ATTR_LATEX: :options [t]{0.3\textwidth}
      #+begin_minipage
-     #+latex: \vspace{1ex}\small%
+     #+latex: \vspace{1ex}
      Aparentemente, existe una relación positiva entre el crecimiento de
      ambos indicadores. No obstante, si se excluye el caso atípico de
      Navarra, la asociación entre pobreza y desigualdad desaparece.
