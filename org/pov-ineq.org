@@ -2,6 +2,23 @@
 #+SETUPFILE: ../setup.org
 
 
+#+begin_export latex
+\pgfplotsset{
+  pen plot/.style={
+    width = 10cm, height = 5.5cm,
+    axis lines = middle,
+    xlabel = {Población (porcentaje)},
+    ylabel = {Renta\\(miles de euros)},
+    xmin = 0, xmax = 100,
+    ymin = 0, ymax = 60,
+    tick label style = {font = \footnotesize},
+    label style = {font = \small},
+    x label style={at={(xticklabel cs:0.5)}, anchor=north},
+    y label style={at={(yticklabel cs:1)}, anchor=east,
+      text width = 2.6cm},
+  },
+}
+#+end_export
 
 * Introducción
 
@@ -39,7 +56,26 @@ indicadores e incluso se han propuesto otros.
 #+LABEL: fig:1
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+include: "../tex/pov-fig-pen.tex" export latex
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[pen plot,
+      grid = both,
+      major grid style = {line width = .2pt, draw = gray!50},
+      minor tick num = 1,
+      xtick = {0, 20, ..., 100},
+      ytick = {0, 20, ..., 60},
+      ]
+    % Curva de Pen
+    \addplot[
+      thick, color = black,
+      const plot,
+    ] table[
+      col sep=comma,
+      x = p, y = y,
+    ] {pen.csv};
+    \end{axis}
+  \end{tikzpicture}
+#+end_src
 #+end_figure
 
 El /Desfile de Pen/ (/Pen's Parade/) es un gráfico que muestra cómo se
@@ -70,7 +106,63 @@ pobreza como el 60% de la mediana de la renta disponible per cápita.
 #+LABEL: fig:2
 #+ATTR_LATEX: :placement [h!]
 #+begin_figure
-#+include: "../tex/pov-fig-z.tex" export latex
+#+begin_src latex
+  \begin{tikzpicture}
+    \begin{axis}[pen plot,
+      ticks=none,
+      set layers,
+      clip = false,
+    ]
+
+    % Curva de Pen
+    \addplot[
+      name path = pen,
+      thick, color = black,
+      const plot,
+    ] table[
+      col sep=comma,
+      x = p, y = y,
+    ] {pen.csv};
+
+    % Renta mediana
+    \addplot[
+      name path = ymed,
+      semithick,
+      color = black,
+    ] table[col sep=comma, x=p, y=ymed]{povline.csv} ;
+
+    % Línea de la pobreza
+    \addplot[
+      name path = povline,
+      semithick,
+      color = black,
+    ] table[col sep=comma, x=p, y=z]{povline.csv} ;
+
+    \draw[
+        name intersections={of=pen and ymed, name=i}
+      ][
+        line width = .3pt,
+        draw = gray!50,
+        on layer = axis background,
+      ] (i-1) -- (i-1 |- current axis.south)
+      node[label={[font=\footnotesize]below:$50$}] {}
+      (i-1 -| current axis.west)
+      node[label={[font=\footnotesize]left:$\operatorname{med}(y)$}] {}
+      ;
+
+    \draw[
+      name intersections={of=pen and povline, name=i}
+    ][
+      line width = .2pt,
+      draw = gray!50,
+    ]
+    (i-1 -| current axis.west)
+    node[label={[font=\footnotesize]left:$z = 0.6  \operatorname{med}(y)$}] {}
+    ;
+
+    \end{axis}
+  \end{tikzpicture}
+#+end_src
 #+end_figure
 
 
