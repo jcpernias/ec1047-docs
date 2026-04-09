@@ -520,7 +520,6 @@ ejemplo).
 #+end_src
 
 
-#+ATTR_LATEX: :options [1)]
 1. La hoja ~Pobreza~ del archivo Excel ~pov-ineq.xlsx~ contiene las
    rentas de 40 individuos (rentas anuales en miles de euros).
 
@@ -625,11 +624,11 @@ ejemplo).
       $SPG$?
 
       #+begin_answer
-        Para minimizar $H$, se debe priorizar a quienes estén más
-        cerca de la línea de la pobreza. Se comienza con el más
-        cercano, Se comienza con el más cercano, asignándole la
-        cantidad necesaria para alcanzar el umbral, y se continúa
-        hasta agotar los fondos.
+        Para minimizar $H$ se debe priorizar a quienes estén más
+        cerca de la línea de la pobreza.  Se comienza con el más
+        cercano, asignándole la cantidad necesaria para alcanzar el
+        umbral, y se continúa hasta agotar los fondos.
+        #+latex: \medskip
 
         La siguiente tabla muestra las rentas iniciales, $y^{0}_{i}$,
         las asignaciones a cada individuo, $d_{i}$, las rentas después
@@ -709,24 +708,21 @@ ejemplo).
           PG^{0} - \frac{D}{N z},
         \end{equation*}
         #+end_export
-        donde $D$ es la suma total de las transferencias. La fórmula anterior
-        muestra que el índice $PG$ sólo depende de la cuantía total de las
-        transferencias y no de cómo se reparta entre los pobres.
-
-        En nuestro caso, sea cual sea la asignación de los \money{10 000}, el
-        índice $PG$ tomará siempre el mismo valor.
+        donde $D$ es la suma total de las transferencias.  Por tanto,
+        mientras las transferencias se dirijan a personas pobres, la
+        reducción de $PG$ depende únicamente de la cuantía total
+        transferida y no de cómo se reparta entre los pobres.
+        #+latex: \medskip
 
         Finalmente, para minimizar la brecha cuadrática, $SPG$ hay que
         priorizar a los más pobres, otorgando más dinero a quienes
-        están más alejados del umbral.
-
-        Se empezaría asignando dinero al individuo más pobre, hasta
-        que su renta se iguale con la del segundo más pobre. Ahora se
-        asigna dinero a estas dos personas hasta que su renta se
-        iguala a la del tercero más pobre. Se continua con estas
-        asignaciones hasta agotar todos los fondos. La aplicación de
-        este algoritmo a nuestro caso llevaría a la siguiente
-        situación:
+        están más alejados del umbral. Se empezaría asignando dinero
+        al individuo más pobre, hasta que su renta se iguale con la
+        del segundo más pobre. Ahora se asigna dinero a estas dos
+        personas hasta que su renta se iguala a la del tercero más
+        pobre. Se continua con estas asignaciones hasta agotar todos
+        los fondos. La aplicación de este algoritmo a nuestro caso
+        llevaría a la siguiente situación:
         #+latex: \medskip
         #+begin_src R :results output raw
           D <- 10
@@ -800,6 +796,7 @@ ejemplo).
             "<<round(sums[[ncols]] / N, 3)>>.")
         #+end_src
       #+end_answer
+      #+latex: \ClearPage{}
 
    c) Suponga que las funciones de utilidad de cada uno de los
       ciudadanos del país son idénticas y sólo dependen del logaritmo
@@ -816,6 +813,7 @@ ejemplo).
         pobre. En este punto, se transferiría dinero a esas dos
         personas hasta igualar su renta con la del tercero más pobre y
         así sucesivamente hasta que se agoten los fondos a repartir.
+        #+latex: \medskip
 
         El utilitarismo, por su parte, busca maximizar la suma de las
         utilidades de todos los individuos que componen la
@@ -830,8 +828,8 @@ ejemplo).
           \frac{1}{y_i}.
         \]
         #+end_export
-        Por tanto, se prioriza igualmente a los más pobres ya que su
-        utilidad marginal de la renta es mayor.
+        Por tanto, aunque por razones distintas, ambos enfoques llevan
+        a priorizar a los individuos con menor renta.
       #+end_answer
 
    d) Compare los repartos óptimos obtenidos con los índices de
@@ -839,23 +837,27 @@ ejemplo).
       coinciden?
 
       #+begin_answer
-        En el caso que hemos analizado, la distribución óptima
-        coincide si se busca maximizar el bienestar (ya sea
-        /rawlsiano/ o utilitarista) o minimizar el índice $SPG$, pues
-        con todos estos enfoques se prioriza a los más pobres.
+        En el caso analizado, la distribución óptima coincide ya se
+        trate de maximizar el bienestar (ya sea /rawlsiano/ o
+        utilitarista) o de minimizar el índice $SPG$: en todos estos
+        enfoques se prioriza a los más pobres.
+        #+latex: \medskip
 
         De los otros dos índices, solo el índice de la pobreza
-        proporciona una solución definida que consiste en centrarse en
-        los individuos que se encuentran más cerca de la línea de la
-        pobreza. Esta estrategia no consideraría en absoluto a las
-        personas más pobres que, si hubiese fondos suficientes, serían
-        las últimas en recibir alguna transferencia.
+        proporciona una solución óptima definida, la cual consiste en
+        centrarse en los individuos que se encuentran más cerca de la
+        línea de la pobreza. Esta estrategia no consideraría en
+        absoluto a las personas más pobres que, si hubiese fondos
+        suficientes, serían las últimas en recibir alguna
+        transferencia.
+        #+latex: \medskip
 
         Por último, el índice de la brecha de la pobreza no sería útil
         para decidir cómo realizar las transferencias ya que solo es
         sensible al monto total de las donaciones y no a cómo se
         distribuyan.
       #+end_answer
+      #+latex: \ClearPage{}
 
 2. En la hoja =Desigualdad= del archivo Excel =pov-ineq.xlsx= se
    presentan las rentas anuales en euros de los 10 habitantes de un
@@ -919,7 +921,7 @@ ejemplo).
         #+end_center
       #+end_answer
 
-   b) Calcule el índice de Gini y el cociente /S80S20/.
+   b) <<item:b>>Calcule el índice de Gini y el cociente /S80S20/.
 
       #+begin_answer
         #+ATTR_LATEX: :options [c]{0.4\textwidth}
@@ -975,7 +977,7 @@ ejemplo).
         #+end_minipage
       #+end_answer
 
-   c) Calcule el índice de Gini y el cociente /S80S20/ cuando se
+   c) <<item:c>>Calcule el índice de Gini y el cociente /S80S20/ cuando se
       transfieren \money{2000} del individuo 1 al individuo 3. ¿Cómo
       cambian los indicadores de desigualdad?
 
@@ -1034,6 +1036,10 @@ ejemplo).
             \\frac{<<y1[9]>> + <<y1[10]>>}{<<y1[1]>> + <<y1[2]>>} =
             <<round(S8020, 2)>>.")
         #+end_src
+
+        Los dos índices muestran un incremento de la desigualdad
+        porque se transfiere renta desde el individuo más pobre hacia
+        uno situado más arriba en la distribución.
         #+end_minipage
       #+end_answer
 
@@ -1096,6 +1102,9 @@ ejemplo).
             \\frac{<<y1[9]>> + <<y1[10]>>}{<<y1[1]>> + <<y1[2]>>} =
             <<round(S8020, 2)>>.")
         #+end_src
+
+        Ambos índices aumentan al transferir renta de un individuo a
+        otro con mayor renta.
         #+end_minipage
       #+end_answer
 
@@ -1109,11 +1118,17 @@ ejemplo).
         con menos renta a otro con mayor renta. En ambos casos, los
         índices indican un empeoramiento de la distribución de la
         renta con respecto a la situación inicial.
+        #+latex: \medskip
 
-        Para comparar las transferencias que se han planteado antes es
-        preferible usar el índice /S80S20/ dado que es más sensible a
-        cambios en los extremos de la distribución. El índice de Gini
-        no ofrece información útil para este tipo de comparación.
+        Los dos índices muestran comportamientos dispares cuando se
+        comparan las dos transferencias. El índice /S80S20/ dado que
+        es más sensible a cambios en los extremos de la distribución y
+        mostraría un mayor empeoramiento de la desigualdad tras la
+        redistribución del apartado [[item:b]]. Por otro lado, el índice
+        de Gini toma el mismo valor después de las transferencias de
+        los apartados [[item:b]] y [[item:c]], ya que mide la desigualdad en
+        toda la distribución y no es especialmente sensible a dónde se
+        producen los cambios.
       #+end_answer
 
 3. En la hoja =CC.AA.= del archivo Excel =pov-ineq.xlsx= se han
@@ -1184,7 +1199,7 @@ ejemplo).
      Se observa una clara relación negativa entre ambas variables: las
      comunidades con mayor crecimiento económico durante el periodo son
      también las que han experimentado las mayores reducciones relativas en
-     sus tasas de pobreza.  tasas de pobreza.
+     sus tasas de pobreza.
      #+end_minipage
      #+ATTR_LATEX: :options [t]{0.7\textwidth}
      #+begin_minipage
