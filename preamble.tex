@@ -153,6 +153,21 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat = 1.18}
 \usepgfplotslibrary{fillbetween}
+\pgfplotsset{
+  every axis/.append style={
+    scale only axis,
+    xlabel near ticks, ylabel near ticks,
+    every axis title shift=3pt,
+    cycle list={},
+    bar cycle list={},
+  },
+  every axis plot/.append style={
+    every mark/.append style={solid},
+  },
+  numformat single/.style={/pgf/number format/#1},
+  numformat/.style={numformat single/.list={#1}},
+}
+
 
 % Hyperlinks
 % --------------------------------------------------------------------------------
