@@ -48,7 +48,7 @@ save_pdf <- function(path, plot) {
 }
 
 save_pdf("figures/ypc_H.pdf", mk_plt(ypc, H, "Crec. Renta", "Crec. Pobreza"))
-save_pdf("figures/ypc_Gini.pdf", mk_plt(ypc, Gini, "Crec. Renta", "Crec. Pobreza" ))
+save_pdf("figures/ypc_Gini.pdf", mk_plt(ypc, Gini, "Crec. Renta", "Crec. Gini" ))
 save_pdf("figures/ypc_S80S20.pdf", mk_plt(ypc, S80S20, "Crec. Renta", "Crec. S80S20"))
 save_pdf("figures/Gini_H.pdf", mk_plt(Gini, H, "Crec. Gini", "Crec. Pobreza"))
 save_pdf("figures/S80S20_H.pdf", mk_plt(S80S20, H, "Crec. S80S20", "Crec. Pobreza"))
