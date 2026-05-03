@@ -2,6 +2,15 @@
 #+SETUPFILE: ../setup.org
 
 
+* COMMENT Posibles cambios
+
+- En el ejercicio 2(d) debería aclararse que la situación inicial es
+  2(b). Tal como está escrito parece que el cambio se produce tras el
+  de 2(c).
+- Cuando se trata de minimizar $H$ da igual como se repartan los
+  últimos 1100 euros.
+- Cambiar la hoja excel para el primer ejercicio de forma que se vean
+  los decimales.
 
 * Introducción
 
@@ -551,7 +560,7 @@ ejemplo).
             cat()
         #+end_src
         #+latex: \smallskip
-        La renta mediana es {{{glue(y_m = <<y_med>>)}}} miles euros
+        La renta mediana es {{{glue(y_m = <<y_med>>)}}} miles de euros
         al año. El umbral de la pobreza es igual al \pct{60} de la
         renta mediana, {{{glue(z = 0.6 y_m = <<z>>)}}} miles de euros
         al año. De los {{{glue(N = <<N>>)}}} individuos, hay {{{glue(q
@@ -624,10 +633,10 @@ ejemplo).
       $SPG$?
 
       #+begin_answer
-        Para minimizar $H$ se debe priorizar a quienes estén más
-        cerca de la línea de la pobreza.  Se comienza con el más
-        cercano, asignándole la cantidad necesaria para alcanzar el
-        umbral, y se continúa hasta agotar los fondos.
+        Para minimizar $H$ se debe priorizar a quienes estén justo por
+        debajo del umbral.  Se comienza con el más cercano,
+        asignándole la cantidad necesaria para alcanzar la línea de la
+        pobreza, y se continúa hasta agotar los fondos.
         #+latex: \medskip
 
         La siguiente tabla muestra las rentas iniciales, $y^{0}_{i}$,
@@ -694,10 +703,11 @@ ejemplo).
             "<<round(sums[[ncols]] / N, 3)>>.")
         #+end_src
 
-        El índice de la brecha de la pobreza, $PG$, es insensible a como se
-        reparten las asignaciones entre los diferentes individuos, siempre que
-        nadie que reciba una transferencia acabe teniendo una renta superior
-        al umbral de la pobreza. Después de las transferencias el índice $PG$ es:
+        El índice de la brecha de la pobreza, $PG$, es insensible a
+        cómo se reparten las asignaciones entre los diferentes
+        individuos, siempre que nadie que reciba una transferencia
+        acabe teniendo una renta superior al umbral de la
+        pobreza. Después de las transferencias el índice $PG$ es:
         #+begin_export latex
         \begin{equation*}
           PG^{1} =
@@ -709,9 +719,10 @@ ejemplo).
         \end{equation*}
         #+end_export
         donde $D$ es la suma total de las transferencias.  Por tanto,
-        mientras las transferencias se dirijan a personas pobres, la
-        reducción de $PG$ depende únicamente de la cuantía total
-        transferida y no de cómo se reparta entre los pobres.
+        mientras las transferencias se dirijan a personas pobres y
+        ningún receptor de transferencias acabe con una renta superior
+        a $z$, la reducción de $PG$ depende únicamente de la cuantía
+        total transferida y no de cómo se reparta entre los pobres.
         #+latex: \medskip
 
         Finalmente, para minimizar la brecha cuadrática, $SPG$ hay que
@@ -720,7 +731,7 @@ ejemplo).
         al individuo más pobre, hasta que su renta se iguale con la
         del segundo más pobre. Ahora se asigna dinero a estas dos
         personas hasta que su renta se iguala a la del tercero más
-        pobre. Se continua con estas asignaciones hasta agotar todos
+        pobre. Se continúa con estas asignaciones hasta agotar todos
         los fondos. La aplicación de este algoritmo a nuestro caso
         llevaría a la siguiente situación:
         #+latex: \medskip
@@ -844,9 +855,9 @@ ejemplo).
         #+latex: \medskip
 
         De los otros dos índices, solo el índice de la pobreza
-        proporciona una solución óptima definida, la cual consiste en
-        centrarse en los individuos que se encuentran más cerca de la
-        línea de la pobreza. Esta estrategia no consideraría en
+        proporciona una regla de asignación definida, la cual consiste
+        en centrarse en los individuos que se encuentran más cerca de
+        la línea de la pobreza. Esta estrategia no consideraría en
         absoluto a las personas más pobres que, si hubiese fondos
         suficientes, serían las últimas en recibir alguna
         transferencia.
@@ -1039,11 +1050,11 @@ ejemplo).
 
         Los dos índices muestran un incremento de la desigualdad
         porque se transfiere renta desde el individuo más pobre hacia
-        uno situado más arriba en la distribución.
+        un individuo situado más arriba en la distribución.
         #+end_minipage
       #+end_answer
 
-   d) Calcule el índice de Gini y el cociente /S80S20/ si se
+   d) <<item:d>>Calcule el índice de Gini y el cociente /S80S20/ si se
       transfieren \money{2000} del individuo 8 al individuo 10. ¿Cómo
       cambian ahora los indicadores de desigualdad?
 
@@ -1103,8 +1114,9 @@ ejemplo).
             <<round(S8020, 2)>>.")
         #+end_src
 
-        Ambos índices aumentan al transferir renta de un individuo a
-        otro con mayor renta.
+        Con respecto a la situación inicial mostrada en [[item:b]], ambos
+        índices aumentan al transferir renta de un individuo a otro
+        con mayor renta.
         #+end_minipage
       #+end_answer
 
@@ -1114,19 +1126,19 @@ ejemplo).
 
       #+begin_answer
         Las redistribuciones que se plantean en los dos apartados
-        anteriores regresivas: se transfiere dinero de un individuo
+        anteriores son regresivas: se transfiere dinero de un individuo
         con menos renta a otro con mayor renta. En ambos casos, los
         índices indican un empeoramiento de la distribución de la
         renta con respecto a la situación inicial.
         #+latex: \medskip
 
         Los dos índices muestran comportamientos dispares cuando se
-        comparan las dos transferencias. El índice /S80S20/ dado que
-        es más sensible a cambios en los extremos de la distribución y
+        comparan las dos transferencias. El índice /S80S20/ es más
+        sensible a cambios en los extremos de la distribución y
         mostraría un mayor empeoramiento de la desigualdad tras la
-        redistribución del apartado [[item:b]]. Por otro lado, el índice
+        redistribución del apartado [[item:c]]. Por otro lado, el índice
         de Gini toma el mismo valor después de las transferencias de
-        los apartados [[item:b]] y [[item:c]], ya que mide la desigualdad en
+        los apartados [[item:c]] y [[item:d]], ya que mide la desigualdad en
         toda la distribución y no es especialmente sensible a dónde se
         producen los cambios.
       #+end_answer
@@ -1166,17 +1178,17 @@ ejemplo).
      #+latex: \medskip
 
      Los dos gráficos que se incluyen a continuación muestran la
-     relación entre el crecimiento de la renta y el crecimiento de la
-     desigualdad, utilizando el índice de Gini y el índice
-     /S80S20/. La relación entre las dos variables parece
-     moderadamente negativa (las correlaciones entre el crecimiento de
-     la renta y el crecimiento de Gini y /S80S20/ son $-0.16$ y
-     $-0.19$, respectivamente). Sin embargo, esto puede deberse al
-     comportamiento singular de los indicadores en Navarra (cuando se
-     elimina Navarra las correlaciones entre el crecimiento de la
-     renta y los índices de desigualdad pasan a valer $0.10$ y
-     $0.02$). En conclusión, no parece haber una fuerte relación entre
-     el crecimiento económico de las comunidades y la desigualdad.
+     relación entre el crecimiento de la renta y el de la desigualdad,
+     utilizando el índice de Gini y el índice /S80S20/. La relación
+     entre las dos variables parece moderadamente negativa (las
+     correlaciones entre el crecimiento de la renta y el crecimiento
+     de Gini y /S80S20/ son $-0.16$ y $-0.19$, respectivamente). Sin
+     embargo, esto puede deberse al comportamiento singular de los
+     indicadores en Navarra (cuando se elimina Navarra las
+     correlaciones entre el crecimiento de la renta y el de los
+     índices de desigualdad pasan a valer $0.10$ y $0.02$). En
+     conclusión, no parece haber una fuerte relación entre el
+     crecimiento económico de las comunidades y el de la desigualdad.
 
      #+ATTR_LATEX: :options [t]{0.5\textwidth}
      #+begin_minipage
@@ -1197,14 +1209,14 @@ ejemplo).
      tasas de crecimiento anuales del índice de la pobreza con
      respecto al crecimiento de los dos indicadores de desigualdad,
      Gini y /S80S20/. Ambos gráficos sugieren una fuerte asociación
-     del crecimiento de la pobreza y el crecimiento de la desigualdad
-     (los coeficientes de correlación son $0.63$ cuando se usa Gini y
+     del crecimiento de la pobreza y el de la desigualdad (los
+     coeficientes de correlación son $0.63$ cuando se usa Gini y
      $0.58$ cuando se usa /S80S20/).  Al igual que ocurría con los dos
      gráficos anteriores, esta fuerte asociación positiva parece
-     deberse en gran medida al comportamiento singular de
-     Navarra. Pero en este caso se sigue observando una notable
-     asociación positiva si se excluye a Navarra del análisis (los
-     coeficientes de correlación son $0.28$ y $0.26$).
+     deberse en gran medida al comportamiento atípico de Navarra. Pero
+     en este caso se sigue observando una notable asociación positiva
+     si se excluye a Navarra del análisis (los coeficientes de
+     correlación son $0.28$ y $0.26$).
 
      #+ATTR_LATEX: :options [t]{0.5\textwidth}
      #+begin_minipage
@@ -1223,11 +1235,11 @@ ejemplo).
 
      En conclusión, el crecimiento de la renta durante el periodo
      analizado ha ido acompañado de una disminución de las tasas de
-     riesgo de pobreza. La relación del crecimiento de la desigualdad
-     con el crecimiento de las otras dos variables es menos clara y se
-     ve fuertemente influida por la evolución de los indicadores en
-     Navarra. A pesar de ello, los datos sugieren una asociación
-     positiva entre el crecimiento de la pobreza y el de la
+     riesgo de pobreza. La relación entre la evolución de la
+     desigualdad y la de las otras dos variables es
+     menos clara y se ve fuertemente influida por la evolución de los
+     indicadores en Navarra. A pesar de ello, los datos sugieren una
+     asociación positiva entre el crecimiento de la pobreza y el de la
      desigualdad.
    #+end_answer
 
