@@ -1142,6 +1142,98 @@ ejemplo).
    ¿De qué forma? ¿Y la desigualdad y la pobreza?
 
    #+begin_answer
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{1ex}
+     El gráfico de la derecha muestra la tasa de crecimiento anual de
+     la tasa de riesgo de la pobreza (el índice de la pobreza, $H$)
+     con respecto a la tasa de crecimiento anual de la renta per
+     cápita. Se representan también las tasas de crecimiento de los
+     indicadores para el conjunto de España con una línea horizontal y
+     una línea vertical.
+
+     El gráfico muestra una notable asociación negativa entre las dos
+     variables (el coeficiente de correlación es $-0.70$): las
+     comunidades donde más ha crecido la renta son también las que
+     registran un mayor descenso del índice de la pobreza.
+     #+end_minipage
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.28
+     [[file:../figures/ypc_H.pdf]]
+     #+end_minipage
+     #+latex: \medskip
+
+     Los dos gráficos que se incluyen a continuación muestran la
+     relación entre el crecimiento de la renta y el crecimiento de la
+     desigualdad, utilizando el índice de Gini y el índice
+     /S80S20/. La relación entre las dos variables parece
+     moderadamente negativa (las correlaciones entre el crecimiento de
+     la renta y el crecimiento de Gini y /S80S20/ son $-0.16$ y
+     $-0.19$, respectivamente). Sin embargo, esto puede deberse al
+     comportamiento singular de los indicadores en Navarra (cuando se
+     elimina Navarra las correlaciones entre el crecimiento de la
+     renta y los índices de desigualdad pasan a valer $0.10$ y
+     $0.02$). En conclusión, no parece haber una fuerte relación entre
+     el crecimiento económico de las comunidades y la desigualdad.
+
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.28
+     [[file:../figures/ypc_Gini.pdf]]
+     #+end_minipage
+     #+latex: \medskip
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.28
+     [[file:../figures/ypc_S80S20.pdf]]
+     #+end_minipage
+     #+latex: \medskip
+
+     En los dos gráficos de la página siguiente se representan las
+     tasas de crecimiento anuales del índice de la pobreza con
+     respecto al crecimiento de los dos indicadores de desigualdad,
+     Gini y /S80S20/. Ambos gráficos sugieren una fuerte asociación
+     del crecimiento de la pobreza y el crecimiento de la desigualdad
+     (los coeficientes de correlación son $0.63$ cuando se usa Gini y
+     $0.58$ cuando se usa /S80S20/).  Al igual que ocurría con los dos
+     gráficos anteriores, esta fuerte asociación positiva parece
+     deberse en gran medida al comportamiento singular de
+     Navarra. Pero en este caso se sigue observando una notable
+     asociación positiva si se excluye a Navarra del análisis (los
+     coeficientes de correlación son $0.28$ y $0.26$).
+
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.28
+     [[file:../figures/Gini_H.pdf]]
+     #+end_minipage
+     #+latex: \medskip
+     #+ATTR_LATEX: :options [t]{0.5\textwidth}
+     #+begin_minipage
+     #+latex: \vspace{0pt}
+     #+ATTR_LATEX: :scale 0.28
+     [[file:../figures/S80S20_H.pdf]]
+     #+end_minipage
+     #+latex: \medskip
+
+     En conclusión, el crecimiento de la renta durante el periodo
+     analizado ha ido acompañado de una disminución de las tasas de
+     riesgo de pobreza. La relación del crecimiento de la desigualdad
+     con el crecimiento de las otras dos variables es menos clara y se
+     ve fuertemente influida por la evolución de los indicadores en
+     Navarra. A pesar de ello, los datos sugieren una asociación
+     positiva entre el crecimiento de la pobreza y el de la
+     desigualdad.
+   #+end_answer
+
+* COMMENT Old answer
+
+   #+begin_answer
      En cada uno de los gráficos que siguen se incluye una línea
      vertical y otra horizontal que representan el valor para el
      conjunto de España de la variable que se representa en el eje
@@ -1261,4 +1353,4 @@ ejemplo).
 #  LocalWords:  Pen Lorenz Gini rawlsiano Haughton Jonathan Shahidur
 #  LocalWords:  Inequality Khandker Handbook on Poverty and DC World
 #  LocalWords:  Washington Bank cápita Eurostat Wikipedia Excel Ceuta
-#  LocalWords:  interdecílicos Melilla Andalucía
+#  LocalWords:  interdecílicos Melilla Andalucía per

@@ -57,3 +57,20 @@ save_pdf("figures/H.pdf", mk_plt(H_2013, H_2023, "Pobreza 2013", "Pobreza 2023")
 save_pdf("figures/S80S20.pdf", mk_plt(S80S20_2013, S80S20_2023,
   "S80S20 2013", "S80S20 2023"))
 save_pdf("figures/ypc.pdf", mk_plt(ypc_2013, ypc_2023, "Renta 2013", "Renta 2023"))
+
+db <- es_db |>
+  pivot_longer(!ccaa) |>
+  mutate(varname = str_extract(name, "^[^_]+"),
+         year = as.integer(str_extract(name, "[0-9]+$"))) |>
+  select(-name) |>
+  pivot_wider(names_from = varname, values_from = value) |>
+  filter_out(ccaa == "ESP")
+
+lm(log(H) ~ log(Gini) + log(ypc) + year, db) |> summary()
+
+lm(log(H) ~ log(S80S20) + log(ypc) + year, db) |> summary()
+
+with(es_g, cor(Gini, H))
+with(es_g |> filter_out(ccaa == "NAV"), cor(Gini, H))
+with(es_g, cor(S80S20, H))
+with(es_g |> filter_out(ccaa == "NAV"), cor(S80S20, H))
